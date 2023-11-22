@@ -8,13 +8,13 @@ import java.util.Random;
 
 public class GamePanel extends JPanel implements ActionListener {
 
-    private static final int PANEL_WIDTH = 600;
-    private static final int PANEL_HEIGHT = 600;
-    private static final int UNIT = 30;
+    private static final int PANEL_WIDTH = 500;
+    private static final int PANEL_HEIGHT = 500;
+    private static final int UNIT = 25;
     private static final int GAME_UNITS = (PANEL_HEIGHT * PANEL_HEIGHT) / (UNIT * UNIT);
     private static final int TIMER_DELAY = 100;
-    private final int[] x = new int[GAME_UNITS];
-    private final int[] y = new int[GAME_UNITS];
+    private final int[] x = new int[GAME_UNITS / (PANEL_WIDTH / UNIT)];
+    private final int[] y = new int[GAME_UNITS / (PANEL_HEIGHT/ UNIT)];
     private int bodyUnits;
     private int foodX;
     private int foodY;
@@ -73,7 +73,7 @@ public class GamePanel extends JPanel implements ActionListener {
         //snake
         for(int i = 0; i < bodyUnits; i++) {
             if(i == 0) {
-                graphics.setColor(new Color(150, 0, 0));
+                graphics.setColor(new Color(107, 9, 9));
                 graphics.fillRect(x[i], y[i], UNIT, UNIT);
             } else {
                 graphics.setColor(Color.red);
