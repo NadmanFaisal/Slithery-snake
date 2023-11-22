@@ -5,7 +5,7 @@ public class GameLauncher {
        SwingUtilities.invokeLater(new Runnable() {
            @Override
            public void run() {
-               new GameFrame();
+               GameFrame frame = new GameFrame();
            }
        });
    }
