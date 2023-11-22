@@ -4,10 +4,10 @@ public class GameFrame {
 
     private JFrame frame;
     public GameFrame() {
-        intialize();
+        initialize();
 
     }
-    public void intialize() {
+    public void initialize() {
         this.frame = new JFrame();
         this.frame.setTitle("Snake Game");
         this.frame.add(new GamePanel());

@@ -8,9 +8,9 @@ public class GamePanel extends JPanel implements ActionListener {
 
     private static final int PANEL_WIDTH = 600;
     private static final int PANEL_HEIGHT = 600;
-    private static final int UNIT_SIZE = 30;
-    private static final int GAME_UNITS = (PANEL_HEIGHT * PANEL_HEIGHT) / (UNIT_SIZE * UNIT_SIZE);
-    private static final int DELAY = 100;
+    private static final int UNIT = 30;
+    private static final int GAME_UNITS = (PANEL_HEIGHT * PANEL_HEIGHT) / (UNIT * UNIT);
+    private static final int TIMER_DELAY = 100;
     private final int[] x = new int[GAME_UNITS];
     private final int[] y = new int[GAME_UNITS];
     private int bodyUnits;
@@ -43,23 +43,23 @@ public class GamePanel extends JPanel implements ActionListener {
     public void draw(Graphics graphics) {
 
         //temporary grid
-        for(int i = 0; i < PANEL_HEIGHT / UNIT_SIZE; i++) {
-            graphics.drawLine(i * UNIT_SIZE, 0, i * UNIT_SIZE, PANEL_HEIGHT);
-            graphics.drawLine(0, i * UNIT_SIZE, PANEL_WIDTH, i * UNIT_SIZE);
+        for(int i = 0; i < PANEL_HEIGHT / UNIT; i++) {
+            graphics.drawLine(i * UNIT, 0, i * UNIT, PANEL_HEIGHT);
+            graphics.drawLine(0, i * UNIT, PANEL_WIDTH, i * UNIT);
         }
 
         //food item
         graphics.setColor(Color.orange);
-        graphics.fillOval(foodX, foodY, UNIT_SIZE, UNIT_SIZE);
+        graphics.fillOval(foodX, foodY, UNIT, UNIT);
 
         //snake
         for(int i = 0; i < bodyUnits; i++) {
             if(i == 0) {
                 graphics.setColor(new Color(150, 0, 0));
-                graphics.fillRect(x[i], y[i], UNIT_SIZE, UNIT_SIZE);
+                graphics.fillRect(x[i], y[i], UNIT, UNIT);
             } else {
                 graphics.setColor(Color.red);
-                graphics.fillRect(x[i], y[i], UNIT_SIZE, UNIT_SIZE);
+                graphics.fillRect(x[i], y[i], UNIT, UNIT);
             }
         }
 
@@ -68,14 +68,14 @@ public class GamePanel extends JPanel implements ActionListener {
     public void startGame() {
         newFood();
         running = true;
-        timer = new Timer(DELAY, this);
+        timer = new Timer(TIMER_DELAY, this);
         timer.start();
 
     }
 
     public void newFood() {
-        foodX = random.nextInt(PANEL_WIDTH / UNIT_SIZE) * UNIT_SIZE; //will it ever appear at corner??
-        foodY = random.nextInt(PANEL_HEIGHT / UNIT_SIZE) * UNIT_SIZE;
+        foodX = random.nextInt(PANEL_WIDTH / UNIT) * UNIT; //will it ever appear at corner??
+        foodY = random.nextInt(PANEL_HEIGHT / UNIT) * UNIT;
     }
 
     public void movement() {
@@ -85,13 +85,13 @@ public class GamePanel extends JPanel implements ActionListener {
         }
 
         if (direction.equals("Right")) {
-            x[0] = x[0] + UNIT_SIZE;
+            x[0] = x[0] + UNIT;
         } else if (direction.equals("Left")) {
-            x[0] = x[0] - UNIT_SIZE;
+            x[0] = x[0] - UNIT;
         } else if (direction.equals("Up")) {
-            y[0] = y[0] - UNIT_SIZE;
+            y[0] = y[0] - UNIT;
         } else if (direction.equals("Down")) {
-            y[0] = y[0] + UNIT_SIZE;
+            y[0] = y[0] + UNIT;
         }
 
     }
