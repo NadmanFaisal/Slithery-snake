@@ -1,11 +1,9 @@
 import javax.swing.*;
 
 public class GameFrame {
-
     private JFrame frame;
     public GameFrame() {
         initialize();
-
     }
     public void initialize() {
         this.frame = new JFrame();

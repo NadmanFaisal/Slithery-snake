@@ -11,10 +11,10 @@ public class GamePanel extends JPanel implements ActionListener {
     private static final int PANEL_WIDTH = 500;
     private static final int PANEL_HEIGHT = 500;
     private static final int UNIT = 25;
-    private static final int GAME_UNITS = (PANEL_HEIGHT * PANEL_HEIGHT) / (UNIT * UNIT);
+    private static final int GAME_UNITS = (PANEL_HEIGHT * PANEL_WIDTH) / (UNIT * UNIT);
     private static final int TIMER_DELAY = 100;
-    private final int[] x = new int[GAME_UNITS / (PANEL_WIDTH / UNIT)];
-    private final int[] y = new int[GAME_UNITS / (PANEL_HEIGHT/ UNIT)];
+    private final int[] x = new int[GAME_UNITS];
+    private final int[] y = new int[GAME_UNITS];
     private int bodyUnits;
     private int foodX;
     private int foodY;
@@ -62,7 +62,8 @@ public class GamePanel extends JPanel implements ActionListener {
         //food item
         graphics.setColor(Color.orange);
         graphics.fillOval(foodX, foodY, UNIT, UNIT);
-        //Food one item
+
+        //ToxicFood item
         if (foodCounter == num) {
             graphics.setColor(new Color(random.nextInt(255), random.nextInt(255), random.nextInt(255)));
             graphics.fillOval(ToxicfoodX, ToxicfoodY, UNIT, UNIT);
@@ -73,7 +74,7 @@ public class GamePanel extends JPanel implements ActionListener {
         //snake
         for(int i = 0; i < bodyUnits; i++) {
             if(i == 0) {
-                graphics.setColor(new Color(107, 9, 9));
+                graphics.setColor(new Color(100, 17, 17));
                 graphics.fillRect(x[i], y[i], UNIT, UNIT);
             } else {
                 graphics.setColor(Color.red);
@@ -138,10 +139,8 @@ public class GamePanel extends JPanel implements ActionListener {
         if(running) {
             movement();
             checkFood();
-
         }
         repaint();
-
     }
 
     public class MyKeyAdapter extends KeyAdapter {
