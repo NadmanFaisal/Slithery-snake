@@ -117,20 +117,25 @@ public class GamePanel extends JPanel implements ActionListener {
 
     }
 
-    public void checkFood() {
+    public void checkFood() { //changed logic in if block
         if((x[0] == foodX && y[0] == foodY)) {
-            bodyUnits = bodyUnits + 1;
-            foodCounter = foodCounter + 1;
-            if(foodCounter != num) {
-                newFood();
-            } else {
+            this.bodyUnits = this.bodyUnits + 1;
+            this.foodCounter = this.foodCounter + 1;
+            newFood();
+            if (this.foodCounter == this.num) {
                 newToxicFood();
             }
-        } else if (x[0] == ToxicfoodX && y[0] == ToxicfoodY) {
-            bodyUnits = bodyUnits / 2;
-            foodCounter = 0;
-            num = random.nextInt(10);
-            newFood();
+        }
+    }
+
+    public void checkToxicFood() { //also separated methods to check the different foods
+        if (this.foodCounter == this.num) { //Added a condition to fix logic
+            if (x[0] == ToxicfoodX && y[0] == ToxicfoodY) {
+                bodyUnits = bodyUnits / 2;
+                foodCounter = 0;
+                num = random.nextInt(10);
+                newFood();
+            }
         }
     }
 
@@ -139,6 +144,7 @@ public class GamePanel extends JPanel implements ActionListener {
         if(running) {
             movement();
             checkFood();
+            checkToxicFood();
         }
         repaint();
     }
