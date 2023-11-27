@@ -26,6 +26,7 @@ public class GamePanel extends JPanel implements ActionListener {
     private Timer timer;
     private int foodCounter;
     private int num; //better name
+    private boolean gameOver = false;
 
     public GamePanel() {
         this.bodyUnits = 6;
@@ -46,7 +47,10 @@ public class GamePanel extends JPanel implements ActionListener {
     @Override
     public void paintComponent(Graphics graphics) {
         super.paintComponent(graphics);
-        if (running) { //Does this work??
+        if (gameOver) {
+            showGameOverScreen(graphics);
+        }
+        else if (running) { //Does this work??
             draw(graphics);
         }
     }
@@ -68,7 +72,6 @@ public class GamePanel extends JPanel implements ActionListener {
             graphics.setColor(new Color(random.nextInt(255), random.nextInt(255), random.nextInt(255)));
             graphics.fillOval(ToxicfoodX, ToxicfoodY, UNIT, UNIT);
         }
-
 
 
         //snake
@@ -103,6 +106,7 @@ public class GamePanel extends JPanel implements ActionListener {
     }
 
     public void movement() {
+
         for(int i = bodyUnits; i > 0; i--) {
             x[i] = x[i - 1];
             y[i] = y[i - 1];
@@ -114,6 +118,8 @@ public class GamePanel extends JPanel implements ActionListener {
             case "Up" -> y[0] = y[0] - UNIT;
             case "Down" -> y[0] = y[0] + UNIT;
         }
+
+        snakeCollision();
 
     }
 
@@ -173,7 +179,45 @@ public class GamePanel extends JPanel implements ActionListener {
                         direction = "Down";
                     }
                 }
+                case (KeyEvent.VK_R) -> {
+                    if (gameOver) {
+                        restartGame();
+                    }
+                }
             }
         }
+    }
+
+    // Shows game over screen after the person dies
+    public void showGameOverScreen (Graphics graphics) {
+
+        graphics.setColor(Color.blue);
+        graphics.setFont(new Font(Font.SERIF, Font.BOLD, 30));
+
+        graphics.drawString("Game Over", PANEL_WIDTH / 2 - 100, PANEL_HEIGHT / 2 - 10);
+        graphics.drawString("Score: " + (bodyUnits - 6), PANEL_WIDTH / 2 - 70, PANEL_HEIGHT / 2 + 20);
+        graphics.drawString("Press R to Restart", PANEL_WIDTH / 2 - 130, PANEL_HEIGHT / 2 + 70);
+    }
+
+    private void snakeCollision() {
+        for (int i = bodyUnits; i > 0; i--) {
+            if (x[0] == x[i] && y[0] == y[i]) {
+                timer.stop();
+                gameOver = true;
+                break;
+            }
+        }
+    }
+
+    // Game restarts when you press "R" in game over screen
+    public void restartGame() {
+        bodyUnits = 6;
+        foodCounter = 0;
+        direction = "Right";
+        running = false;
+        gameOver = false;
+
+
+        startGame();
     }
 }
