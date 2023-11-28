@@ -145,12 +145,46 @@ public class GamePanel extends JPanel implements ActionListener {
         }
     }
 
+
+
+    private void snakeCollision() {
+        for (int i = bodyUnits; i > 0; i--) {
+            if ((x[0] == x[i]) && (y[0] == y[i])) {
+              gameOver = true;
+              timer.stop();
+              break;
+            }   
+          }
+        // if the head collides with the panel walls the game stops. 
+        if (x[0] < 0) {
+            gameOver = true;
+        }
+
+        if (x[0] > PANEL_WIDTH) {
+           gameOver = true;
+         }
+
+         if (y[0] < 0) {
+          gameOver = true;
+         }
+
+         if (y[0] > PANEL_HEIGHT) {
+           gameOver = true;
+         }
+        
+        if (!running){
+           timer.stop();
+        }
+    } 
+
+
     @Override
     public void actionPerformed(ActionEvent e) {
         if(running) {
             movement();
             checkFood();
             checkToxicFood();
+            snakeCollision();
         }
         repaint();
     }
@@ -199,25 +233,16 @@ public class GamePanel extends JPanel implements ActionListener {
         graphics.drawString("Press R to Restart", PANEL_WIDTH / 2 - 130, PANEL_HEIGHT / 2 + 70);
     }
 
-    private void snakeCollision() {
-        for (int i = bodyUnits; i > 0; i--) {
-            if (x[0] == x[i] && y[0] == y[i]) {
-                timer.stop();
-                gameOver = true;
-                break;
-            }
-        }
-    }
-
+   
     // Game restarts when you press "R" in game over screen
     public void restartGame() {
         bodyUnits = 6;
         foodCounter = 0;
         direction = "Right";
         running = false;
-        gameOver = false;
-
+        gameOver = false; 
 
         startGame();
+        
     }
 }
