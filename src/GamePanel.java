@@ -148,6 +148,8 @@ public class GamePanel extends JPanel implements ActionListener {
 
 
     private void snakeCollision() {
+
+        // self collision
         for (int i = bodyUnits; i > 0; i--) {
             if ((x[0] == x[i]) && (y[0] == y[i])) {
               gameOver = true;
@@ -155,26 +157,19 @@ public class GamePanel extends JPanel implements ActionListener {
               break;
             }   
           }
-        // if the head collides with the panel walls the game stops. 
-        if (x[0] < 0) {
+
+        // Snake Collides With Wall/ Panel
+        /* if the snake head (x) is smaller than the left panel(0) or bigger than the right panel(500)
+           or the snake head (y) is smaller than the upper panel(0) or bigger than the lower panel(500)
+           game ends.
+           here 0 may look like a magic number but it's not as we all know width and height size is 500
+           it means the starting point is 0. So it the panel size goes from 0 --> 500; both side.
+           */
+        if ((x[0] < 0 || x[0] >= PANEL_WIDTH) || (y[0] < 0 || y[0] >= PANEL_HEIGHT)){
             gameOver = true;
+            timer.stop();
         }
 
-        if (x[0] > PANEL_WIDTH) {
-           gameOver = true;
-         }
-
-         if (y[0] < 0) {
-          gameOver = true;
-         }
-
-         if (y[0] > PANEL_HEIGHT) {
-           gameOver = true;
-         }
-        
-        if (!running){
-           timer.stop();
-        }
     } 
 
 
@@ -236,6 +231,13 @@ public class GamePanel extends JPanel implements ActionListener {
    
     // Game restarts when you press "R" in game over screen
     public void restartGame() {
+        //Restart from a new position
+        // Always restarts from the top left side.
+        for (int i=0; i < bodyUnits; i++){
+            x[i]= 0;
+            y[i]= 0;
+        }
+
         bodyUnits = 6;
         foodCounter = 0;
         direction = "Right";
