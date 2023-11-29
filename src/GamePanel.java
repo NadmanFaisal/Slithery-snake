@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.Random;
+import javax.swing.JLabel;
 
 public class GamePanel extends JPanel implements ActionListener {
 
@@ -28,6 +29,10 @@ public class GamePanel extends JPanel implements ActionListener {
     private int num; //better name
     private boolean gameOver = false;
 
+    private Timer stopwatchTimer;  //timer attribute for the stopwatch of type timer
+    private JLabel stopwatchLabel; // for the label of the stopwatch
+    private int playedSeconds; //attribute for the seconds that will go up as we play
+
     public GamePanel() {
         this.bodyUnits = 6;
         this.foodCounter = 0;
@@ -40,9 +45,23 @@ public class GamePanel extends JPanel implements ActionListener {
         this.setFocusable(true);
         this.addKeyListener(new MyKeyAdapter());
 
+        this.stopwatchLabel = new JLabel("Time: 0 seconds"); //creating the label for the stopwatch
+        add(stopwatchLabel); //adding the new stopwatchlable to the already existing game panel
+
+        this.playedSeconds = 0; //stopwatch starts at 0 seconds.
+
+        this.stopwatchTimer = new Timer(1000, this); //making the stopwatch a Timer (built-in java) object.
+        startStopwatch(); //calling method to start the stopwatch when player starts playing
+        
+        
         startGame();
 
     }
+
+    public void startStopwatch(){ //the stopwatch timer starts
+        stopwatchTimer.start();
+    }
+
 
     @Override
     public void paintComponent(Graphics graphics) {
@@ -156,19 +175,11 @@ public class GamePanel extends JPanel implements ActionListener {
             }   
           }
         // if the head collides with the panel walls the game stops. 
-        if (x[0] < 0) {
+        if ((x[0] < 0) || (y[0] < 0)) {
             gameOver = true;
         }
 
-        if (x[0] > PANEL_WIDTH) {
-           gameOver = true;
-         }
-
-         if (y[0] < 0) {
-          gameOver = true;
-         }
-
-         if (y[0] > PANEL_HEIGHT) {
+        if ((x[0] > PANEL_WIDTH) || (y[0] > PANEL_HEIGHT)) {
            gameOver = true;
          }
         
@@ -184,7 +195,9 @@ public class GamePanel extends JPanel implements ActionListener {
             movement();
             checkFood();
             checkToxicFood();
-            snakeCollision();
+
+            playedSeconds = playedSeconds + 1;
+            stopwatchLabel.setText("Time: " + playedSeconds + " seconds");
         }
         repaint();
     }
