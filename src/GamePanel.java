@@ -32,6 +32,7 @@ public class GamePanel extends JPanel implements ActionListener {
     private Timer stopwatchTimer;  //timer attribute for the stopwatch of type timer
     private JLabel stopwatchLabel; // for the label of the stopwatch
     private int playedSeconds; //attribute for the seconds that will go up as we play
+    private int tenthOfSecond;
 
     public GamePanel() {
         this.bodyUnits = 6;
@@ -46,11 +47,10 @@ public class GamePanel extends JPanel implements ActionListener {
         this.addKeyListener(new MyKeyAdapter());
 
         this.stopwatchLabel = new JLabel("Time: 0 seconds"); //creating the label for the stopwatch
-        add(stopwatchLabel); //adding the new stopwatchlable to the already existing game panel
-
-        this.playedSeconds = 0; //stopwatch starts at 0 seconds.
-
+        add(stopwatchLabel); //adding the new stopwatchlabel to the already existing game panel
         this.stopwatchTimer = new Timer(1000, this); //making the stopwatch a Timer (built-in java) object.
+        this.playedSeconds = 0; 
+        this.tenthOfSecond = 0; 
         startStopwatch(); //calling method to start the stopwatch when player starts playing
         
         
@@ -58,8 +58,20 @@ public class GamePanel extends JPanel implements ActionListener {
 
     }
 
-    public void startStopwatch(){ //the stopwatch timer starts
+    public void startStopwatch(){ //start stopwatch
+        
+        tenthOfSecond = tenthOfSecond + 1;
+        if(tenthOfSecond == 10){
+            tenthOfSecond = 0;
+            playedSeconds = playedSeconds + 1;
+        }
+        stopwatchLabel.setText("Time: " + playedSeconds + "." + tenthOfSecond + " seconds");
         stopwatchTimer.start();
+    }
+
+
+    public void stopStopwatch() { //stop stopwatch
+        stopwatchTimer.stop();
     }
 
 
@@ -111,6 +123,7 @@ public class GamePanel extends JPanel implements ActionListener {
         running = true;
         timer = new Timer(TIMER_DELAY, this);
         timer.start();
+        startStopwatch(); 
 
     }
 
@@ -205,10 +218,9 @@ public class GamePanel extends JPanel implements ActionListener {
             movement();
             checkFood();
             checkToxicFood();
-
-            playedSeconds = playedSeconds + 1;
-            stopwatchLabel.setText("Time: " + playedSeconds + " seconds");
+            startStopwatch();
         }
+        stopStopwatch();
         repaint();
     }
 
