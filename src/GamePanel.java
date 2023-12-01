@@ -34,7 +34,7 @@ public class GamePanel extends JPanel implements ActionListener {
         this.direction = "Right";
         this.running = false;
         this.random = new Random();
-        this.num = random.nextInt(10);
+        this.num = random.nextInt(100);
         this.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
         this.setBackground(Color.black);
         this.setFocusable(true);
@@ -144,7 +144,7 @@ public class GamePanel extends JPanel implements ActionListener {
         if (this.foodCounter == this.num) { //Added a condition to fix logic
             if (x[0] == ToxicfoodX && y[0] == ToxicfoodY) {
                 bodyUnits = bodyUnits / 2;
-                foodCounter = foodCounter/2;
+                this.foodCounter = this.foodCounter/2;
                 num = random.nextInt(10);
                 newFood();
             }
