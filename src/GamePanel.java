@@ -36,14 +36,13 @@ public class GamePanel extends JPanel implements ActionListener {
         this.running = false;
         this.random = new Random();
         this.num = random.nextInt(10);
-        this.score += 10;
+        this.score = 0;
         this.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
         this.setBackground(Color.black);
         this.setFocusable(true);
         this.addKeyListener(new MyKeyAdapter());
 
         startGame();
-
     }
 
     @Override
@@ -74,7 +73,6 @@ public class GamePanel extends JPanel implements ActionListener {
             graphics.setColor(new Color(random.nextInt(255), random.nextInt(255), random.nextInt(255)));
             graphics.fillOval(ToxicfoodX, ToxicfoodY, UNIT, UNIT);
         }
-
 
         //snake
         for(int i = 0; i < bodyUnits; i++) {
@@ -135,6 +133,7 @@ public class GamePanel extends JPanel implements ActionListener {
         if((x[0] == foodX && y[0] == foodY)) {
             this.bodyUnits = this.bodyUnits + 1;
             this.foodCounter = this.foodCounter + 1;
+            updateScore();
             newFood();
             if (this.foodCounter == this.num) {
                 newToxicFood();
@@ -148,8 +147,17 @@ public class GamePanel extends JPanel implements ActionListener {
                 bodyUnits = bodyUnits / 2;
                 this.foodCounter = 0;
                 num = random.nextInt(10);
+                updateScore();
                 newFood();
             }
+        }
+    }
+
+    public void updateScore() {
+        if (x[0] == foodX && y[0] == foodY) {
+            score += 10;
+        } else {
+            score = score/2;
         }
     }
 
