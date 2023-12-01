@@ -85,6 +85,12 @@ public class GamePanel extends JPanel implements ActionListener {
             }
         }
 
+        //scoreboard
+        graphics.setColor(Color.red);
+        graphics.setFont(new Font(Font.SERIF, Font.BOLD, 40));
+        FontMetrics metrics = getFontMetrics(graphics.getFont());
+        graphics.drawString("Score: " + foodCounter, (PANEL_WIDTH - metrics.stringWidth("Score: " + foodCounter))/2,graphics.getFont().getSize());
+
     }
 
     public void startGame() {
