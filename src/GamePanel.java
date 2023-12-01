@@ -26,6 +26,7 @@ public class GamePanel extends JPanel implements ActionListener {
     private Timer timer;
     private int foodCounter;
     private int num; //better name
+    private int score;
     private boolean gameOver = false;
 
     public GamePanel() {
@@ -34,7 +35,8 @@ public class GamePanel extends JPanel implements ActionListener {
         this.direction = "Right";
         this.running = false;
         this.random = new Random();
-        this.num = random.nextInt(100);
+        this.num = random.nextInt(10);
+        this.score += 10;
         this.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
         this.setBackground(Color.black);
         this.setFocusable(true);
@@ -89,7 +91,7 @@ public class GamePanel extends JPanel implements ActionListener {
         graphics.setColor(Color.red);
         graphics.setFont(new Font(Font.SERIF, Font.BOLD, 40));
         FontMetrics metrics = getFontMetrics(graphics.getFont());
-        graphics.drawString("Score: " + foodCounter, (PANEL_WIDTH - metrics.stringWidth("Score: " + foodCounter))/2,graphics.getFont().getSize());
+        graphics.drawString("Score: " + score, (PANEL_WIDTH - metrics.stringWidth("Score: " + score))/2,graphics.getFont().getSize());
 
     }
 
@@ -132,7 +134,7 @@ public class GamePanel extends JPanel implements ActionListener {
     public void checkFood() { //changed logic in if block
         if((x[0] == foodX && y[0] == foodY)) {
             this.bodyUnits = this.bodyUnits + 1;
-            this.foodCounter = this.foodCounter + 10;
+            this.foodCounter = this.foodCounter + 1;
             newFood();
             if (this.foodCounter == this.num) {
                 newToxicFood();
@@ -144,7 +146,7 @@ public class GamePanel extends JPanel implements ActionListener {
         if (this.foodCounter == this.num) { //Added a condition to fix logic
             if (x[0] == ToxicfoodX && y[0] == ToxicfoodY) {
                 bodyUnits = bodyUnits / 2;
-                this.foodCounter = this.foodCounter/2;
+                this.foodCounter = 0;
                 num = random.nextInt(10);
                 newFood();
             }
@@ -201,7 +203,7 @@ public class GamePanel extends JPanel implements ActionListener {
         graphics.setFont(new Font(Font.SERIF, Font.BOLD, 30));
 
         graphics.drawString("Game Over", PANEL_WIDTH / 2 - 100, PANEL_HEIGHT / 2 - 10);
-        graphics.drawString("Score: " + (foodCounter), PANEL_WIDTH / 2 - 70, PANEL_HEIGHT / 2 + 20);
+        graphics.drawString("Score: " + (score), PANEL_WIDTH / 2 - 70, PANEL_HEIGHT / 2 + 20);
         graphics.drawString("Press R to Restart", PANEL_WIDTH / 2 - 130, PANEL_HEIGHT / 2 + 70);
     }
 
