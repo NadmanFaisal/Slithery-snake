@@ -201,7 +201,7 @@ public class GamePanel extends JPanel implements ActionListener {
         graphics.setFont(new Font(Font.SERIF, Font.BOLD, 30));
 
         graphics.drawString("Game Over", PANEL_WIDTH / 2 - 100, PANEL_HEIGHT / 2 - 10);
-        graphics.drawString("Score: " + (bodyUnits - 6), PANEL_WIDTH / 2 - 70, PANEL_HEIGHT / 2 + 20);
+        graphics.drawString("Score: " + (foodCounter), PANEL_WIDTH / 2 - 70, PANEL_HEIGHT / 2 + 20);
         graphics.drawString("Press R to Restart", PANEL_WIDTH / 2 - 130, PANEL_HEIGHT / 2 + 70);
     }
 
