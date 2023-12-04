@@ -26,7 +26,7 @@ public class GamePanel extends JPanel implements ActionListener {
     private Timer timer;
     private int foodCounter;
     private int num; //better name
-    private int score;
+    private int scoreCounter;
     private boolean gameOver = false;
 
     public GamePanel() {
@@ -36,7 +36,7 @@ public class GamePanel extends JPanel implements ActionListener {
         this.running = false;
         this.random = new Random();
         this.num = random.nextInt(10);
-        this.score = 0;
+        this.scoreCounter = 0;
         this.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
         this.setBackground(Color.black);
         this.setFocusable(true);
@@ -89,7 +89,7 @@ public class GamePanel extends JPanel implements ActionListener {
         graphics.setColor(Color.red);
         graphics.setFont(new Font(Font.SERIF, Font.BOLD, 40));
         FontMetrics metrics = getFontMetrics(graphics.getFont());
-        graphics.drawString("Score: " + score, (PANEL_WIDTH - metrics.stringWidth("Score: " + score))/2,graphics.getFont().getSize());
+        graphics.drawString("Score: " + scoreCounter, (PANEL_WIDTH - metrics.stringWidth("Score: " + scoreCounter))/2,graphics.getFont().getSize());
 
     }
 
@@ -155,9 +155,9 @@ public class GamePanel extends JPanel implements ActionListener {
 
     public void updateScore() {
         if (x[0] == foodX && y[0] == foodY) {
-            score += 10;
+            scoreCounter += 10;
         } else {
-            score = score/2;
+            scoreCounter = scoreCounter/2;
         }
     }
 
@@ -211,7 +211,7 @@ public class GamePanel extends JPanel implements ActionListener {
         graphics.setFont(new Font(Font.SERIF, Font.BOLD, 30));
 
         graphics.drawString("Game Over", PANEL_WIDTH / 2 - 100, PANEL_HEIGHT / 2 - 10);
-        graphics.drawString("Score: " + (score), PANEL_WIDTH / 2 - 70, PANEL_HEIGHT / 2 + 20);
+        graphics.drawString("Score: " + (scoreCounter), PANEL_WIDTH / 2 - 70, PANEL_HEIGHT / 2 + 20);
         graphics.drawString("Press R to Restart", PANEL_WIDTH / 2 - 130, PANEL_HEIGHT / 2 + 70);
     }
 
