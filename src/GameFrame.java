@@ -7,7 +7,7 @@ public class GameFrame {
     }
     public void initialize() {
         this.frame = new JFrame();
-        this.frame.setTitle("Snake Game");
+        this.frame.setTitle("Slithery Snake");
         this.frame.add(new GamePanel());
         this.frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.frame.setResizable(false);
