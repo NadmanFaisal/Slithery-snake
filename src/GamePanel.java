@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.Random;
+import javax.swing.JLabel;
 
 public class GamePanel extends JPanel implements ActionListener {
 
@@ -29,6 +30,11 @@ public class GamePanel extends JPanel implements ActionListener {
     private int scoreCounter;
     private boolean gameOver = false;
 
+    private Timer stopwatchTimer;  //timer attribute for the stopwatch of type timer
+    private JLabel stopwatchLabel; // for the label of the stopwatch
+    private int playedSeconds; //attribute for the seconds that will go up as we play
+    private int tenthOfSecond;
+
     public GamePanel() {
         this.bodyUnits = 6;
         this.foodCounter = 0;
@@ -42,8 +48,33 @@ public class GamePanel extends JPanel implements ActionListener {
         this.setFocusable(true);
         this.addKeyListener(new MyKeyAdapter());
 
+        this.stopwatchLabel = new JLabel("Time: 0 seconds"); //creating the label for the stopwatch
+        add(stopwatchLabel); //adding the new stopwatchlabel to the already existing game panel
+        this.stopwatchTimer = new Timer(1000, this); //making the stopwatch a Timer (built-in java) object.
+        this.playedSeconds = 0; 
+        this.tenthOfSecond = 0; 
+        startStopwatch(); //calling method to start the stopwatch when player starts playing
+        
+        
         startGame();
     }
+
+    public void startStopwatch(){ //start stopwatch
+        
+        tenthOfSecond = tenthOfSecond + 1;
+        if(tenthOfSecond == 10){
+            tenthOfSecond = 0;
+            playedSeconds = playedSeconds + 1;
+        }
+        stopwatchLabel.setText("Time: " + playedSeconds + "." + tenthOfSecond + " seconds");
+        stopwatchTimer.start();
+    }
+
+
+    public void stopStopwatch() { //stop stopwatch
+        stopwatchTimer.stop();
+    }
+
 
     @Override
     public void paintComponent(Graphics graphics) {
@@ -98,6 +129,7 @@ public class GamePanel extends JPanel implements ActionListener {
         running = true;
         timer = new Timer(TIMER_DELAY, this);
         timer.start();
+        startStopwatch(); 
 
     }
 
@@ -179,6 +211,7 @@ public class GamePanel extends JPanel implements ActionListener {
             timer.stop();
         }
 
+
     }
 
     public void updateScore() {
@@ -190,14 +223,16 @@ public class GamePanel extends JPanel implements ActionListener {
     }
 
 
+
     @Override
     public void actionPerformed(ActionEvent e) {
         if(running) {
             movement();
             checkFood();
             checkToxicFood();
-            snakeCollision();
+            startStopwatch();
         }
+        stopStopwatch();
         repaint();
     }
 
