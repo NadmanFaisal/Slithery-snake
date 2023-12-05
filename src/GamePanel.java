@@ -185,9 +185,6 @@ public class GamePanel extends JPanel implements ActionListener {
         }
     }
 
-
-
-
     private void snakeCollision() {
 
         // self collision
@@ -211,7 +208,6 @@ public class GamePanel extends JPanel implements ActionListener {
             timer.stop();
         }
 
-
     }
 
     public void updateScore() {
@@ -221,8 +217,6 @@ public class GamePanel extends JPanel implements ActionListener {
             scoreCounter = scoreCounter/2;
         }
     }
-
-
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -292,6 +286,7 @@ public class GamePanel extends JPanel implements ActionListener {
 
         bodyUnits = 6;
         foodCounter = 0;
+        scoreCounter = 0;
         direction = "Right";
         running = false;
         gameOver = false; 
