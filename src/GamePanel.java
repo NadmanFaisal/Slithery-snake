@@ -50,7 +50,7 @@ public class GamePanel extends JPanel implements ActionListener {
     private JLabel stopwatchLabel; // for the label of the stopwatch
     private int playedSeconds; //attribute for the seconds that will go up as we play
     private int tenthOfSecond;
-    private Image backgroundImage;
+    private ImageIcon backgroundImage;
 
 
     public GamePanel() {
@@ -74,11 +74,8 @@ public class GamePanel extends JPanel implements ActionListener {
         this.tenthOfSecond = 0; 
         startStopwatch(); //calling method to start the stopwatch when player starts playing
 
-        try {
-            backgroundImage = ImageIO.read(new File("src/gamepanel-bg.png")); //reads image
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+
+            backgroundImage = new ImageIcon("src/gamepanel-bg.png"); //reads image
 
         startGame();
     }
@@ -106,7 +103,7 @@ public class GamePanel extends JPanel implements ActionListener {
         if (gameOver) {
             showGameOverScreen(graphics);
         } else if (backgroundImage != null) {
-            graphics.drawImage(backgroundImage, 0, 0, PANEL_WIDTH, PANEL_HEIGHT, this);
+            graphics.drawImage(backgroundImage.getImage(), 0, 0, PANEL_WIDTH, PANEL_HEIGHT, this);
         }
         if (running) { //Does this work??
             draw(graphics);
