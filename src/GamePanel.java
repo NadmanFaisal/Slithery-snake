@@ -109,13 +109,12 @@ public class GamePanel extends JPanel implements ActionListener {
         super.paintComponent(graphics);
         if (gameOver) {
             showGameOverScreen(graphics);
-        } else if (backgroundImage != null) {
-            graphics.drawImage(backgroundImage.getImage(), 0, 0, PANEL_WIDTH, PANEL_HEIGHT, this);
         }
         if (running) {
-            draw(graphics); // drawBackground(), then drawFood(), then drawSnake(), then drawScore()
+            drawBackgroundImage(graphics);
             drawFood(graphics);
             drawSnake(graphics);
+            draw(graphics);
         }
     }
 
@@ -215,6 +214,10 @@ public class GamePanel extends JPanel implements ActionListener {
         FontMetrics metrics = getFontMetrics(graphics.getFont());
         graphics.drawString("Score: " + scoreCounter, (PANEL_WIDTH - metrics.stringWidth("Score: " + scoreCounter))/2,graphics.getFont().getSize());
 
+    }
+
+    public void drawBackgroundImage(Graphics graphics){
+        graphics.drawImage(backgroundImage.getImage(), 0, 0, PANEL_WIDTH, PANEL_HEIGHT, this);
     }
 
     public void startGame() {
