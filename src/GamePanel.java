@@ -1,9 +1,12 @@
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.File;
+import java.io.IOException;
 import java.util.Random;
 import javax.swing.JLabel;
 
@@ -47,6 +50,8 @@ public class GamePanel extends JPanel implements ActionListener {
     private JLabel stopwatchLabel; // for the label of the stopwatch
     private int playedSeconds; //attribute for the seconds that will go up as we play
     private int tenthOfSecond;
+    private Image backgroundImage;
+
 
     public GamePanel() {
         this.bodyUnits = 6;
@@ -68,8 +73,13 @@ public class GamePanel extends JPanel implements ActionListener {
         this.playedSeconds = 0; 
         this.tenthOfSecond = 0; 
         startStopwatch(); //calling method to start the stopwatch when player starts playing
-        
-        
+
+        try {
+            backgroundImage = ImageIO.read(new File("src/gamepanel-bg.png")); //reads image
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
         startGame();
     }
 
@@ -95,8 +105,10 @@ public class GamePanel extends JPanel implements ActionListener {
         super.paintComponent(graphics);
         if (gameOver) {
             showGameOverScreen(graphics);
+        } else if (backgroundImage != null) {
+            graphics.drawImage(backgroundImage, 0, 0, PANEL_WIDTH, PANEL_HEIGHT, this);
         }
-        else if (running) { //Does this work??
+        if (running) { //Does this work??
             draw(graphics);
             drawFood(graphics);
             drawSnake(graphics);
