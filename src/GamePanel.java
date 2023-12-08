@@ -224,7 +224,7 @@ public class GamePanel extends JPanel implements ActionListener {
 
     public void drawScore(Graphics graphics) {
         graphics.setColor(new Color(14,102,0));
-        graphics.setFont(customFont.deriveFont(Font.BOLD, 30));
+        graphics.setFont(customFont.deriveFont(Font.BOLD, 25));
         graphics.drawString("Score: " + scoreCounter,15,graphics.getFont().getSize());
     }
 
