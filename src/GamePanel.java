@@ -113,7 +113,8 @@ public class GamePanel extends JPanel implements ActionListener {
         if (gameOver) {
             showGameOverScreen(graphics);
         }
-        if (running) {// drawBackground(), then drawFood(), then drawSnake(), then drawScore()
+        if (running) {
+            drawBackgroundImage(graphics);
             drawFood(graphics);
             drawSnake(graphics);
             drawScore(graphics);
