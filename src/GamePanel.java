@@ -98,8 +98,9 @@ public class GamePanel extends JPanel implements ActionListener {
         }
         else if (running) { //Does this work??
             draw(graphics);
-            drawSnake(graphics);
             drawFood(graphics);
+            drawSnake(graphics);
+
         }
     }
 
