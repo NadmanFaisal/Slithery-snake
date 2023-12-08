@@ -4,6 +4,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
 import java.util.Random;
 import javax.swing.JLabel;
 
@@ -48,7 +51,7 @@ public class GamePanel extends JPanel implements ActionListener {
     private int playedSeconds; //attribute for the seconds that will go up as we play
     private int tenthOfSecond;
     private ImageIcon backgroundImage;
-
+    private final Font customFont;
 
     public GamePanel() {
         this.bodyUnits = 6;
@@ -83,7 +86,7 @@ public class GamePanel extends JPanel implements ActionListener {
         this.playedSeconds = 0; 
         this.tenthOfSecond = 0; 
         startStopwatch(); //calling method to start the stopwatch when player starts playing
-
+        this.customFont = getFont("KarmaFuture.ttf");
         startGame();
     }
 
@@ -112,10 +115,10 @@ public class GamePanel extends JPanel implements ActionListener {
         } else if (backgroundImage != null) {
             graphics.drawImage(backgroundImage.getImage(), 0, 0, PANEL_WIDTH, PANEL_HEIGHT, this);
         }
-        if (running) {
-            draw(graphics); // drawBackground(), then drawFood(), then drawSnake(), then drawScore()
+        if (running) {// drawBackground(), then drawFood(), then drawSnake(), then drawScore()
             drawFood(graphics);
             drawSnake(graphics);
+            drawScore(graphics);
         }
     }
 
@@ -206,15 +209,23 @@ public class GamePanel extends JPanel implements ActionListener {
         if (foodCounter == randomNumber) {
             graphics.drawImage(evilBerry.getImage(), ToxicfoodX, ToxicfoodY, null);
         }
+
     }
 
-    public void draw(Graphics graphics) {
-        //scoreboard
-        graphics.setColor(Color.red);
-        graphics.setFont(new Font(Font.SERIF, Font.BOLD, 40));
-        FontMetrics metrics = getFontMetrics(graphics.getFont());
-        graphics.drawString("Score: " + scoreCounter, (PANEL_WIDTH - metrics.stringWidth("Score: " + scoreCounter))/2,graphics.getFont().getSize());
+    public Font getFont(String fontName) {
+        try {
+            String path = "/Fonts/" + fontName;
+            URL url = getClass().getResource(path);
+            return Font.createFont(Font.TRUETYPE_FONT, url.openStream());
+        } catch (IOException | FontFormatException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
+    public void drawScore(Graphics graphics) {
+        graphics.setColor(new Color(14,102,0));
+        graphics.setFont(customFont.deriveFont(Font.BOLD, 25));
+        graphics.drawString("Score: " + scoreCounter,15,graphics.getFont().getSize());
     }
 
     public void startGame() {
