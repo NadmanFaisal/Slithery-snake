@@ -29,6 +29,7 @@ public class GamePanel extends JPanel implements ActionListener {
     private int randomNumber; //better name
     private int scoreCounter;
     private boolean gameOver = false;
+
     private ImageIcon snakeRightT = new ImageIcon("src/Images/Snake Right.png");
     private ImageIcon snakeLeftT = new ImageIcon("src/Images/Snake Left.png");
     private ImageIcon snakeUpT = new ImageIcon("src/Images/Snake Up.png");
@@ -40,8 +41,8 @@ public class GamePanel extends JPanel implements ActionListener {
     private ImageIcon snakeBody = new ImageIcon("src/Images/SnakeBody (circle).png");
     private ImageIcon berry = new ImageIcon("src/Images/Strawberry.png");
     private ImageIcon evilBerry = new ImageIcon("src/Images/EvilBerry.png");
-    private int moveCounter;
 
+    private int moveCounter;
     private Timer stopwatchTimer;  //timer attribute for the stopwatch of type timer
     private JLabel stopwatchLabel; // for the label of the stopwatch
     private int playedSeconds; //attribute for the seconds that will go up as we play
