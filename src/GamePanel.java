@@ -1,12 +1,9 @@
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.io.File;
-import java.io.IOException;
 import java.util.Random;
 import javax.swing.JLabel;
 
@@ -33,17 +30,17 @@ public class GamePanel extends JPanel implements ActionListener {
     private int scoreCounter;
     private boolean gameOver = false;
 
-    private ImageIcon snakeRightT = new ImageIcon("src/Images/Snake Right.png");
-    private ImageIcon snakeLeftT = new ImageIcon("src/Images/Snake Left.png");
-    private ImageIcon snakeUpT = new ImageIcon("src/Images/Snake Up.png");
-    private ImageIcon snakeDownT = new ImageIcon("src/Images/Snake Down.png");
-    private ImageIcon snakeRight = new ImageIcon("src/Images/Snake Right (no).png");
-    private ImageIcon snakeLeft = new ImageIcon("src/Images/Snake Left (no).png");
-    private ImageIcon snakeUp = new ImageIcon("src/Images/Snake Up (no).png");
-    private ImageIcon snakeDown = new ImageIcon("src/Images/Snake Down (no).png");
-    private ImageIcon snakeBody = new ImageIcon("src/Images/SnakeBody (circle).png");
-    private ImageIcon berry = new ImageIcon("src/Images/Strawberry.png");
-    private ImageIcon evilBerry = new ImageIcon("src/Images/EvilBerry.png");
+    private ImageIcon snakeRightT;
+    private ImageIcon snakeLeftT;
+    private ImageIcon snakeUpT;
+    private ImageIcon snakeDownT;
+    private ImageIcon snakeRight;
+    private ImageIcon snakeLeft;
+    private ImageIcon snakeUp;
+    private ImageIcon snakeDown;
+    private ImageIcon snakeBody;
+    private ImageIcon berry;
+    private ImageIcon evilBerry;
 
     private int moveCounter;
     private Timer stopwatchTimer;  //timer attribute for the stopwatch of type timer
@@ -67,15 +64,25 @@ public class GamePanel extends JPanel implements ActionListener {
         this.setFocusable(true);
         this.addKeyListener(new MyKeyAdapter());
 
+        this.backgroundImage = new ImageIcon("src/Images/gamepanel-bg.png");
+        this.snakeRightT = new ImageIcon("src/Images/Snake Right.png");
+        this.snakeLeftT = new ImageIcon("src/Images/Snake Left.png");
+        this.snakeUpT = new ImageIcon("src/Images/Snake Up.png");
+        this.snakeDownT = new ImageIcon("src/Images/Snake Down.png");
+        this.snakeRight = new ImageIcon("src/Images/Snake Right (no).png");
+        this.snakeLeft = new ImageIcon("src/Images/Snake Left (no).png");
+        this.snakeUp = new ImageIcon("src/Images/Snake Up (no).png");
+        this.snakeDown = new ImageIcon("src/Images/Snake Down (no).png");
+        this.snakeBody = new ImageIcon("src/Images/SnakeBody (circle).png");
+        this.berry = new ImageIcon("src/Images/Strawberry.png");
+        this.evilBerry = new ImageIcon("src/Images/EvilBerry.png");
+
         this.stopwatchLabel = new JLabel("Time: 0 seconds"); //creating the label for the stopwatch
-        add(stopwatchLabel); //adding the new stopwatchlabel to the already existing game panel
+        this.add(stopwatchLabel); //adding the new stopwatchlabel to the already existing game panel
         this.stopwatchTimer = new Timer(1000, this); //making the stopwatch a Timer (built-in java) object.
         this.playedSeconds = 0; 
         this.tenthOfSecond = 0; 
         startStopwatch(); //calling method to start the stopwatch when player starts playing
-
-
-            backgroundImage = new ImageIcon("src/gamepanel-bg.png"); //reads image
 
         startGame();
     }
@@ -109,7 +116,6 @@ public class GamePanel extends JPanel implements ActionListener {
             draw(graphics);
             drawFood(graphics);
             drawSnake(graphics);
-
         }
     }
 
