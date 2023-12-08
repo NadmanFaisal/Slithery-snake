@@ -29,9 +29,23 @@ public class GamePanel extends JPanel implements ActionListener {
     private Random random;
     private Timer timer;
     private int foodCounter;
-    private int num; //better name
+    private int randomNumber; //better name
     private int scoreCounter;
     private boolean gameOver = false;
+
+    private ImageIcon snakeRightT = new ImageIcon("src/Images/Snake Right.png");
+    private ImageIcon snakeLeftT = new ImageIcon("src/Images/Snake Left.png");
+    private ImageIcon snakeUpT = new ImageIcon("src/Images/Snake Up.png");
+    private ImageIcon snakeDownT = new ImageIcon("src/Images/Snake Down.png");
+    private ImageIcon snakeRight = new ImageIcon("src/Images/Snake Right (no).png");
+    private ImageIcon snakeLeft = new ImageIcon("src/Images/Snake Left (no).png");
+    private ImageIcon snakeUp = new ImageIcon("src/Images/Snake Up (no).png");
+    private ImageIcon snakeDown = new ImageIcon("src/Images/Snake Down (no).png");
+    private ImageIcon snakeBody = new ImageIcon("src/Images/SnakeBody (circle).png");
+    private ImageIcon berry = new ImageIcon("src/Images/Strawberry.png");
+    private ImageIcon evilBerry = new ImageIcon("src/Images/EvilBerry.png");
+
+    private int moveCounter;
     private Timer stopwatchTimer;  //timer attribute for the stopwatch of type timer
     private JLabel stopwatchLabel; // for the label of the stopwatch
     private int playedSeconds; //attribute for the seconds that will go up as we play
@@ -42,10 +56,11 @@ public class GamePanel extends JPanel implements ActionListener {
     public GamePanel() {
         this.bodyUnits = 6;
         this.foodCounter = 0;
+        this.moveCounter = 0;
         this.direction = "Right";
         this.running = false;
         this.random = new Random();
-        this.num = random.nextInt(10);
+        this.randomNumber = random.nextInt(10);
         this.scoreCounter = 0;
         this.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
         this.setBackground(Color.black);
@@ -95,38 +110,102 @@ public class GamePanel extends JPanel implements ActionListener {
         }
         if (running) { //Does this work??
             draw(graphics);
+            drawFood(graphics);
+            drawSnake(graphics);
+
+        }
+    }
+
+    private ImageIcon getHead() {
+        ImageIcon head = null;
+
+        switch (direction) {
+            case ("Right") -> {
+                if (moveCounter % 5 == 0) {
+                    head = snakeRightT;
+                } else {
+                    head = snakeRight;
+                }
+            }
+            case ("Left") -> {
+                if (moveCounter % 5 == 0) {
+                    head = snakeLeftT;
+                } else {
+                    head = snakeLeft;
+                }
+            }
+            case ("Up") -> {
+                if (moveCounter % 5 == 0) {
+                    head = snakeUpT;
+                } else {
+                    head = snakeUp;
+                }
+            }
+            case ("Down") -> {
+                if (moveCounter % 5 == 0) {
+                    head = snakeDownT;
+                } else {
+                    head = snakeDown;
+                }
+            }
+        }
+        return head;
+    }
+
+    public void drawSnake(Graphics graphics) {
+        ImageIcon head = getHead();
+        //snake
+        switch (direction) {
+            case "Right", "Down" -> {
+                for (int i = 0; i < bodyUnits; i++) {
+                    if (i == 0) {
+                        graphics.drawImage(head.getImage(), x[i], y[i], null);
+                    } else {
+                        graphics.drawImage(snakeBody.getImage(), x[i], y[i], null);
+                    }
+                }
+            }
+            case "Left" -> {
+                for (int i = 0; i < bodyUnits; i++) {
+                    if (i == 0) {
+                        if (head.equals(snakeLeftT)) {
+                            graphics.drawImage(head.getImage(), x[i] - 10, y[i], null);
+                        } else {
+                            graphics.drawImage(head.getImage(), x[i], y[i], null);
+                        }
+                    } else {
+                        graphics.drawImage(snakeBody.getImage(), x[i], y[i], null);
+                    }
+                }
+            }
+            case "Up" -> {
+                for (int i = 0; i < bodyUnits; i++) {
+                    if (i == 0) {
+                        if (head.equals(snakeUpT)) {
+                            graphics.drawImage(head.getImage(), x[i], y[i] - 10, null);
+                        } else {
+                            graphics.drawImage(head.getImage(), x[i], y[i], null);
+                        }
+
+                    } else {
+                        graphics.drawImage(snakeBody.getImage(), x[i], y[i], null);
+                    }
+                }
+            }
+        }
+    }
+
+    public void drawFood(Graphics graphics) {
+        //food item
+        graphics.drawImage(berry.getImage(), foodX, foodY, null);
+
+        //ToxicFood item
+        if (foodCounter == randomNumber) {
+            graphics.drawImage(evilBerry.getImage(), ToxicfoodX, ToxicfoodY, null);
         }
     }
 
     public void draw(Graphics graphics) {
-
-        //temporary grid
-        for(int i = 0; i < PANEL_HEIGHT / UNIT; i++) {
-            graphics.drawLine(i * UNIT, 0, i * UNIT, PANEL_HEIGHT);
-            graphics.drawLine(0, i * UNIT, PANEL_WIDTH, i * UNIT);
-        }
-
-        //food item
-        graphics.setColor(Color.orange);
-        graphics.fillOval(foodX, foodY, UNIT, UNIT);
-
-        //ToxicFood item
-        if (foodCounter == num) {
-            graphics.setColor(new Color(random.nextInt(255), random.nextInt(255), random.nextInt(255)));
-            graphics.fillOval(ToxicfoodX, ToxicfoodY, UNIT, UNIT);
-        }
-
-        //snake
-        for(int i = 0; i < bodyUnits; i++) {
-            if(i == 0) {
-                graphics.setColor(new Color(100, 17, 17));
-                graphics.fillRect(x[i], y[i], UNIT, UNIT);
-            } else {
-                graphics.setColor(Color.red);
-                graphics.fillRect(x[i], y[i], UNIT, UNIT);
-            }
-        }
-
         //scoreboard
         graphics.setColor(Color.red);
         graphics.setFont(new Font(Font.SERIF, Font.BOLD, 40));
@@ -161,6 +240,8 @@ public class GamePanel extends JPanel implements ActionListener {
             y[i] = y[i - 1];
         }
 
+        moveCounter += 1;
+
         switch (direction) {
             case "Right" -> x[0] = x[0] + UNIT;
             case "Left" -> x[0] = x[0] - UNIT;
@@ -178,18 +259,18 @@ public class GamePanel extends JPanel implements ActionListener {
             this.foodCounter = this.foodCounter + 1;
             updateScore();
             newFood();
-            if (this.foodCounter == this.num) {
+            if (this.foodCounter == this.randomNumber) {
                 newToxicFood();
             }
         }
     }
 
     public void checkToxicFood() { //also separated methods to check the different foods
-        if (this.foodCounter == this.num) { //Added a condition to fix logic
+        if (this.foodCounter == this.randomNumber) { //Added a condition to fix logic
             if (x[0] == ToxicfoodX && y[0] == ToxicfoodY) {
                 bodyUnits = bodyUnits / 2;
                 this.foodCounter = 0;
-                num = random.nextInt(10);
+                this.randomNumber = random.nextInt(10);
                 updateScore();
                 newFood();
             }
@@ -298,6 +379,8 @@ public class GamePanel extends JPanel implements ActionListener {
         bodyUnits = 6;
         foodCounter = 0;
         scoreCounter = 0;
+        randomNumber = 0;
+        
         direction = "Right";
         running = false;
         gameOver = false; 
