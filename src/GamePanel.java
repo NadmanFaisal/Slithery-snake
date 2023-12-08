@@ -112,8 +112,8 @@ public class GamePanel extends JPanel implements ActionListener {
         } else if (backgroundImage != null) {
             graphics.drawImage(backgroundImage.getImage(), 0, 0, PANEL_WIDTH, PANEL_HEIGHT, this);
         }
-        if (running) { //Does this work??
-            draw(graphics);
+        if (running) {
+            draw(graphics); // drawBackground(), then drawFood(), then drawSnake(), then drawScore()
             drawFood(graphics);
             drawSnake(graphics);
         }
@@ -386,7 +386,7 @@ public class GamePanel extends JPanel implements ActionListener {
         
         direction = "Right";
         running = false;
-        gameOver = false; 
+        gameOver = false;
 
         startGame();
         
