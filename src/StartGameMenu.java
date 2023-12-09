@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -7,6 +8,7 @@ import java.awt.geom.RoundRectangle2D;
         public boolean active;
         private  int panelWidth;
         private int panelHeight;
+        private ImageIcon backgroundImage;
 
         // play button
         private RoundRectangle2D playButton;
@@ -15,10 +17,11 @@ import java.awt.geom.RoundRectangle2D;
         private Font font;
         private GamePanel gamePanel;
 
-        public StartGameMenu(GamePanel gamePanel, int panelWidth, int panelHeight) {
+        public StartGameMenu(GamePanel gamePanel, int panelWidth, int panelHeight, ImageIcon backgroundImage) {
             this.gamePanel = gamePanel;
             this.panelWidth = panelWidth;
             this.panelHeight= panelHeight;
+            this.backgroundImage = backgroundImage;
             designButton();
         }
         public void designButton (){
@@ -35,18 +38,19 @@ import java.awt.geom.RoundRectangle2D;
         // This method draws the button and adds the text inside
         public void drawStartMenu(Graphics graphics) {
             Graphics2D graphics2D = (Graphics2D) graphics;
+            graphics2D.drawImage(backgroundImage.getImage(),0,0,panelWidth,panelHeight,null);
             graphics2D.setFont(font);
 
             // Sets the color of the button. The button changes to dark green if the mouse is hovering over it.
             if (btnHighlight) {
-                graphics2D.setColor(new Color(0,100,0));
+                graphics2D.setColor(new Color(0,128,0));
             }else{
                 graphics2D.setColor(new Color(34,139,34));
             }
 
             // Border of the button
             graphics2D.fill(playButton);
-            graphics2D.setColor(new Color(124,252,0));
+            graphics.setColor(new Color(51,102,51));
             int borderThickness = 8;
             graphics2D.setStroke(new BasicStroke(borderThickness));
             graphics2D.draw(playButton);
@@ -55,8 +59,7 @@ import java.awt.geom.RoundRectangle2D;
             // Adding start button text and positioning it inside the button
             int strWidth = graphics.getFontMetrics(font).stringWidth(buttonText);
             int strHeight = graphics.getFontMetrics(font).getHeight();
-
-            graphics.setColor(new Color(173,255,47));
+            graphics.setColor(new Color(255,255,240));
             graphics.drawString(buttonText, (int) (playButton.getX() + playButton.getWidth() / 2 - strWidth / 2),
                     (int) (playButton.getY() + playButton.getHeight() / 2 + strHeight / 4));
 

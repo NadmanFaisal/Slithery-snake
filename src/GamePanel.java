@@ -67,10 +67,10 @@ public class GamePanel extends JPanel implements ActionListener {
         this.setBackground(Color.black);
         this.setFocusable(true);
         this.addKeyListener(new MyKeyAdapter());
-        startGameMenu = new StartGameMenu(this,PANEL_WIDTH,PANEL_HEIGHT);
 
 
         this.backgroundImage = new ImageIcon("src/Images/gamepanel-bg.png");
+        this.startGameMenu = new StartGameMenu(this,PANEL_WIDTH,PANEL_HEIGHT,backgroundImage);
         this.snakeRightT = new ImageIcon("src/Images/Snake Right.png");
         this.snakeLeftT = new ImageIcon("src/Images/Snake Left.png");
         this.snakeUpT = new ImageIcon("src/Images/Snake Up.png");
