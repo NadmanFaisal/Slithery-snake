@@ -52,6 +52,7 @@ public class GamePanel extends JPanel implements ActionListener {
     private int tenthOfSecond;
     private ImageIcon backgroundImage;
     private final Font customFont;
+    private StartGameMenu startGameMenu;
 
     public GamePanel() {
         this.bodyUnits = 6;
@@ -66,6 +67,8 @@ public class GamePanel extends JPanel implements ActionListener {
         this.setBackground(Color.black);
         this.setFocusable(true);
         this.addKeyListener(new MyKeyAdapter());
+        startGameMenu = new StartGameMenu(this,PANEL_WIDTH,PANEL_HEIGHT);
+
 
         this.backgroundImage = new ImageIcon("src/Images/gamepanel-bg.png");
         this.snakeRightT = new ImageIcon("src/Images/Snake Right.png");
@@ -87,7 +90,9 @@ public class GamePanel extends JPanel implements ActionListener {
         this.tenthOfSecond = 0; 
         startStopwatch(); //calling method to start the stopwatch when player starts playing
         this.customFont = getFont("KarmaFuture.ttf");
-        startGame();
+        this.addMouseListener(startGameMenu);
+        this.addMouseMotionListener(startGameMenu);
+        //startGame();
     }
 
     public void startStopwatch(){ //start stopwatch
@@ -110,14 +115,17 @@ public class GamePanel extends JPanel implements ActionListener {
     @Override
     public void paintComponent(Graphics graphics) {
         super.paintComponent(graphics);
-        if (gameOver) {
-            showGameOverScreen(graphics);
-        }
-        if (running) {
+        if(!running){
+            startGameMenu.drawStartMenu(graphics);
+        }else{
             drawBackgroundImage(graphics);
             drawFood(graphics);
             drawSnake(graphics);
             drawScore(graphics);
+
+        }
+        if (gameOver) {
+            showGameOverScreen(graphics);
         }
     }
 
