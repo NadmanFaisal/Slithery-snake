@@ -5,7 +5,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.Random;
-import javax.swing.JLabel;
 
 public class GamePanel extends JPanel implements ActionListener {
 
@@ -35,7 +34,9 @@ public class GamePanel extends JPanel implements ActionListener {
     private int playedSeconds; //attribute for the seconds that will go up as we play
     private int tenthOfSecond;
 
+
     public GamePanel() {
+
         this.bodyUnits = 6;
         this.foodCounter = 0;
         this.direction = "Right";
@@ -55,9 +56,26 @@ public class GamePanel extends JPanel implements ActionListener {
         this.tenthOfSecond = 0; 
         startStopwatch(); //calling method to start the stopwatch when player starts playing
         
-        
         startGame();
     }
+    
+
+    public int getScoreCounter() {
+
+        return this.scoreCounter; 
+    }
+
+    public int getPlayedSeconds() {
+
+        return this.playedSeconds; 
+    }
+
+    public int getTenthOfSecond() {
+
+        return this.tenthOfSecond; 
+    }
+
+
 
     public void startStopwatch(){ //start stopwatch
         
@@ -80,11 +98,18 @@ public class GamePanel extends JPanel implements ActionListener {
     public void paintComponent(Graphics graphics) {
         super.paintComponent(graphics);
         if (gameOver) {
-            showGameOverScreen(graphics);
+
+            GameOverPanel gameOverPanel = new GameOverPanel();
+            gameOverPanel.showGameOverScreen(graphics);
         }
         else if (running) { //Does this work??
             draw(graphics);
         }
+    }
+
+    public void setGameOver(boolean gameOver){
+        this.gameOver = gameOver; 
+        repaint();
     }
 
     public void draw(Graphics graphics) {
@@ -121,6 +146,8 @@ public class GamePanel extends JPanel implements ActionListener {
         graphics.setFont(new Font(Font.SERIF, Font.BOLD, 40));
         FontMetrics metrics = getFontMetrics(graphics.getFont());
         graphics.drawString("Score: " + scoreCounter, (PANEL_WIDTH - metrics.stringWidth("Score: " + scoreCounter))/2,graphics.getFont().getSize());
+
+
 
     }
 
@@ -269,17 +296,6 @@ public class GamePanel extends JPanel implements ActionListener {
         }
     }
 
-    // Shows game over screen after the person dies
-    public void showGameOverScreen (Graphics graphics) {
-
-        graphics.setColor(Color.blue);
-        graphics.setFont(new Font(Font.SERIF, Font.BOLD, 30));
-
-        graphics.drawString("Game Over", PANEL_WIDTH / 2 - 100, PANEL_HEIGHT / 2 - 10);
-        graphics.drawString("Score: " + (scoreCounter), PANEL_WIDTH / 2 - 70, PANEL_HEIGHT / 2 + 20);
-        graphics.drawString("Press R to Restart", PANEL_WIDTH / 2 - 130, PANEL_HEIGHT / 2 + 70);
-    }
-
    
     // Game restarts when you press "R" in game over screen
     public void restartGame() {
@@ -295,6 +311,8 @@ public class GamePanel extends JPanel implements ActionListener {
         direction = "Right";
         running = false;
         gameOver = false; 
+        scoreCounter = 0; 
+        playedSeconds = 0; 
 
         startGame();
         
