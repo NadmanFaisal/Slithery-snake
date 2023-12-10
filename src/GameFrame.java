@@ -19,6 +19,14 @@ public class GameFrame {
         JButton playButton = new JButton("Play");
         topPanel.add(playButton);
 
+        ImageIcon logo = new ImageIcon("D:/GitLab Home/group-11/src/Untitled design (1).png");
+        Image logoImage = logo.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
+        ImageIcon resizedLogo = new ImageIcon(logoImage);
+        JLabel logoLabel = new JLabel(resizedLogo);
+
+        topPanel.setLayout(new BorderLayout());
+        topPanel.add(logoLabel, BorderLayout.WEST);
+
         this.frame.add(topPanel, BorderLayout.NORTH);
         this.frame.add(new GamePanel(), BorderLayout.CENTER);
         this.frame.pack();
