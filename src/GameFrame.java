@@ -22,7 +22,7 @@ public class GameFrame {
         this.frame.add(gamePanel);//NEW
     //  this.frame.add(gameOverPanel); //NEW
         this.gamePanel.setVisible(true); //NEW
-      //  this.gameOverPanel.setVisible(false); //NEW
+        //this.gameOverPanel.setVisible(false); //NEW
 
         this.frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.frame.setResizable(false);

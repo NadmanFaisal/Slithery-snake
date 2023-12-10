@@ -11,8 +11,8 @@ import java.util.Random;
 
 public class GamePanel extends JPanel implements ActionListener {
 
-    private static final int PANEL_WIDTH = 500;
-    private static final int PANEL_HEIGHT = 500;
+    public static final int PANEL_WIDTH = 500;
+    public static final int PANEL_HEIGHT = 500;
     private static final int UNIT = 25;
     private static final int GAME_UNITS = (PANEL_HEIGHT * PANEL_WIDTH) / (UNIT * UNIT);
     private static final int TIMER_DELAY = 100;
@@ -31,6 +31,7 @@ public class GamePanel extends JPanel implements ActionListener {
     private int randomNumber; //better name
     private int scoreCounter;
     private boolean gameOver = false;
+    private GameOverPanel gameOverPanel;
 
     private ImageIcon snakeRightT;
     private ImageIcon snakeLeftT;
@@ -67,6 +68,7 @@ public class GamePanel extends JPanel implements ActionListener {
         this.setBackground(Color.black);
         this.setFocusable(true);
         this.addKeyListener(new MyKeyAdapter());
+        this.gameOverPanel = new GameOverPanel();
 
         this.backgroundImage = new ImageIcon("src/Images/gamepanel-bg.png");
         this.snakeRightT = new ImageIcon("src/Images/Snake Right.png");
@@ -131,8 +133,6 @@ public class GamePanel extends JPanel implements ActionListener {
     public void paintComponent(Graphics graphics) {
         super.paintComponent(graphics);
         if (gameOver) {
-
-            GameOverPanel gameOverPanel = new GameOverPanel();
             gameOverPanel.showGameOverScreen(graphics);
         }
         if (running) {
@@ -323,6 +323,7 @@ public class GamePanel extends JPanel implements ActionListener {
         for (int i = bodyUnits; i > 0; i--) {
             if ((x[0] == x[i]) && (y[0] == y[i])) {
                 gameOver = true;
+                running = false;
                 timer.stop();
                 break;
             }
@@ -337,9 +338,15 @@ public class GamePanel extends JPanel implements ActionListener {
            */
         if ((x[0] < 0 || x[0] >= PANEL_WIDTH) || (y[0] < 0 || y[0] >= PANEL_HEIGHT)) {
             gameOver = true;
+            running = false;
             timer.stop();
         }
 
+        if(gameOver) {
+            this.gameOverPanel.setScoreCounter(scoreCounter);
+            this.gameOverPanel.setTime(playedSeconds,tenthOfSecond);
+           // this.gameOverPanel.setVisible(true);
+        }
     }
 
     public void updateScore () {
