@@ -16,6 +16,9 @@ public class GameFrame {
         topPanel.setPreferredSize(new Dimension(0,50));
         topPanel.setBackground(Color.green);
 
+        JButton playButton = new JButton("Play");
+        topPanel.add(playButton);
+
         this.frame.add(topPanel, BorderLayout.NORTH);
         this.frame.add(new GamePanel(), BorderLayout.CENTER);
         this.frame.pack();
