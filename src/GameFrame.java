@@ -14,9 +14,11 @@ public class GameFrame {
 
         JPanel topPanel = new JPanel();
         topPanel.setPreferredSize(new Dimension(0,50));
-        topPanel.setBackground(Color.green);
+        topPanel.setBackground(new Color(49, 85, 69));
 
         JButton playButton = new JButton("Play");
+        playButton.setBounds(50,10, 50,30);
+        playButton.setFocusable(false);
         topPanel.add(playButton);
 
         ImageIcon logo = new ImageIcon("D:/GitLab Home/group-11/src/Untitled design (1).png");
