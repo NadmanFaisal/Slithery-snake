@@ -87,6 +87,8 @@ public class GamePanel extends JPanel implements ActionListener {
         this.tenthOfSecond = 0; 
         startStopwatch(); //calling method to start the stopwatch when player starts playing
         this.customFont = getFont("KarmaFuture.ttf");
+        this.stopwatchLabel.setFont(customFont.deriveFont(Font.BOLD, 25));
+        this.stopwatchLabel.setForeground(new Color(14, 102, 0));
         startGame();
     }
 
@@ -276,6 +278,8 @@ public class GamePanel extends JPanel implements ActionListener {
             this.foodCounter = this.foodCounter + 1;
             updateScore();
             newFood();
+            Audio clicked = new Audio("src/SnakeEat2.wav");
+            clicked.audio.start();
             if (this.foodCounter == this.randomNumber) {
                 newToxicFood();
             }
@@ -289,6 +293,8 @@ public class GamePanel extends JPanel implements ActionListener {
                 this.foodCounter = 0;
                 this.randomNumber = random.nextInt(10);
                 updateScore();
+                Audio clicked = new Audio("src/SnakePoisonFruit.wav");
+                clicked.audio.start();
                 newFood();
             }
         }
@@ -301,6 +307,8 @@ public class GamePanel extends JPanel implements ActionListener {
             if ((x[0] == x[i]) && (y[0] == y[i])) {
               gameOver = true;
               running = false;
+                Audio clicked = new Audio("src/SnakeGameOver.wav");
+                clicked.audio.start();
               timer.stop();
               break;
             }   
@@ -316,6 +324,8 @@ public class GamePanel extends JPanel implements ActionListener {
         if ((x[0] < 0 || x[0] >= PANEL_WIDTH) || (y[0] < 0 || y[0] >= PANEL_HEIGHT)){
             gameOver = true;
             running = false;
+            Audio clicked = new Audio("src/SnakeGameOver.wav");
+            clicked.audio.start();
             timer.stop();
         }
 
