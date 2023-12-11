@@ -132,14 +132,14 @@ public class GamePanel extends JPanel implements ActionListener {
     @Override
     public void paintComponent(Graphics graphics) {
         super.paintComponent(graphics);
-        if (gameOver) {
-            gameOverPanel.showGameOverScreen(graphics);
-        }
         if (running) {
             drawBackgroundImage(graphics);
             drawFood(graphics);
             drawSnake(graphics);
             drawScore(graphics);
+        }
+        if (gameOver) {
+            gameOverPanel.showGameOverScreen(graphics);
         }
     }
     private ImageIcon getHead() {

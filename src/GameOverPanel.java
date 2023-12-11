@@ -1,5 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
+import java.net.URL;
 
 public class GameOverPanel extends JPanel {
 
@@ -11,11 +13,14 @@ public class GameOverPanel extends JPanel {
 
     private JButton restartButton;
 
+    private ImageIcon backgroundImage;
 
     public GameOverPanel() {
         this.setPreferredSize(new Dimension(GamePanel.PANEL_WIDTH, GamePanel.PANEL_HEIGHT));
         this.setFocusable(false);
         this.setVisible(true);
+
+        this.backgroundImage = new ImageIcon("src/Images/gamepanel-bg.png");
 
         restartButton = new JButton("Restart Game");
         restartButton.setPreferredSize(new Dimension(150, 50));
@@ -40,8 +45,9 @@ public class GameOverPanel extends JPanel {
     public void showGameOverScreen(Graphics graphics) {
 
             graphics.setFont(new Font(Font.SERIF, Font.BOLD, 30));
-            graphics.setColor(Color.PINK);
-            graphics.fillRect(0, 0, GamePanel.PANEL_WIDTH, GamePanel.PANEL_HEIGHT);
+           // graphics.setColor(Color.PINK);
+           // graphics.fillRect(0, 0, GamePanel.PANEL_WIDTH, GamePanel.PANEL_HEIGHT);
+            drawBackgroundImage(graphics);
             graphics.setColor(Color.RED);
 
             FontMetrics metrics = graphics.getFontMetrics();
@@ -58,5 +64,9 @@ public class GameOverPanel extends JPanel {
             graphics.drawString("Score: " + scoreCounter, xScore, y + 10); // Adjust Y position for spacing
             graphics.drawString("Time played: " + playedSeconds + "." + tenthOfSecond + " seconds", xTime, y + 50);
 
+    }
+
+    public void drawBackgroundImage (Graphics graphics){
+        graphics.drawImage(backgroundImage.getImage(), 0, 0, GamePanel.PANEL_WIDTH, GamePanel.PANEL_HEIGHT, this);
     }
 }

@@ -17,7 +17,7 @@ public class GameFrame {
         this.frame.setTitle("Slithery Snake");
 
         this.gamePanel = new GamePanel();//NEW
-        this.gameOverPanel = new GameOverPanel(); //NEW
+       // this.gameOverPanel = new GameOverPanel(); //NEW
 
         this.frame.add(gamePanel);//NEW
     //  this.frame.add(gameOverPanel); //NEW
