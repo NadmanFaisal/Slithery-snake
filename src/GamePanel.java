@@ -300,6 +300,7 @@ public class GamePanel extends JPanel implements ActionListener {
         for (int i = bodyUnits; i > 0; i--) {
             if ((x[0] == x[i]) && (y[0] == y[i])) {
               gameOver = true;
+              running = false;
               timer.stop();
               break;
             }   
@@ -314,6 +315,7 @@ public class GamePanel extends JPanel implements ActionListener {
            */
         if ((x[0] < 0 || x[0] >= PANEL_WIDTH) || (y[0] < 0 || y[0] >= PANEL_HEIGHT)){
             gameOver = true;
+            running = false;
             timer.stop();
         }
 
@@ -394,7 +396,6 @@ public class GamePanel extends JPanel implements ActionListener {
         }
 
         bodyUnits = 6;
-        foodCounter = 0;
         scoreCounter = 0;
         randomNumber = 0;
         
