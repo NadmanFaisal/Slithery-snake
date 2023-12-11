@@ -8,10 +8,11 @@ public class GameOverPanel extends JPanel {
     private int scoreCounter;
     private int playedSeconds;
     private int tenthOfSecond;
+    private final Font customFont;
 
     private boolean gameOver;
 
-    private JButton restartButton;
+   // private JButton restartButton;
 
     private ImageIcon backgroundImage;
 
@@ -21,11 +22,11 @@ public class GameOverPanel extends JPanel {
         this.setVisible(true);
 
         this.backgroundImage = new ImageIcon("src/Images/gamepanel-bg.png");
-
-        restartButton = new JButton("Restart Game");
+        this.customFont = getFont("KarmaFuture.ttf");
+       /*  restartButton = new JButton("Restart Game");
         restartButton.setPreferredSize(new Dimension(150, 50));
         add(restartButton);
-        restartButton.setVisible(true);
+        restartButton.setVisible(true); */
     }
 
     public void setScoreCounter(int scoreCounter) {
@@ -42,13 +43,22 @@ public class GameOverPanel extends JPanel {
     }
 
 
+    public Font getFont (String fontName){
+        try {
+            String path = "/Fonts/" + fontName;
+            URL url = getClass().getResource(path);
+            return Font.createFont(Font.TRUETYPE_FONT, url.openStream());
+        } catch (IOException | FontFormatException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public void showGameOverScreen(Graphics graphics) {
 
-            graphics.setFont(new Font(Font.SERIF, Font.BOLD, 30));
-           // graphics.setColor(Color.PINK);
-           // graphics.fillRect(0, 0, GamePanel.PANEL_WIDTH, GamePanel.PANEL_HEIGHT);
+        
+            graphics.setFont(customFont.deriveFont(Font.BOLD, 25));
+            graphics.setColor(new Color(14, 102, 0));
             drawBackgroundImage(graphics);
-            graphics.setColor(Color.RED);
 
             FontMetrics metrics = graphics.getFontMetrics();
             int gameOverWidth = metrics.stringWidth("Game Over!");
