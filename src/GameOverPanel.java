@@ -1,32 +1,50 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.net.URL;
 
 public class GameOverPanel extends JPanel {
 
     private int scoreCounter;
-    private int playedSeconds;
+    private int playedSeconds;          
     private int tenthOfSecond;
     private final Font customFont;
-
+    private JButton restartButton; 
     private boolean gameOver;
 
-   // private JButton restartButton;
 
     private ImageIcon backgroundImage;
 
     public GameOverPanel() {
+
         this.setPreferredSize(new Dimension(GamePanel.PANEL_WIDTH, GamePanel.PANEL_HEIGHT));
         this.setFocusable(false);
-        this.setVisible(true);
+        this.setVisible(false);
 
         this.backgroundImage = new ImageIcon("src/Images/gamepanel-bg.png");
         this.customFont = getFont("KarmaFuture.ttf");
-       /*  restartButton = new JButton("Restart Game");
-        restartButton.setPreferredSize(new Dimension(150, 50));
-        add(restartButton);
-        restartButton.setVisible(true); */
+        this.setOpaque(false); //So that you cannot see a grey background
+        createButton();
+    }
+
+    public void createButton(){
+    
+        this.restartButton = new JButton("Restart Game"); 
+
+        restartButton.setPreferredSize(new Dimension(130, 30));
+        restartButton.setBounds(100,100,200,50); 
+        restartButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        ActionListener actionListener = new ActionListener() {
+            public void actionPerformed(ActionEvent action){
+                GameLauncher.restart();
+            }
+        };
+    restartButton.addActionListener(actionListener);    
+
+        this.add(Box.createVerticalStrut(700));
+        this.add(restartButton);
     }
 
     public void setScoreCounter(int scoreCounter) {
@@ -42,7 +60,6 @@ public class GameOverPanel extends JPanel {
         this.gameOver = gameOver;
     }
 
-
     public Font getFont (String fontName){
         try {
             String path = "/Fonts/" + fontName;
@@ -55,7 +72,6 @@ public class GameOverPanel extends JPanel {
 
     public void showGameOverScreen(Graphics graphics) {
 
-        
             graphics.setFont(customFont.deriveFont(Font.BOLD, 25));
             graphics.setColor(new Color(14, 102, 0));
             drawBackgroundImage(graphics);
@@ -79,4 +95,5 @@ public class GameOverPanel extends JPanel {
     public void drawBackgroundImage (Graphics graphics){
         graphics.drawImage(backgroundImage.getImage(), 0, 0, GamePanel.PANEL_WIDTH, GamePanel.PANEL_HEIGHT, this);
     }
+
 }

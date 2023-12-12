@@ -69,6 +69,7 @@ public class GamePanel extends JPanel implements ActionListener {
         this.setFocusable(true);
         this.addKeyListener(new MyKeyAdapter());
         this.gameOverPanel = new GameOverPanel();
+        this.add(gameOverPanel);
 
         this.backgroundImage = new ImageIcon("src/Images/gamepanel-bg.png");
         this.snakeRightT = new ImageIcon("src/Images/Snake Right.png");
@@ -139,6 +140,7 @@ public class GamePanel extends JPanel implements ActionListener {
             drawScore(graphics);
         }
         if (gameOver) {
+            gameOverPanel.setVisible(true);
             gameOverPanel.showGameOverScreen(graphics);
         }
     }
@@ -244,6 +246,7 @@ public class GamePanel extends JPanel implements ActionListener {
             throw new RuntimeException(e);
         }
     }
+    
     public void drawScore (Graphics graphics){
         graphics.setColor(new Color(14, 102, 0));
         graphics.setFont(customFont.deriveFont(Font.BOLD, 25));

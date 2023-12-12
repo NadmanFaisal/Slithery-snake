@@ -43,4 +43,8 @@ public class GameFrame {
      public GameOverPanel getGameOverPanel(){ //NEW
         return gameOverPanel; 
     }
+
+    public void deleteFrame(){
+        frame.dispose();
+    }
 }
