@@ -3,6 +3,11 @@ import java.awt.*;
 
 public class GameFrame {
     private JFrame frame;
+    private Timer stopwatchTimer;
+    private JLabel stopwatchLabel;
+    private JPanel stopwatchPanel;
+    private int playedSeconds;  
+
     public GameFrame() {
         initialize();
     }
@@ -34,5 +39,11 @@ public class GameFrame {
         this.frame.pack();
         this.frame.setVisible(true);
         this.frame.setLocationRelativeTo(null);
+        this.stopwatchPanel = new JPanel();
+        this.stopwatchLabel = new JLabel();
+        this.stopwatchLabel.setText("Time: 0 seconds"); 
+        this.stopwatchPanel.add(stopwatchLabel);
+        this.frame.add(stopwatchPanel);
+        //this.stopwatchTimer = new Timer(1000, null);
     }
 }
