@@ -6,7 +6,8 @@ public class GameFrame {
     private Timer stopwatchTimer;
     private JLabel stopwatchLabel;
     private JPanel stopwatchPanel;
-    private int playedSeconds;  
+    private int playedSeconds;
+    private ImageIcon imageIcon;
 
     public GameFrame() {
         initialize();
@@ -26,5 +27,7 @@ public class GameFrame {
         this.stopwatchPanel.add(stopwatchLabel);
         this.frame.add(stopwatchPanel);
         //this.stopwatchTimer = new Timer(1000, null);
+        this.imageIcon = new ImageIcon("src/Images/ICON.png");
+        frame.setIconImage(imageIcon.getImage());
     }
 }
