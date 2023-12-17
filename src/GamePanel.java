@@ -90,6 +90,8 @@ public class GamePanel extends JPanel implements ActionListener {
         this.tenthOfSecond = 0; 
         startStopwatch(); //calling method to start the stopwatch when player starts playing
         this.customFont = getFont("KarmaFuture.ttf");
+        this.randomNumber = random.nextInt(10);
+
         startGame();
     }
 
@@ -228,7 +230,7 @@ public class GamePanel extends JPanel implements ActionListener {
     public void drawScore(Graphics graphics) {
         graphics.setColor(new Color(14,102,0));
         graphics.setFont(customFont.deriveFont(Font.BOLD, 25));
-        graphics.drawString("Score: " + scoreCounter,15,graphics.getFont().getSize());
+        graphics.drawString("Score: " + scoreCounter,10,graphics.getFont().getSize() + 70);
     }
 
     public void drawBackgroundImage(Graphics graphics){
