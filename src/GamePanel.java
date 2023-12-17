@@ -252,12 +252,12 @@ public class GamePanel extends JPanel implements ActionListener {
 
     public void newFood() {
         foodX = random.nextInt(PANEL_WIDTH / UNIT) * UNIT; //will it ever appear at corner??
-        foodY = random.nextInt(PANEL_HEIGHT / UNIT) * UNIT;
+        foodY = random.nextInt(PANEL_HEIGHT / UNIT) * UNIT + TOP_PANEL_HEIGHT;
     }
 
     public void newToxicFood() {
         ToxicfoodX = random.nextInt(PANEL_WIDTH / UNIT) * UNIT;
-        ToxicfoodY = random.nextInt(PANEL_HEIGHT / UNIT) * UNIT;
+        ToxicfoodY = random.nextInt(PANEL_HEIGHT / UNIT) * UNIT + TOP_PANEL_HEIGHT;
     }
 
     public void movement() {
