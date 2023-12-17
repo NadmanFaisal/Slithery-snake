@@ -47,6 +47,7 @@ public class GamePanel extends JPanel implements ActionListener {
     private ImageIcon snakeBody;
     private ImageIcon berry;
     private ImageIcon evilBerry;
+    private ImageIcon logo;
 
     private int moveCounter;
     private Timer stopwatchTimer;  //timer attribute for the stopwatch of type timer
@@ -82,6 +83,7 @@ public class GamePanel extends JPanel implements ActionListener {
         this.snakeBody = new ImageIcon("src/Images/SnakeBody (circle).png");
         this.berry = new ImageIcon("src/Images/Strawberry.png");
         this.evilBerry = new ImageIcon("src/Images/EvilBerry.png");
+        this.logo = new ImageIcon("src/Images/SnakeLogo.png");
 
         this.stopwatchLabel = new JLabel("Time: 0 seconds"); //creating the label for the stopwatch
         this.add(stopwatchLabel); //adding the new stopwatchlabel to the already existing game panel
@@ -422,5 +424,6 @@ public class GamePanel extends JPanel implements ActionListener {
     private void drawTopPanel(Graphics graphics){
         graphics.setColor(Color.WHITE);
         graphics.fillRect(0,0,PANEL_WIDTH, TOP_PANEL_HEIGHT);
+        graphics.drawImage(logo.getImage(), 5,0,TOP_PANEL_HEIGHT, TOP_PANEL_HEIGHT, null);
     }
 }
