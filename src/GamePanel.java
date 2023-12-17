@@ -16,6 +16,7 @@ public class GamePanel extends JPanel implements ActionListener {
 
     private static final int PANEL_WIDTH = 500;
     private static final int PANEL_HEIGHT = 500;
+    private static final int TOP_PANEL_HEIGHT = 70;
     private static final int UNIT = 25;
     private static final int GAME_UNITS = (PANEL_HEIGHT * PANEL_WIDTH) / (UNIT * UNIT);
     private static final int TIMER_DELAY = 100;
@@ -64,7 +65,7 @@ public class GamePanel extends JPanel implements ActionListener {
         this.random = new Random();
         this.randomNumber = random.nextInt(10);
         this.scoreCounter = 0;
-        this.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
+        this.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT + TOP_PANEL_HEIGHT));
         this.setBackground(Color.black);
         this.setFocusable(true);
         this.addKeyListener(new MyKeyAdapter());
@@ -116,6 +117,7 @@ public class GamePanel extends JPanel implements ActionListener {
             showGameOverScreen(graphics);
         }
         if (running) {
+            drawTopPanel(graphics);
             drawBackgroundImage(graphics);
             drawFood(graphics);
             drawSnake(graphics);
@@ -230,7 +232,7 @@ public class GamePanel extends JPanel implements ActionListener {
     }
 
     public void drawBackgroundImage(Graphics graphics){
-        graphics.drawImage(backgroundImage.getImage(), 0, 0, PANEL_WIDTH, PANEL_HEIGHT, this);
+        graphics.drawImage(backgroundImage.getImage(), 0, TOP_PANEL_HEIGHT, PANEL_WIDTH, PANEL_HEIGHT, this);
     }
 
     public void startGame() {
@@ -407,5 +409,10 @@ public class GamePanel extends JPanel implements ActionListener {
 
         startGame();
         
+    }
+
+    private void drawTopPanel(Graphics graphics){
+        graphics.setColor(Color.WHITE);
+        graphics.fillRect(0,0,PANEL_WIDTH, TOP_PANEL_HEIGHT);
     }
 }
