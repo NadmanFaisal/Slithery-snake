@@ -323,7 +323,7 @@ public class GamePanel extends JPanel implements ActionListener {
            here 0 may look like a magic number but it's not as we all know width and height size is 500
            it means the starting point is 0. So it the panel size goes from 0 --> 500; both side.
            */
-        if ((x[0] < 0 || x[0] >= PANEL_WIDTH) || (y[0] < 0 || y[0] >= PANEL_HEIGHT)){
+        if ((x[0] < 0 || x[0] >= PANEL_WIDTH) || (y[0] < TOP_PANEL_HEIGHT || y[0] >= PANEL_HEIGHT + TOP_PANEL_HEIGHT)){
             gameOver = true;
             running = false;
             timer.stop();
