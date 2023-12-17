@@ -236,6 +236,12 @@ public class GamePanel extends JPanel implements ActionListener {
     }
 
     public void startGame() {
+
+        for (int i = 0; i< bodyUnits; i++){
+            x[i] = 0;
+            y[i] = TOP_PANEL_HEIGHT;
+        }
+
         newFood();
         running = true;
         timer = new Timer(TIMER_DELAY, this);
