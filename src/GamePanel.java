@@ -56,6 +56,7 @@ public class GamePanel extends JPanel implements ActionListener {
     private int tenthOfSecond;
     private ImageIcon backgroundImage;
     private final Font customFont;
+    private Buttons buttons;
 
     public GamePanel() {
         this.bodyUnits = 6;
@@ -94,7 +95,9 @@ public class GamePanel extends JPanel implements ActionListener {
         this.customFont = getFont("KarmaFuture.ttf");
         this.randomNumber = random.nextInt(10);
 
-        startGame();
+        this.buttons = new Buttons("PLAY");
+        this.buttons.addActionListener(e -> startGame());
+        this.add(buttons);
     }
 
     public void startStopwatch(){ //start stopwatch
@@ -240,6 +243,8 @@ public class GamePanel extends JPanel implements ActionListener {
     }
 
     public void startGame() {
+
+        buttons.setVisible(true);
 
         for (int i = 0; i< bodyUnits; i++){
             x[i] = 0;
@@ -390,6 +395,8 @@ public class GamePanel extends JPanel implements ActionListener {
 
     // Shows game over screen after the person dies
     public void showGameOverScreen (Graphics graphics) {
+
+        buttons.setVisible(false);
 
         graphics.setColor(Color.blue);
         graphics.setFont(new Font(Font.SERIF, Font.BOLD, 30));
