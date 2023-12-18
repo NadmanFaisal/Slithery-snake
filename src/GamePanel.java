@@ -24,12 +24,15 @@ public class GamePanel extends JPanel implements ActionListener {
     private int foodY;
     private int ToxicfoodX;
     private int ToxicfoodY;
+    private int InvincibleFoodX;
+    private int InvincibleFoody;
     private String direction;
     private boolean running;
     private Random random;
     private Timer timer;
     private int foodCounter;
     private int randomNumber; //better name
+    private int randomNumber2;
     private int scoreCounter;
     private boolean gameOver = false;
 
@@ -44,6 +47,7 @@ public class GamePanel extends JPanel implements ActionListener {
     private ImageIcon snakeBody;
     private ImageIcon berry;
     private ImageIcon evilBerry;
+    private ImageIcon invincibleBerry;
 
     private int moveCounter;
     private Timer stopwatchTimer;  //timer attribute for the stopwatch of type timer
@@ -52,6 +56,7 @@ public class GamePanel extends JPanel implements ActionListener {
     private int tenthOfSecond;
     private ImageIcon backgroundImage;
     private final Font customFont;
+    private boolean invincible = false;
 
     public GamePanel() {
         this.bodyUnits = 6;
@@ -61,6 +66,7 @@ public class GamePanel extends JPanel implements ActionListener {
         this.running = false;
         this.random = new Random();
         this.randomNumber = random.nextInt(10);
+        this.randomNumber2 = random.nextInt(10);
         this.scoreCounter = 0;
         this.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
         this.setBackground(Color.black);
@@ -79,6 +85,7 @@ public class GamePanel extends JPanel implements ActionListener {
         this.snakeBody = new ImageIcon("src/Images/SnakeBody (circle).png");
         this.berry = new ImageIcon("src/Images/Strawberry.png");
         this.evilBerry = new ImageIcon("src/Images/EvilBerry.png");
+        this.invincibleBerry = new ImageIcon("src/Images/InvincibleBerry.png");
 
         this.stopwatchLabel = new JLabel("Time: 0 seconds"); //creating the label for the stopwatch
         this.add(stopwatchLabel); //adding the new stopwatchlabel to the already existing game panel
@@ -209,6 +216,10 @@ public class GamePanel extends JPanel implements ActionListener {
             graphics.drawImage(evilBerry.getImage(), ToxicfoodX, ToxicfoodY, null);
         }
 
+        if (foodCounter == randomNumber2) {
+            graphics.drawImage(invincibleBerry.getImage(), InvincibleFoodX, InvincibleFoody, null);
+        }
+
     }
 
     public Font getFont(String fontName) {
@@ -245,6 +256,11 @@ public class GamePanel extends JPanel implements ActionListener {
         foodY = random.nextInt(PANEL_HEIGHT / UNIT) * UNIT;
     }
 
+    public void newInvincibleFood() {
+        InvincibleFoodX = random.nextInt(PANEL_WIDTH / UNIT) * UNIT;
+        InvincibleFoody = random.nextInt(PANEL_HEIGHT / UNIT) * UNIT;
+    }
+
     public void newToxicFood() {
         ToxicfoodX = random.nextInt(PANEL_WIDTH / UNIT) * UNIT;
         ToxicfoodY = random.nextInt(PANEL_HEIGHT / UNIT) * UNIT;
@@ -266,7 +282,11 @@ public class GamePanel extends JPanel implements ActionListener {
             case "Down" -> y[0] = y[0] + UNIT;
         }
 
-        snakeCollision();
+        snakeWallCollision();
+
+        if (!invincible) {
+            snakeBodyCollision();
+        }
 
     }
 
@@ -278,6 +298,9 @@ public class GamePanel extends JPanel implements ActionListener {
             newFood();
             if (this.foodCounter == this.randomNumber) {
                 newToxicFood();
+            }
+            if (this.foodCounter == this.randomNumber2) {
+                newInvincibleFood();
             }
         }
     }
@@ -294,7 +317,31 @@ public class GamePanel extends JPanel implements ActionListener {
         }
     }
 
-    private void snakeCollision() {
+    public void checkInvincibleFood() {
+        if (this.foodCounter == this.randomNumber2) {
+            if (x[0] == InvincibleFoodX && y[0] == InvincibleFoody) {
+                this.foodCounter = 0;
+                this.randomNumber2 = random.nextInt(10);
+                activateInvincibility();
+                newFood();
+            }
+        }
+    }
+
+    public void activateInvincibility() {
+        invincible = true;
+        Timer invincibilityTimer = new Timer(10000, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                invincible = false;
+            }
+        });
+        invincibilityTimer.setRepeats(false); // Make the timer run only once
+        invincibilityTimer.start();
+    }
+
+
+    private void snakeBodyCollision() {
 
         // self collision
         for (int i = bodyUnits; i > 0; i--) {
@@ -306,6 +353,11 @@ public class GamePanel extends JPanel implements ActionListener {
             }   
           }
 
+
+
+    }
+
+    public void snakeWallCollision() {
         // Snake Collides With Wall/ Panel
         /* if the snake head (x) is smaller than the left panel(0) or bigger than the right panel(500)
            or the snake head (y) is smaller than the upper panel(0) or bigger than the lower panel(500)
@@ -318,7 +370,6 @@ public class GamePanel extends JPanel implements ActionListener {
             running = false;
             timer.stop();
         }
-
     }
 
     public void updateScore() {
@@ -335,6 +386,7 @@ public class GamePanel extends JPanel implements ActionListener {
             movement();
             checkFood();
             checkToxicFood();
+            checkInvincibleFood();
             startStopwatch();
         }
         stopStopwatch();
