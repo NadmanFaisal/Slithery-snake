@@ -217,7 +217,7 @@ public class GamePanel extends JPanel implements ActionListener {
         }
 
         if (foodCounter == randomNumber2) {
-            graphics.drawImage(invincibleBerry.getImage(), InvincibleFoodX, InvincibleFoody, null);
+            graphics.drawImage(invincibleBerry.getImage(), InvincibleFoodX, InvincibleFoodY, null);
         }
 
     }
