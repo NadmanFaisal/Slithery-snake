@@ -85,7 +85,7 @@ public class GamePanel extends JPanel implements ActionListener {
         this.snakeBody = new ImageIcon("src/Images/SnakeBody (circle).png");
         this.berry = new ImageIcon("src/Images/Strawberry.png");
         this.evilBerry = new ImageIcon("src/Images/EvilBerry.png");
-        this.invincibleBerry = new ImageIcon("src/Images/InvincibleBerry.png");
+        this.invincibleBerry = new ImageIcon("src/Images/InvincibleBerryMain.png");
 
         this.stopwatchLabel = new JLabel("Time: 0 seconds"); //creating the label for the stopwatch
         this.add(stopwatchLabel); //adding the new stopwatchlabel to the already existing game panel
