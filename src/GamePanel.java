@@ -25,7 +25,7 @@ public class GamePanel extends JPanel implements ActionListener {
     private int ToxicfoodX;
     private int ToxicfoodY;
     private int InvincibleFoodX;
-    private int InvincibleFoody;
+    private int InvincibleFoodY;
     private String direction;
     private boolean running;
     private Random random;
@@ -258,7 +258,7 @@ public class GamePanel extends JPanel implements ActionListener {
 
     public void newInvincibleFood() {
         InvincibleFoodX = random.nextInt(PANEL_WIDTH / UNIT) * UNIT;
-        InvincibleFoody = random.nextInt(PANEL_HEIGHT / UNIT) * UNIT;
+        InvincibleFoodY = random.nextInt(PANEL_HEIGHT / UNIT) * UNIT;
     }
 
     public void newToxicFood() {
@@ -319,7 +319,7 @@ public class GamePanel extends JPanel implements ActionListener {
 
     public void checkInvincibleFood() {
         if (this.foodCounter == this.randomNumber2) {
-            if (x[0] == InvincibleFoodX && y[0] == InvincibleFoody) {
+            if (x[0] == InvincibleFoodX && y[0] == InvincibleFoodY) {
                 this.foodCounter = 0;
                 this.randomNumber2 = random.nextInt(10);
                 activateInvincibility();
