@@ -95,6 +95,7 @@ public class GamePanel extends JPanel implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 startGame();
+                startButton.setVisible(false);
             }
         });
         startButton.setBounds(250,250,120,70);
