@@ -8,12 +8,11 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Random;
-import javax.swing.JLabel;
 
 public class GamePanel extends JPanel implements ActionListener {
 
-    private static final int PANEL_WIDTH = 500;
-    private static final int PANEL_HEIGHT = 500;
+    public static final int PANEL_WIDTH = 500;
+    public static final int PANEL_HEIGHT = 500;
     private static final int UNIT = 25;
     private static final int GAME_UNITS = (PANEL_HEIGHT * PANEL_WIDTH) / (UNIT * UNIT);
     private static final int TIMER_DELAY = 100;
@@ -35,6 +34,7 @@ public class GamePanel extends JPanel implements ActionListener {
     private int randomNumber2;
     private int scoreCounter;
     private boolean gameOver = false;
+    private GameOverPanel gameOverPanel;
 
     private ImageIcon snakeRightT;
     private ImageIcon snakeLeftT;
@@ -58,7 +58,9 @@ public class GamePanel extends JPanel implements ActionListener {
     private GameButtons startButton;
     private boolean invincible = false;
 
+
     public GamePanel() {
+
         this.bodyUnits = 6;
         this.foodCounter = 0;
         this.moveCounter = 0;
@@ -72,6 +74,8 @@ public class GamePanel extends JPanel implements ActionListener {
         this.setBackground(Color.black);
         this.setFocusable(true);
         this.addKeyListener(new MyKeyAdapter());
+        this.gameOverPanel = new GameOverPanel();
+        this.add(gameOverPanel);
 
 
         this.backgroundImage = new ImageIcon("src/Images/gamepanel-bg.png");
@@ -88,8 +92,8 @@ public class GamePanel extends JPanel implements ActionListener {
         this.berry = new ImageIcon("src/Images/Strawberry.png");
         this.evilBerry = new ImageIcon("src/Images/EvilBerry.png");
         this.invincibleBerry = new ImageIcon("src/Images/InvincibleBerryMain.png");
-
         this.setLayout(null);
+
         this.customFont = getFont("KarmaFuture.ttf");
 
         this.stopwatchTimer = new Timer(1000, this); //making the stopwatch a Timer (built-in java) object.
@@ -109,16 +113,29 @@ public class GamePanel extends JPanel implements ActionListener {
 
     }
 
-    public void startStopwatch(){ //start stopwatch
+    public int getScoreCounter() {
+        return this.scoreCounter;
+    }
 
+    public int getPlayedSeconds() {
+
+        return this.playedSeconds;
+    }
+
+    public int getTenthOfSecond() {
+        return this.tenthOfSecond;
+    }
+
+
+
+    public void startStopwatch(){ //start stopwatch
         tenthOfSecond = tenthOfSecond + 1;
-        if(tenthOfSecond == 10){
+        if (tenthOfSecond == 10) {
             tenthOfSecond = 0;
             playedSeconds = playedSeconds + 1;
         }
         stopwatchTimer.start();
     }
-
 
     public void stopStopwatch() { //stop stopwatch
         stopwatchTimer.stop();
@@ -128,9 +145,8 @@ public class GamePanel extends JPanel implements ActionListener {
     @Override
     public void paintComponent(Graphics graphics) {
         super.paintComponent(graphics);
-        if(!running){
-            //startGameMenu.drawStartMenu(graphics);
-        }else{
+
+        if (running) {
             drawBackgroundImage(graphics);
             drawFood(graphics);
             drawSnake(graphics);
@@ -139,7 +155,8 @@ public class GamePanel extends JPanel implements ActionListener {
 
         }
         if (gameOver) {
-            showGameOverScreen(graphics);
+            gameOverPanel.setVisible(true);
+            gameOverPanel.showGameOverScreen(graphics);
 
         }
     }
@@ -149,8 +166,11 @@ public class GamePanel extends JPanel implements ActionListener {
             graphics.setFont(customFont.deriveFont(Font.BOLD, 25));
             graphics.drawString("Time: "+ playedSeconds + "." + tenthOfSecond + " seconds", PANEL_WIDTH -250, 25 );
         }
+        if (gameOver) {
+            gameOverPanel.setVisible(true);
+            gameOverPanel.showGameOverScreen(graphics);
+        }
     }
-
     private ImageIcon getHead() {
         ImageIcon head = null;
 
@@ -187,7 +207,9 @@ public class GamePanel extends JPanel implements ActionListener {
         return head;
     }
 
-    public void drawSnake(Graphics graphics) {
+
+
+    public void drawSnake (Graphics graphics){
         ImageIcon head = getHead();
         //snake
         switch (direction) {
@@ -222,6 +244,7 @@ public class GamePanel extends JPanel implements ActionListener {
                             graphics.drawImage(head.getImage(), x[i], y[i], null);
                         }
 
+
                     } else {
                         graphics.drawImage(snakeBody.getImage(), x[i], y[i], null);
                     }
@@ -230,7 +253,7 @@ public class GamePanel extends JPanel implements ActionListener {
         }
     }
 
-    public void drawFood(Graphics graphics) {
+    public void drawFood (Graphics graphics){
         //food item
         graphics.drawImage(berry.getImage(), foodX, foodY, null);
 
@@ -245,7 +268,7 @@ public class GamePanel extends JPanel implements ActionListener {
 
     }
 
-    public Font getFont(String fontName) {
+    public Font getFont (String fontName){
         try {
             String path = "/Fonts/" + fontName;
             URL url = getClass().getResource(path);
@@ -254,18 +277,18 @@ public class GamePanel extends JPanel implements ActionListener {
             throw new RuntimeException(e);
         }
     }
-
-    public void drawScore(Graphics graphics) {
-        graphics.setColor(new Color(14,102,0));
+    
+    public void drawScore (Graphics graphics){
+        graphics.setColor(new Color(14, 102, 0));
         graphics.setFont(customFont.deriveFont(Font.BOLD, 25));
-        graphics.drawString("Score: " + scoreCounter,15,graphics.getFont().getSize());
+        graphics.drawString("Score: " + scoreCounter, 15, graphics.getFont().getSize());
     }
 
-    public void drawBackgroundImage(Graphics graphics){
+    public void drawBackgroundImage (Graphics graphics){
         graphics.drawImage(backgroundImage.getImage(), 0, 0, PANEL_WIDTH, PANEL_HEIGHT, this);
     }
 
-    public void startGame() {
+    public void startGame () {
         newFood();
         running = true;
         timer = new Timer(TIMER_DELAY, this);
@@ -274,7 +297,7 @@ public class GamePanel extends JPanel implements ActionListener {
 
     }
 
-    public void newFood() {
+    public void newFood () {
         foodX = random.nextInt(PANEL_WIDTH / UNIT) * UNIT; //will it ever appear at corner??
         foodY = random.nextInt(PANEL_HEIGHT / UNIT) * UNIT;
     }
@@ -289,9 +312,9 @@ public class GamePanel extends JPanel implements ActionListener {
         ToxicfoodY = random.nextInt(PANEL_HEIGHT / UNIT) * UNIT;
     }
 
-    public void movement() {
+    public void movement () {
 
-        for(int i = bodyUnits; i > 0; i--) {
+        for (int i = bodyUnits; i > 0; i--) {
             x[i] = x[i - 1];
             y[i] = y[i - 1];
         }
@@ -313,8 +336,8 @@ public class GamePanel extends JPanel implements ActionListener {
 
     }
 
-    public void checkFood() { //changed logic in if block
-        if((x[0] == foodX && y[0] == foodY)) {
+    public void checkFood () { //changed logic in if block
+        if ((x[0] == foodX && y[0] == foodY)) {
             this.bodyUnits = this.bodyUnits + 1;
             this.foodCounter = this.foodCounter + 1;
             updateScore();
@@ -330,7 +353,7 @@ public class GamePanel extends JPanel implements ActionListener {
         }
     }
 
-    public void checkToxicFood() { //also separated methods to check the different foods
+    public void checkToxicFood () { //also separated methods to check the different foods
         if (this.foodCounter == this.randomNumber) { //Added a condition to fix logic
             if (x[0] == ToxicfoodX && y[0] == ToxicfoodY) {
                 bodyUnits = bodyUnits / 2;
@@ -343,6 +366,7 @@ public class GamePanel extends JPanel implements ActionListener {
             }
         }
     }
+
 
     public void checkInvincibleFood() {
         if (this.foodCounter == this.randomNumber2) {
@@ -392,26 +416,33 @@ public class GamePanel extends JPanel implements ActionListener {
            here 0 may look like a magic number but it's not as we all know width and height size is 500
            it means the starting point is 0. So it the panel size goes from 0 --> 500; both side.
            */
-        if ((x[0] < 0 || x[0] >= PANEL_WIDTH) || (y[0] < 0 || y[0] >= PANEL_HEIGHT)){
+        if ((x[0] < 0 || x[0] >= PANEL_WIDTH) || (y[0] < 0 || y[0] >= PANEL_HEIGHT)) {
             gameOver = true;
             running = false;
             Audio clicked = new Audio("src/SnakeGameOver.wav");
             clicked.audio.start();
             timer.stop();
         }
+
+        if(gameOver) {
+            this.gameOverPanel.setScoreCounter(scoreCounter);
+            this.gameOverPanel.setTime(playedSeconds,tenthOfSecond);
+
+        }
+
     }
 
-    public void updateScore() {
+    public void updateScore () {
         if (x[0] == foodX && y[0] == foodY) {
             scoreCounter += 10;
         } else {
-            scoreCounter = scoreCounter/2;
+            scoreCounter = scoreCounter / 2;
         }
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
-        if(running) {
+    public void actionPerformed(ActionEvent e){
+        if (running) {
             movement();
             checkFood();
             checkToxicFood();
@@ -455,25 +486,13 @@ public class GamePanel extends JPanel implements ActionListener {
         }
     }
 
-    // Shows game over screen after the person dies
-    public void showGameOverScreen (Graphics graphics) {
-
-        graphics.setColor(Color.blue);
-        graphics.setFont(new Font(Font.SERIF, Font.BOLD, 30));
-
-        graphics.drawString("Game Over", PANEL_WIDTH / 2 - 100, PANEL_HEIGHT / 2 - 10);
-        graphics.drawString("Score: " + (scoreCounter), PANEL_WIDTH / 2 - 70, PANEL_HEIGHT / 2 + 20);
-        graphics.drawString("Press R to Restart", PANEL_WIDTH / 2 - 130, PANEL_HEIGHT / 2 + 70);
-    }
-
-
     // Game restarts when you press "R" in game over screen
-    public void restartGame() {
+    public void restartGame () {
         //Restart from a new position
         // Always restarts from the top left side.
-        for (int i=0; i < bodyUnits; i++){
-            x[i]= 0;
-            y[i]= 0;
+        for (int i = 0; i < bodyUnits; i++) {
+            x[i] = 0;
+            y[i] = 0;
         }
 
         bodyUnits = 6;
@@ -490,5 +509,6 @@ public class GamePanel extends JPanel implements ActionListener {
         startGame();
 
     }
+
 }
 
