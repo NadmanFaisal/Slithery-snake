@@ -51,12 +51,13 @@ public class GamePanel extends JPanel implements ActionListener {
 
     private int moveCounter;
     private Timer stopwatchTimer;  //timer attribute for the stopwatch of type timer
-    private JLabel stopwatchLabel; // for the label of the stopwatch
     private int playedSeconds; //attribute for the seconds that will go up as we play
     private int tenthOfSecond;
     private ImageIcon backgroundImage;
     private final Font customFont;
     private boolean invincible = false;
+
+
 
     public GamePanel() {
         this.bodyUnits = 6;
@@ -87,13 +88,13 @@ public class GamePanel extends JPanel implements ActionListener {
         this.evilBerry = new ImageIcon("src/Images/EvilBerry.png");
         this.invincibleBerry = new ImageIcon("src/Images/InvincibleBerryMain.png");
 
-        this.stopwatchLabel = new JLabel("Time: 0 seconds"); //creating the label for the stopwatch
-        this.add(stopwatchLabel); //adding the new stopwatchlabel to the already existing game panel
+        this.setLayout(null);
+        this.customFont = getFont("KarmaFuture.ttf");
+
         this.stopwatchTimer = new Timer(1000, this); //making the stopwatch a Timer (built-in java) object.
         this.playedSeconds = 0; 
         this.tenthOfSecond = 0; 
         startStopwatch(); //calling method to start the stopwatch when player starts playing
-        this.customFont = getFont("KarmaFuture.ttf");
         startGame();
     }
 
@@ -104,7 +105,6 @@ public class GamePanel extends JPanel implements ActionListener {
             tenthOfSecond = 0;
             playedSeconds = playedSeconds + 1;
         }
-        stopwatchLabel.setText("Time: " + playedSeconds + "." + tenthOfSecond + " seconds");
         stopwatchTimer.start();
     }
 
@@ -125,6 +125,15 @@ public class GamePanel extends JPanel implements ActionListener {
             drawFood(graphics);
             drawSnake(graphics);
             drawScore(graphics);
+            drawStopwatchLabel(graphics);
+
+        }
+    }
+    public void drawStopwatchLabel (Graphics graphics) {
+        if ( !gameOver ) {
+            graphics.setColor(new Color(14, 102, 0));
+            graphics.setFont(customFont.deriveFont(Font.BOLD, 25));
+            graphics.drawString("Time: "+ playedSeconds + "." + tenthOfSecond + " seconds", PANEL_WIDTH -250, 25 );
         }
     }
 
@@ -296,6 +305,8 @@ public class GamePanel extends JPanel implements ActionListener {
             this.foodCounter = this.foodCounter + 1;
             updateScore();
             newFood();
+            Audio clicked = new Audio("src/SnakeEat2.wav");
+            clicked.audio.start();
             if (this.foodCounter == this.randomNumber) {
                 newToxicFood();
             }
@@ -312,6 +323,8 @@ public class GamePanel extends JPanel implements ActionListener {
                 this.foodCounter = 0;
                 this.randomNumber = random.nextInt(10);
                 updateScore();
+                Audio clicked = new Audio("src/SnakePoisonFruit.wav");
+                clicked.audio.start();
                 newFood();
             }
         }
@@ -348,6 +361,8 @@ public class GamePanel extends JPanel implements ActionListener {
             if ((x[0] == x[i]) && (y[0] == y[i])) {
               gameOver = true;
               running = false;
+                Audio clicked = new Audio("src/SnakeGameOver.wav");
+                clicked.audio.start();
               timer.stop();
               break;
             }   
@@ -368,6 +383,8 @@ public class GamePanel extends JPanel implements ActionListener {
         if ((x[0] < 0 || x[0] >= PANEL_WIDTH) || (y[0] < 0 || y[0] >= PANEL_HEIGHT)){
             gameOver = true;
             running = false;
+            Audio clicked = new Audio("src/SnakeGameOver.wav");
+            clicked.audio.start();
             timer.stop();
         }
     }
@@ -450,6 +467,8 @@ public class GamePanel extends JPanel implements ActionListener {
         bodyUnits = 6;
         scoreCounter = 0;
         randomNumber = 0;
+        playedSeconds = 0;
+        tenthOfSecond = 0;
         
         direction = "Right";
         running = false;
