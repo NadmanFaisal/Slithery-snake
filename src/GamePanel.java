@@ -1,3 +1,4 @@
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -13,6 +14,7 @@ public class GamePanel extends JPanel implements ActionListener {
 
     public static final int PANEL_WIDTH = 500;
     public static final int PANEL_HEIGHT = 500;
+    private static final int TOP_PANEL_HEIGHT = 70;
     private static final int UNIT = 25;
     private static final int GAME_UNITS = (PANEL_HEIGHT * PANEL_WIDTH) / (UNIT * UNIT);
     private static final int TIMER_DELAY = 100;
@@ -47,17 +49,18 @@ public class GamePanel extends JPanel implements ActionListener {
     private ImageIcon snakeBody;
     private ImageIcon berry;
     private ImageIcon evilBerry;
+    private ImageIcon logo;
     private ImageIcon invincibleBerry;
-
     private int moveCounter;
     private Timer stopwatchTimer;  //timer attribute for the stopwatch of type timer
     private int playedSeconds; //attribute for the seconds that will go up as we play
     private int tenthOfSecond;
     private ImageIcon backgroundImage;
     private final Font customFont;
+    private Buttons buttons;
+
     private GameButtons startButton;
     private boolean invincible = false;
-
 
     public GamePanel() {
 
@@ -70,9 +73,10 @@ public class GamePanel extends JPanel implements ActionListener {
         this.randomNumber = random.nextInt(10);
         this.randomNumber2 = random.nextInt(10);
         this.scoreCounter = 0;
-        this.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
+        this.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT + TOP_PANEL_HEIGHT));
         this.setBackground(Color.black);
         this.setFocusable(true);
+        this.setLayout(null);
         this.addKeyListener(new MyKeyAdapter());
         this.gameOverPanel = new GameOverPanel();
         this.add(gameOverPanel);
@@ -91,10 +95,15 @@ public class GamePanel extends JPanel implements ActionListener {
         this.snakeBody = new ImageIcon("src/Images/SnakeBody (circle).png");
         this.berry = new ImageIcon("src/Images/Strawberry.png");
         this.evilBerry = new ImageIcon("src/Images/EvilBerry.png");
+        this.logo = new ImageIcon("src/Images/SnakeLogo.png");
         this.invincibleBerry = new ImageIcon("src/Images/InvincibleBerryMain.png");
-        this.setLayout(null);
 
         this.customFont = getFont("KarmaFuture.ttf");
+
+        this.buttons = new Buttons("PLAY");
+        this.buttons.addActionListener(e -> startGame());
+        this.add(buttons);
+
 
         this.stopwatchTimer = new Timer(1000, this); //making the stopwatch a Timer (built-in java) object.
         this.playedSeconds = 0;
@@ -147,6 +156,7 @@ public class GamePanel extends JPanel implements ActionListener {
         super.paintComponent(graphics);
 
         if (running) {
+            drawTopPanel(graphics);
             drawBackgroundImage(graphics);
             drawFood(graphics);
             drawSnake(graphics);
@@ -281,14 +291,22 @@ public class GamePanel extends JPanel implements ActionListener {
     public void drawScore (Graphics graphics){
         graphics.setColor(new Color(14, 102, 0));
         graphics.setFont(customFont.deriveFont(Font.BOLD, 25));
-        graphics.drawString("Score: " + scoreCounter, 15, graphics.getFont().getSize());
+        graphics.drawString("Score: " + scoreCounter,10,graphics.getFont().getSize() + 70);
     }
 
-    public void drawBackgroundImage (Graphics graphics){
-        graphics.drawImage(backgroundImage.getImage(), 0, 0, PANEL_WIDTH, PANEL_HEIGHT, this);
+    public void drawBackgroundImage(Graphics graphics){
+        graphics.drawImage(backgroundImage.getImage(), 0, TOP_PANEL_HEIGHT, PANEL_WIDTH, PANEL_HEIGHT, this);
     }
 
-    public void startGame () {
+    public void startGame() {
+
+        buttons.setVisible(true);
+
+        for (int i = 0; i< bodyUnits; i++){
+            x[i] = 0;
+            y[i] = TOP_PANEL_HEIGHT;
+        }
+
         newFood();
         running = true;
         timer = new Timer(TIMER_DELAY, this);
@@ -299,17 +317,17 @@ public class GamePanel extends JPanel implements ActionListener {
 
     public void newFood () {
         foodX = random.nextInt(PANEL_WIDTH / UNIT) * UNIT; //will it ever appear at corner??
-        foodY = random.nextInt(PANEL_HEIGHT / UNIT) * UNIT;
+        foodY = random.nextInt(PANEL_HEIGHT / UNIT) * UNIT + TOP_PANEL_HEIGHT;
     }
 
     public void newInvincibleFood() {
         InvincibleFoodX = random.nextInt(PANEL_WIDTH / UNIT) * UNIT;
-        InvincibleFoodY = random.nextInt(PANEL_HEIGHT / UNIT) * UNIT;
+        InvincibleFoodY = random.nextInt(PANEL_HEIGHT / UNIT) * UNIT + TOP_PANEL_HEIGHT;
     }
 
     public void newToxicFood() {
         ToxicfoodX = random.nextInt(PANEL_WIDTH / UNIT) * UNIT;
-        ToxicfoodY = random.nextInt(PANEL_HEIGHT / UNIT) * UNIT;
+        ToxicfoodY = random.nextInt(PANEL_HEIGHT / UNIT) * UNIT + TOP_PANEL_HEIGHT;
     }
 
     public void movement () {
@@ -411,12 +429,13 @@ public class GamePanel extends JPanel implements ActionListener {
     public void snakeWallCollision() {
         // Snake Collides With Wall/ Panel
         /* if the snake head (x) is smaller than the left panel(0) or bigger than the right panel(500)
-           or the snake head (y) is smaller than the upper panel(0) or bigger than the lower panel(500)
+           or the snake head (y) is smaller than the upper panel(70) or bigger than the lower panel(570)
            game ends.
-           here 0 may look like a magic number but it's not as we all know width and height size is 500
-           it means the starting point is 0. So it the panel size goes from 0 --> 500; both side.
+           here 0 may look like a magic number but it's not as we all know width and height size is 570
+           it means the starting point is 0. So it the panel size goes from 70 --> 570; both side.
            */
-        if ((x[0] < 0 || x[0] >= PANEL_WIDTH) || (y[0] < 0 || y[0] >= PANEL_HEIGHT)) {
+
+        if ((x[0] < 0 || x[0] >= PANEL_WIDTH) || (y[0] < TOP_PANEL_HEIGHT || y[0] >= PANEL_HEIGHT + TOP_PANEL_HEIGHT)){
             gameOver = true;
             running = false;
             Audio clicked = new Audio("src/SnakeGameOver.wav");
@@ -486,6 +505,7 @@ public class GamePanel extends JPanel implements ActionListener {
         }
     }
 
+
     // Game restarts when you press "R" in game over screen
     public void restartGame () {
         //Restart from a new position
@@ -497,7 +517,7 @@ public class GamePanel extends JPanel implements ActionListener {
 
         bodyUnits = 6;
         scoreCounter = 0;
-        randomNumber = 0;
+        randomNumber = random.nextInt(10);
 
         playedSeconds = 0;
         tenthOfSecond = 0;
@@ -510,5 +530,10 @@ public class GamePanel extends JPanel implements ActionListener {
 
     }
 
+    private void drawTopPanel(Graphics graphics){
+        graphics.setColor(Color.WHITE);
+        graphics.fillRect(0,0,PANEL_WIDTH, TOP_PANEL_HEIGHT);
+        graphics.drawImage(logo.getImage(), 5,0,TOP_PANEL_HEIGHT, TOP_PANEL_HEIGHT, null);
+    }
 }
 

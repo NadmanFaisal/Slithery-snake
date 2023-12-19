@@ -1,4 +1,5 @@
 import javax.swing.*;
+import java.awt.*;
 
 public class GameFrame {
     private JFrame frame;
@@ -7,7 +8,8 @@ public class GameFrame {
     private Timer stopwatchTimer;
     private JLabel stopwatchLabel;
     private JPanel stopwatchPanel;
-    private int playedSeconds;  
+    private int playedSeconds;
+    private ImageIcon imageIcon;
 
     public GameFrame() {
         initialize();

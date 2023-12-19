@@ -19,7 +19,7 @@ public class GameOverPanel extends JPanel {
 
     public GameOverPanel() {
 
-        this.setPreferredSize(new Dimension(GamePanel.PANEL_WIDTH, GamePanel.PANEL_HEIGHT));
+        this.setPreferredSize(new Dimension(GamePanel.PANEL_WIDTH, GamePanel.PANEL_HEIGHT + 70));
         this.setFocusable(false);
         this.setVisible(false);
 
@@ -93,7 +93,7 @@ public class GameOverPanel extends JPanel {
     }
 
     public void drawBackgroundImage (Graphics graphics){
-        graphics.drawImage(backgroundImage.getImage(), 0, 0, GamePanel.PANEL_WIDTH, GamePanel.PANEL_HEIGHT, this);
+        graphics.drawImage(backgroundImage.getImage(), 0, 0, GamePanel.PANEL_WIDTH, GamePanel.PANEL_HEIGHT + 70, this);
     }
 
 }
