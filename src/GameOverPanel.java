@@ -41,7 +41,7 @@ public class GameOverPanel extends JPanel {
                 GameLauncher.restart();
             }
         };
-    restartButton.addActionListener(actionListener);    
+        restartButton.addActionListener(actionListener);
 
         this.add(Box.createVerticalStrut(700));
         this.add(restartButton);

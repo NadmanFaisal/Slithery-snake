@@ -13,6 +13,7 @@ public class GameFrame {
         initialize();
     }
     public void initialize() {
+        ImageIcon snakeLogo = new ImageIcon("Snake_Logo.png");
         this.frame = new JFrame();
         this.frame.setTitle("Slithery Snake");
 
@@ -34,6 +35,8 @@ public class GameFrame {
         this.stopwatchLabel.setText("Time: 0 seconds"); 
         this.stopwatchPanel.add(stopwatchLabel);
         this.frame.add(stopwatchPanel);
+        this.frame.setIconImage(snakeLogo.getImage());
+
     }
 
     public GamePanel getGamePanel(){ //NEW
