@@ -55,9 +55,8 @@ public class GamePanel extends JPanel implements ActionListener {
     private int tenthOfSecond;
     private ImageIcon backgroundImage;
     private final Font customFont;
+    private GameButtons startButton;
     private boolean invincible = false;
-
-
 
     public GamePanel() {
         this.bodyUnits = 6;
@@ -74,7 +73,9 @@ public class GamePanel extends JPanel implements ActionListener {
         this.setFocusable(true);
         this.addKeyListener(new MyKeyAdapter());
 
+
         this.backgroundImage = new ImageIcon("src/Images/gamepanel-bg.png");
+        this.startButton = new GameButtons("Start");
         this.snakeRightT = new ImageIcon("src/Images/Snake Right.png");
         this.snakeLeftT = new ImageIcon("src/Images/Snake Left.png");
         this.snakeUpT = new ImageIcon("src/Images/Snake Up.png");
@@ -92,14 +93,24 @@ public class GamePanel extends JPanel implements ActionListener {
         this.customFont = getFont("KarmaFuture.ttf");
 
         this.stopwatchTimer = new Timer(1000, this); //making the stopwatch a Timer (built-in java) object.
-        this.playedSeconds = 0; 
-        this.tenthOfSecond = 0; 
+        this.playedSeconds = 0;
+        this.tenthOfSecond = 0;
         startStopwatch(); //calling method to start the stopwatch when player starts playing
-        startGame();
+
+        startButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                startGame();
+                startButton.setVisible(false);
+            }
+        });
+        startButton.setBounds(250,250,120,70);
+        this.add(startButton);
+
     }
 
     public void startStopwatch(){ //start stopwatch
-        
+
         tenthOfSecond = tenthOfSecond + 1;
         if(tenthOfSecond == 10){
             tenthOfSecond = 0;
@@ -117,15 +128,18 @@ public class GamePanel extends JPanel implements ActionListener {
     @Override
     public void paintComponent(Graphics graphics) {
         super.paintComponent(graphics);
-        if (gameOver) {
-            showGameOverScreen(graphics);
-        }
-        if (running) {
+        if(!running){
+            //startGameMenu.drawStartMenu(graphics);
+        }else{
             drawBackgroundImage(graphics);
             drawFood(graphics);
             drawSnake(graphics);
             drawScore(graphics);
             drawStopwatchLabel(graphics);
+
+        }
+        if (gameOver) {
+            showGameOverScreen(graphics);
 
         }
     }
@@ -256,7 +270,7 @@ public class GamePanel extends JPanel implements ActionListener {
         running = true;
         timer = new Timer(TIMER_DELAY, this);
         timer.start();
-        startStopwatch(); 
+        startStopwatch();
 
     }
 
@@ -355,22 +369,20 @@ public class GamePanel extends JPanel implements ActionListener {
 
 
     private void snakeBodyCollision() {
-
         // self collision
         for (int i = bodyUnits; i > 0; i--) {
             if ((x[0] == x[i]) && (y[0] == y[i])) {
-              gameOver = true;
-              running = false;
+                gameOver = true;
+                running = false;
                 Audio clicked = new Audio("src/SnakeGameOver.wav");
                 clicked.audio.start();
-              timer.stop();
-              break;
-            }   
-          }
+                timer.stop();
+                break;
+            }
 
-
-
+        }
     }
+
 
     public void snakeWallCollision() {
         // Snake Collides With Wall/ Panel
@@ -454,7 +466,7 @@ public class GamePanel extends JPanel implements ActionListener {
         graphics.drawString("Press R to Restart", PANEL_WIDTH / 2 - 130, PANEL_HEIGHT / 2 + 70);
     }
 
-   
+
     // Game restarts when you press "R" in game over screen
     public void restartGame() {
         //Restart from a new position
@@ -467,14 +479,16 @@ public class GamePanel extends JPanel implements ActionListener {
         bodyUnits = 6;
         scoreCounter = 0;
         randomNumber = 0;
+
         playedSeconds = 0;
         tenthOfSecond = 0;
-        
+
         direction = "Right";
         running = false;
         gameOver = false;
 
         startGame();
-        
+
     }
 }
+
