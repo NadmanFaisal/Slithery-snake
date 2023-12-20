@@ -59,7 +59,7 @@ public class GamePanel extends JPanel implements ActionListener {
     private final Font customFont;
     private Buttons buttons;
 
-    private GameButtons startButton;
+    private StartGameButton startButton;
     private boolean invincible = false;
 
     public GamePanel() {
@@ -80,10 +80,10 @@ public class GamePanel extends JPanel implements ActionListener {
         this.addKeyListener(new MyKeyAdapter());
         this.gameOverPanel = new GameOverPanel();
         this.add(gameOverPanel);
+        this.startButton = new StartGameButton(this,PANEL_WIDTH,PANEL_HEIGHT);
 
 
         this.backgroundImage = new ImageIcon("src/Images/gamepanel-bg.png");
-        this.startButton = new GameButtons("Start");
         this.snakeRightT = new ImageIcon("src/Images/Snake Right.png");
         this.snakeLeftT = new ImageIcon("src/Images/Snake Left.png");
         this.snakeUpT = new ImageIcon("src/Images/Snake Up.png");
@@ -109,16 +109,9 @@ public class GamePanel extends JPanel implements ActionListener {
         this.playedSeconds = 0;
         this.tenthOfSecond = 0;
         startStopwatch(); //calling method to start the stopwatch when player starts playing
+        this.addMouseListener(startButton);
+        this.addMouseMotionListener(startButton);
 
-        startButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                startGame();
-                startButton.setVisible(false);
-            }
-        });
-        startButton.setBounds(250,250,120,70);
-        this.add(startButton);
 
     }
 
@@ -155,7 +148,10 @@ public class GamePanel extends JPanel implements ActionListener {
     public void paintComponent(Graphics graphics) {
         super.paintComponent(graphics);
 
-        if (running) {
+        if (!running){
+            startButton.drawStartMenu(graphics);
+
+        }else{
             drawTopPanel(graphics);
             drawBackgroundImage(graphics);
             drawFood(graphics);
