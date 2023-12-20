@@ -80,7 +80,7 @@ public class GamePanel extends JPanel implements ActionListener {
         this.addKeyListener(new MyKeyAdapter());
         this.gameOverPanel = new GameOverPanel();
         this.add(gameOverPanel);
-        this.startButton = new StartGameButton(this,PANEL_WIDTH,PANEL_HEIGHT);
+        this.startButton = new StartGameButton(this,PANEL_WIDTH,PANEL_HEIGHT + TOP_PANEL_HEIGHT);
 
 
         this.backgroundImage = new ImageIcon("src/Images/gamepanel-bg.png");
