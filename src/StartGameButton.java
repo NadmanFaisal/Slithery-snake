@@ -24,7 +24,7 @@ public class StartGameButton extends MouseAdapter {
         this.gamePanel = gamePanel;
         this.panelWidth = panelWidth;
         this.panelHeight = panelHeight;
-        this.backgroundImage = new ImageIcon("src/Images/gamepanel-bg.png");
+        this.backgroundImage = new ImageIcon("src/Images/Background.jpg");
         this.font = getFont("KarmaFuture.ttf");
         designButton();
     }
@@ -63,7 +63,7 @@ public class StartGameButton extends MouseAdapter {
 
         // Adding start button text and positioning it inside the button
         int textX = (int) ((playButton.getX() + playButton.getWidth()) / 2);
-        int textY = (int) (playButton.getY() + (playButton.getHeight() / 2) + 10);
+        int textY = (int) (playButton.getY() + (playButton.getHeight() / 2) + 15);
         graphics.setColor(new Color(255, 255, 240));
         graphics.drawString(buttonText, textX, textY);
     }
