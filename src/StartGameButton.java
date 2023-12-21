@@ -24,7 +24,7 @@ public class StartGameButton extends MouseAdapter {
         this.gamePanel = gamePanel;
         this.panelWidth = panelWidth;
         this.panelHeight = panelHeight;
-        this.backgroundImage = new ImageIcon("src/Images/Background.jpg");
+        this.backgroundImage = new ImageIcon("src/Images/Background.jpeg");
         this.font = getFont("KarmaFuture.ttf");
         designButton();
     }
