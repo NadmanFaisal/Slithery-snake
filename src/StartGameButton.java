@@ -70,9 +70,11 @@ public class StartGameButton extends MouseAdapter {
         @Override
         public void mouseClicked(MouseEvent mouseEvent) {
             Point p = mouseEvent.getPoint(); // gets the coordinate of the mouse event/click
-            if (playButton.contains(p)) { // Checks if the mouse click occurred within the playButton area.
-                active = true;
-                gamePanel.startGame();
+            if (!active){
+                if (playButton.contains(p)) { // Checks if the mouse click occurred within the playButton area.
+                    active = true;
+                    gamePanel.startGame();
+                }
             }
         }
         // Detects mouse movements within the play button.
