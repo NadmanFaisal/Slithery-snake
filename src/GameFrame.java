@@ -4,7 +4,6 @@ import java.awt.*;
 public class GameFrame {
     private JFrame frame;
     private GamePanel gamePanel; //NEW
-    private GameOverPanel gameOverPanel; //NEW
     private Timer stopwatchTimer;
     private JLabel stopwatchLabel;
     private JPanel stopwatchPanel;
@@ -43,10 +42,6 @@ public class GameFrame {
 
     public GamePanel getGamePanel(){ //NEW
         return gamePanel; 
-    }
-
-     public GameOverPanel getGameOverPanel(){ //NEW
-        return gameOverPanel; 
     }
 
     public void deleteFrame(){

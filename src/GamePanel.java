@@ -36,7 +36,7 @@ public class GamePanel extends JPanel implements ActionListener {
     private int randomNumber2;
     private int scoreCounter;
     private boolean gameOver = false;
-    private GameOverPanel gameOverPanel;
+    private GameOverScreen gameOverScreen;
 
     private ImageIcon snakeRightT;
     private ImageIcon snakeLeftT;
@@ -78,8 +78,9 @@ public class GamePanel extends JPanel implements ActionListener {
         this.setFocusable(true);
         this.setLayout(null);
         this.addKeyListener(new MyKeyAdapter());
-        this.gameOverPanel = new GameOverPanel();
-        this.add(gameOverPanel);
+        this.gameOverScreen = new GameOverScreen(this, PANEL_WIDTH, PANEL_HEIGHT);
+        this.addMouseListener(gameOverScreen);
+        this.addMouseMotionListener(gameOverScreen);
 
 
         this.backgroundImage = new ImageIcon("src/Images/gamepanel-bg.png");
@@ -165,8 +166,7 @@ public class GamePanel extends JPanel implements ActionListener {
 
         }
         if (gameOver) {
-            gameOverPanel.setVisible(true);
-            gameOverPanel.showGameOverScreen(graphics);
+            gameOverScreen.showGameOverScreen(graphics);
 
         }
     }
@@ -177,8 +177,7 @@ public class GamePanel extends JPanel implements ActionListener {
             graphics.drawString("Time: "+ playedSeconds + "." + tenthOfSecond + " seconds", PANEL_WIDTH -250, 25 );
         }
         if (gameOver) {
-            gameOverPanel.setVisible(true);
-            gameOverPanel.showGameOverScreen(graphics);
+            gameOverScreen.showGameOverScreen(graphics);
         }
     }
     private ImageIcon getHead() {
@@ -444,8 +443,8 @@ public class GamePanel extends JPanel implements ActionListener {
         }
 
         if(gameOver) {
-            this.gameOverPanel.setScoreCounter(scoreCounter);
-            this.gameOverPanel.setTime(playedSeconds,tenthOfSecond);
+            this.gameOverScreen.setScoreCounter(scoreCounter);
+            this.gameOverScreen.setTime(playedSeconds,tenthOfSecond);
 
         }
 
@@ -494,11 +493,6 @@ public class GamePanel extends JPanel implements ActionListener {
                 case (KeyEvent.VK_DOWN) -> {
                     if (!direction.equals("Up")) {
                         direction = "Down";
-                    }
-                }
-                case (KeyEvent.VK_R) -> {
-                    if (gameOver) {
-                        restartGame();
                     }
                 }
             }
