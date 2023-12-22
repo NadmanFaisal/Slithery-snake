@@ -31,19 +31,21 @@ public class StartGameButton extends MouseAdapter {
 
     public void designButton() {
         // Position of the button on the screen
-        int buttonWidth = 200;
-        int buttonHeight = 100;
+        int buttonWidth = 110;
+        int buttonHeight = 60;
         int xCor = panelWidth/2 - buttonWidth/2;
-        int yCor = (panelHeight/2 - buttonHeight/2) + 50;
+        int yCor = (panelHeight/2 - buttonHeight/2) + 110;
 
         playButton = new RoundRectangle2D.Double(xCor, yCor, buttonWidth, buttonHeight, 50, 30);
     }
 
     // This method draws the button and adds the text inside
-    public void drawStartMenu(Graphics graphics) {
+    public void drawStartMenu(Graphics graphics, int size, ImageIcon logo) {
         Graphics2D graphics2D = (Graphics2D) graphics;
         graphics2D.drawImage(backgroundImage.getImage(), 0, 0, panelWidth, panelHeight, null);
-        graphics2D.setFont(font.deriveFont(Font.BOLD, 50));
+        graphics.drawImage(logo.getImage(), 125,125,size, size, null);
+
+        graphics2D.setFont(font.deriveFont(Font.BOLD, 30));
 
 
         // Sets the color of the button. The button changes to dark green if the mouse is hovering over it.
@@ -62,10 +64,11 @@ public class StartGameButton extends MouseAdapter {
 
 
         // Adding start button text and positioning it inside the button
-        int textX = (int) ((playButton.getX() + playButton.getWidth()) / 2);
+        FontMetrics metrics = graphics.getFontMetrics();
+        int textX = (int) (playButton.getX() + ((playButton.getWidth() - metrics.stringWidth(buttonText))/2));
         int textY = (int) (playButton.getY() + (playButton.getHeight() / 2) + 15);
         graphics.setColor(new Color(255, 255, 240));
-        graphics.drawString(buttonText, textX, textY);
+        graphics.drawString(buttonText, textX, textY - 5);
     }
 
     // Detects if a mouse click occurs within the coordinates of the play button.

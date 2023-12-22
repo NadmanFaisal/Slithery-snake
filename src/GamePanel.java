@@ -149,7 +149,7 @@ public class GamePanel extends JPanel implements ActionListener {
         super.paintComponent(graphics);
 
         if (!running){
-            startButton.drawStartMenu(graphics);
+            startButton.drawStartMenu(graphics, 250, logo);
 
         }else{
             drawTopPanel(graphics);
