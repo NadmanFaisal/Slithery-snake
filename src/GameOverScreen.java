@@ -35,10 +35,10 @@ public class GameOverScreen extends MouseAdapter {
     public void createButton(){
 
         // Position of the button on the screen
-        int buttonWidth = 200;
-        int buttonHeight = 100;
+        int buttonWidth = 110;
+        int buttonHeight = 60;
         int xCor = panelWidth/2 - buttonWidth/2;
-        int yCor = (panelHeight/2 - buttonHeight/2) + 100;
+        int yCor = (panelHeight/2 - buttonHeight/2) + 110;
 
         restartButton = new RoundRectangle2D.Double(xCor, yCor, buttonWidth, buttonHeight, 50, 30);
     }
@@ -64,9 +64,39 @@ public class GameOverScreen extends MouseAdapter {
 
     public void showGameOverScreen(Graphics graphics) {
 
+        drawBackground(graphics);
+        drawGameResult(graphics);
+        drawButton(graphics);
+        drawTextInsideButton(graphics);
+
+        active = true;
+
+    }
+
+    public void drawBackground(Graphics graphics){
+        graphics.drawImage(backgroundImage.getImage(), 0, 0, panelWidth, panelHeight, null);
+    }
+
+    public void drawGameResult(Graphics graphics){
+        graphics.setFont(customFont.deriveFont(Font.BOLD, 30));
+        graphics.setColor(new Color(14, 102, 0));
+        FontMetrics metrics = graphics.getFontMetrics();
+        int gameOverWidth = metrics.stringWidth("Game Over!");
+        int scoreWidth = metrics.stringWidth("Score: " + scoreCounter);
+        int timeWidth = metrics.stringWidth("Time played: " + playedSeconds + "." + tenthOfSecond + "seconds");
+
+        int xGameOver = (GamePanel.PANEL_WIDTH - gameOverWidth) / 2;
+        int xScore = (GamePanel.PANEL_WIDTH - scoreWidth) / 2;
+        int xTime = (GamePanel.PANEL_WIDTH - timeWidth) / 2;
+        int y = GamePanel.PANEL_HEIGHT / 2 + 20;
+
+        graphics.drawString("Game Over!", xGameOver, y - 30);
+        graphics.drawString("Score: " + scoreCounter, xScore, y + 10); // Adjust Y position for spacing
+        graphics.drawString("Time played: " + playedSeconds + "." + tenthOfSecond + " seconds", xTime, y + 50);
+    }
+
+    public void drawButton(Graphics graphics){
         Graphics2D graphics2D = (Graphics2D) graphics;
-        graphics2D.drawImage(backgroundImage.getImage(), 0, 0, panelWidth, panelHeight, null);
-        graphics2D.setFont(customFont.deriveFont(Font.BOLD, 25));
 
         // Sets the color of the button. The button changes to dark green if the mouse is hovering over it.
         if (btnHighlight) {
@@ -82,28 +112,16 @@ public class GameOverScreen extends MouseAdapter {
         graphics2D.setStroke(new BasicStroke(borderThickness));
         graphics2D.draw(restartButton);
 
+    }
+
+    public void drawTextInsideButton(Graphics graphics){
+        graphics.setFont(customFont.deriveFont(Font.BOLD, 23));
+        graphics.setColor(new Color(255, 255, 240));
+
         // Adding start button text and positioning it inside the button
-        int textX = (int) ((restartButton.getX() + restartButton.getWidth()) / 2);
-        int textY = (int) (restartButton.getY() + (restartButton.getHeight() / 2));
-        graphics.setColor(new Color(14, 102, 0));
+        int textX = (int) (restartButton.getX() + 5);
+        int textY = (int) (restartButton.getY() + 35);
         graphics.drawString(buttonText, textX, textY);
-
-        FontMetrics metrics = graphics.getFontMetrics();
-        int gameOverWidth = metrics.stringWidth("Game Over!");
-        int scoreWidth = metrics.stringWidth("Score: " + scoreCounter);
-        int timeWidth = metrics.stringWidth("Time played: " + playedSeconds + "." + tenthOfSecond + "seconds");
-
-        int xGameOver = (GamePanel.PANEL_WIDTH - gameOverWidth) / 2;
-        int xScore = (GamePanel.PANEL_WIDTH - scoreWidth) / 2;
-        int xTime = (GamePanel.PANEL_WIDTH - timeWidth) / 2;
-        int y = GamePanel.PANEL_HEIGHT / 2;
-
-        graphics.drawString("Game Over!", xGameOver, y - 30);
-        graphics.drawString("Score: " + scoreCounter, xScore, y + 10); // Adjust Y position for spacing
-        graphics.drawString("Time played: " + playedSeconds + "." + tenthOfSecond + " seconds", xTime, y + 50);
-
-        active = true;
-
     }
 
     // Detects if a mouse click occurs within the coordinates of the play button.

@@ -78,7 +78,7 @@ public class GamePanel extends JPanel implements ActionListener {
         this.setFocusable(true);
         this.setLayout(null);
         this.addKeyListener(new MyKeyAdapter());
-        this.gameOverScreen = new GameOverScreen(this, PANEL_WIDTH, PANEL_HEIGHT);
+        this.gameOverScreen = new GameOverScreen(this, PANEL_WIDTH, PANEL_HEIGHT + TOP_PANEL_HEIGHT);
         this.addMouseListener(gameOverScreen);
         this.addMouseMotionListener(gameOverScreen);
 
