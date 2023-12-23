@@ -1,16 +1,13 @@
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
+import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Random;
 
-public class GamePanel extends JPanel implements ActionListener {
+public class GamePanel extends JPanel implements ActionListener{
 
     public static final int PANEL_WIDTH = 500;
     public static final int PANEL_HEIGHT = 500;
@@ -80,7 +77,7 @@ public class GamePanel extends JPanel implements ActionListener {
         this.addKeyListener(new MyKeyAdapter());
         this.gameOverPanel = new GameOverPanel();
         this.add(gameOverPanel);
-        this.startButton = new StartGameButton(this,PANEL_WIDTH,PANEL_HEIGHT + TOP_PANEL_HEIGHT);
+        this.startButton = new StartGameButton(PANEL_WIDTH,PANEL_HEIGHT + TOP_PANEL_HEIGHT);
 
 
         this.backgroundImage = new ImageIcon("src/Images/gamepanel-bg.png");
@@ -112,7 +109,8 @@ public class GamePanel extends JPanel implements ActionListener {
         this.addMouseListener(startButton);
         this.addMouseMotionListener(startButton);
 
-
+        timer = new Timer(TIMER_DELAY, this);
+        timer.start();
     }
 
     public int getScoreCounter() {
@@ -305,6 +303,9 @@ public class GamePanel extends JPanel implements ActionListener {
 
         newFood();
         running = true;
+        if(timer != null && timer.isRunning()) {
+            timer.stop();
+        }
         timer = new Timer(TIMER_DELAY, this);
         timer.start();
         startStopwatch();
@@ -419,6 +420,11 @@ public class GamePanel extends JPanel implements ActionListener {
             }
 
         }
+
+        if(gameOver) {
+            this.gameOverPanel.setScoreCounter(scoreCounter);
+            this.gameOverPanel.setTime(playedSeconds,tenthOfSecond);
+        }
     }
 
 
@@ -457,6 +463,14 @@ public class GamePanel extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e){
+        if (startButton.isRepaint()) {
+            repaint();
+            startButton.setRepaint(false);
+        }
+        if (!running && startButton.isActive()) {
+            startGame();
+            startButton.setActive(false);
+        }
         if (running) {
             movement();
             checkFood();

@@ -8,7 +8,8 @@ import java.net.URL;
 
 
 public class StartGameButton extends MouseAdapter {
-    public boolean active;
+    private boolean active;
+    private boolean repaint;
     private int panelWidth;
     private int panelHeight;
     private ImageIcon backgroundImage;
@@ -18,15 +19,15 @@ public class StartGameButton extends MouseAdapter {
     private String buttonText = "Start";
     private boolean btnHighlight = false; // Boolean to check if mouse is hovering on button
     private Font font;
-    private GamePanel gamePanel;
 
-    public StartGameButton(GamePanel gamePanel, int panelWidth, int panelHeight) {
-        this.gamePanel = gamePanel;
+    public StartGameButton(int panelWidth, int panelHeight) {
+        this.active = false;
         this.panelWidth = panelWidth;
         this.panelHeight = panelHeight;
         this.backgroundImage = new ImageIcon("src/Images/Background.jpeg");
         this.font = getFont("KarmaFuture.ttf");
         designButton();
+        this.repaint = false;
     }
 
     public void designButton() {
@@ -78,7 +79,6 @@ public class StartGameButton extends MouseAdapter {
         if (!active) {
             if (playButton.contains(p)) { // Checks if the mouse click occurred within the playButton area.
                 active = true;
-                gamePanel.startGame();
             }
         }
     }
@@ -92,7 +92,7 @@ public class StartGameButton extends MouseAdapter {
         } else {
             btnHighlight = false;
         }
-        gamePanel.repaint();
+        repaint = true;
     }
 
     public Font getFont(String fontName) {
@@ -103,6 +103,21 @@ public class StartGameButton extends MouseAdapter {
         } catch (IOException | FontFormatException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public boolean isRepaint() {
+        return repaint;
+    }
+
+    public void setRepaint(boolean repaint) {
+        this.repaint = repaint;
+    }
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 }
 
