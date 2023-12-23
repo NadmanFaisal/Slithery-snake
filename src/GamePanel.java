@@ -84,9 +84,7 @@ public class GamePanel extends JPanel implements ActionListener{
         this.addMouseListener(startButton);
         this.addMouseMotionListener(startButton);
 
-
-
-        this.backgroundImage = new ImageIcon("src/Images/gamepanel-bg.png");
+        this.backgroundImage = new ImageIcon("src/Images/Background.jpeg");
         this.snakeRightT = new ImageIcon("src/Images/Snake Right.png");
         this.snakeLeftT = new ImageIcon("src/Images/Snake Left.png");
         this.snakeUpT = new ImageIcon("src/Images/Snake Up.png");
@@ -106,7 +104,6 @@ public class GamePanel extends JPanel implements ActionListener{
         this.buttons = new Buttons("PLAY");
         this.buttons.addActionListener(e -> startGame());
         this.add(buttons);
-
 
         this.stopwatchTimer = new Timer(1000, this); //making the stopwatch a Timer (built-in java) object.
         this.playedSeconds = 0;
