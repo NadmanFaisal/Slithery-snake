@@ -114,10 +114,8 @@ public class GameOverScreen extends MouseAdapter {
     @Override
     public void mouseClicked(MouseEvent mouseEvent) {
         Point p = mouseEvent.getPoint(); // gets the coordinate of the mouse event/click
-        if (!active) {
-            if (restartButton.contains(p)) { // Checks if the mouse click occurred within the playButton area.
-                active = true;
-            }
+        if (!active && restartButton.contains(p)) {
+            active = true;
         }
     }
 

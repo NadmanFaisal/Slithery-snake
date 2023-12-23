@@ -276,6 +276,7 @@ public class GamePanel extends JPanel implements ActionListener{
     }
 
     public void startGame() {
+        gameOverScreen.setActive(false);//WHY DO WE I HAVE TO?? MAYBE BUG
 
         buttons.setVisible(true);
 
