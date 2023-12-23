@@ -31,8 +31,8 @@ public class GamePanel extends JPanel implements ActionListener{
     private int randomNumber; //better name
     private int randomNumber2;
     private int scoreCounter;
-    private boolean gameOver = false;
-    private GameOverPanel gameOverPanel;
+    private boolean gameOver;
+    private GameOverScreen gameOverScreen;
 
     private ImageIcon snakeRightT;
     private ImageIcon snakeLeftT;
@@ -65,6 +65,7 @@ public class GamePanel extends JPanel implements ActionListener{
         this.moveCounter = 0;
         this.direction = "Right";
         this.running = false;
+        this.gameOver = false;
         this.random = new Random();
         this.randomNumber = random.nextInt(10);
         this.randomNumber2 = random.nextInt(10);
@@ -74,9 +75,15 @@ public class GamePanel extends JPanel implements ActionListener{
         this.setFocusable(true);
         this.setLayout(null);
         this.addKeyListener(new MyKeyAdapter());
-        this.gameOverPanel = new GameOverPanel();
-        this.add(gameOverPanel);
+
+        this.gameOverScreen = new GameOverScreen(PANEL_WIDTH, PANEL_HEIGHT + TOP_PANEL_HEIGHT);
+        this.addMouseListener(gameOverScreen);
+        this.addMouseMotionListener(gameOverScreen);
+
         this.startButton = new StartScreen(PANEL_WIDTH,PANEL_HEIGHT + TOP_PANEL_HEIGHT);
+        this.addMouseListener(startButton);
+        this.addMouseMotionListener(startButton);
+
 
 
         this.backgroundImage = new ImageIcon("src/Images/gamepanel-bg.png");
@@ -105,27 +112,10 @@ public class GamePanel extends JPanel implements ActionListener{
         this.playedSeconds = 0;
         this.tenthOfSecond = 0;
         startStopwatch(); //calling method to start the stopwatch when player starts playing
-        this.addMouseListener(startButton);
-        this.addMouseMotionListener(startButton);
 
         timer = new Timer(TIMER_DELAY, this);
         timer.start();
     }
-
-    public int getScoreCounter() {
-        return this.scoreCounter;
-    }
-
-    public int getPlayedSeconds() {
-
-        return this.playedSeconds;
-    }
-
-    public int getTenthOfSecond() {
-        return this.tenthOfSecond;
-    }
-
-
 
     public void startStopwatch(){ //start stopwatch
         tenthOfSecond = tenthOfSecond + 1;
@@ -158,9 +148,7 @@ public class GamePanel extends JPanel implements ActionListener{
 
         }
         if (gameOver) {
-            gameOverPanel.setVisible(true);
-            gameOverPanel.showGameOverScreen(graphics);
-
+            gameOverScreen.showGameOverScreen(graphics, scoreCounter, playedSeconds, tenthOfSecond);
         }
     }
     public void drawStopwatchLabel (Graphics graphics) {
@@ -169,12 +157,8 @@ public class GamePanel extends JPanel implements ActionListener{
             graphics.setFont(customFont.deriveFont(Font.BOLD, 25));
             graphics.drawString("Time: "+ playedSeconds + "." + tenthOfSecond + " seconds", PANEL_WIDTH -250, 25 );
         }
-        if (gameOver) {
-            gameOverPanel.setVisible(true);
-            gameOverPanel.showGameOverScreen(graphics);
-        }
     }
-    private ImageIcon getHead() {
+    private ImageIcon getSnakeHead() {
         ImageIcon head = null;
 
         switch (direction) {
@@ -213,7 +197,7 @@ public class GamePanel extends JPanel implements ActionListener{
 
 
     public void drawSnake (Graphics graphics){
-        ImageIcon head = getHead();
+        ImageIcon head = getSnakeHead();
         //snake
         switch (direction) {
             case "Right", "Down" -> {
@@ -292,6 +276,7 @@ public class GamePanel extends JPanel implements ActionListener{
     }
 
     public void startGame() {
+        gameOverScreen.setActive(false);//WHY DO WE I HAVE TO?? MAYBE BUG
 
         buttons.setVisible(true);
 
@@ -414,16 +399,11 @@ public class GamePanel extends JPanel implements ActionListener{
                 running = false;
                 Audio clicked = new Audio("src/SnakeGameOver.wav");
                 clicked.audio.start();
-                timer.stop();
                 break;
             }
 
         }
 
-        if(gameOver) {
-            this.gameOverPanel.setScoreCounter(scoreCounter);
-            this.gameOverPanel.setTime(playedSeconds,tenthOfSecond);
-        }
     }
 
 
@@ -441,13 +421,6 @@ public class GamePanel extends JPanel implements ActionListener{
             running = false;
             Audio clicked = new Audio("src/SnakeGameOver.wav");
             clicked.audio.start();
-            timer.stop();
-        }
-
-        if(gameOver) {
-            this.gameOverPanel.setScoreCounter(scoreCounter);
-            this.gameOverPanel.setTime(playedSeconds,tenthOfSecond);
-
         }
 
     }
@@ -462,13 +435,24 @@ public class GamePanel extends JPanel implements ActionListener{
 
     @Override
     public void actionPerformed(ActionEvent e){
-        if (startButton.isRepaint()) {
-            repaint();
-            startButton.setRepaint(false);
-        }
-        if (!running && startButton.isActive()) {
-            startGame();
-            startButton.setActive(false);
+        if(!running && !gameOver) {
+            if (startButton.isRepaint()) {
+                repaint();
+                startButton.setRepaint(false);
+            }
+            if (startButton.isActive()) {
+                startGame();
+                startButton.setActive(false);
+            }
+        } else if (gameOver) {
+            if (gameOverScreen.isRepaint()) {
+                repaint();
+                gameOverScreen.setRepaint(false);
+            }
+            if (gameOverScreen.isActive()) {
+                restartGame();
+                gameOverScreen.setActive(false);
+            }
         }
         if (running) {
             movement();
@@ -503,11 +487,6 @@ public class GamePanel extends JPanel implements ActionListener{
                 case (KeyEvent.VK_DOWN) -> {
                     if (!direction.equals("Up")) {
                         direction = "Down";
-                    }
-                }
-                case (KeyEvent.VK_R) -> {
-                    if (gameOver) {
-                        restartGame();
                     }
                 }
             }

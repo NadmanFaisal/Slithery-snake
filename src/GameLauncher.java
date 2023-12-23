@@ -12,9 +12,4 @@ public class GameLauncher {
             }
         });
     }
-
-    public static void restart(){
-        frame.deleteFrame();
-        main(null);
-    }
 }
