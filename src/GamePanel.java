@@ -20,27 +20,33 @@ public class GamePanel extends JPanel implements ActionListener{
     private Food invincibleFood;
     private Food toxicFood;
 
-    private String direction;
-    private boolean running;
     private Random random;
     private Timer timer;
+    private Timer stopwatchTimer;  //timer attribute for the stopwatch of type timer
+    private String direction;
+    private boolean running;
+    private boolean gameOver;
+    private boolean invincible;
+
     private int foodCounter;
     private int randomNumber; //better name
     private int randomNumber2;
     private int scoreCounter;
-    private boolean gameOver;
-    private GameOverScreen gameOverScreen;
-    private ImageIcon logo;
 
-    private Timer stopwatchTimer;  //timer attribute for the stopwatch of type timer
+
+
     private int playedSeconds; //attribute for the seconds that will go up as we play
     private int tenthOfSecond;
+
+    private GameOverScreen gameOverScreen;
+    private StartScreen startScreen;
+    private ImageIcon logo;
     private ImageIcon backgroundImage;
     private final Font customFont;
     private Button button;
 
-    private StartScreen startButton;
-    private boolean invincible = false;
+
+
 
     public GamePanel() {
         this.snake = new Snake(UNIT, GAME_UNITS);
@@ -48,6 +54,7 @@ public class GamePanel extends JPanel implements ActionListener{
         this.direction = "Right";
         this.running = false;
         this.gameOver = false;
+        this.invincible = false;
         this.random = new Random();
         this.randomNumber = random.nextInt(10);
         this.randomNumber2 = random.nextInt(10);
@@ -62,9 +69,9 @@ public class GamePanel extends JPanel implements ActionListener{
         this.addMouseListener(gameOverScreen);
         this.addMouseMotionListener(gameOverScreen);
 
-        this.startButton = new StartScreen(PANEL_WIDTH,PANEL_HEIGHT + TOP_PANEL_HEIGHT);
-        this.addMouseListener(startButton);
-        this.addMouseMotionListener(startButton);
+        this.startScreen = new StartScreen(PANEL_WIDTH,PANEL_HEIGHT + TOP_PANEL_HEIGHT);
+        this.addMouseListener(startScreen);
+        this.addMouseMotionListener(startScreen);
 
         this.backgroundImage = new ImageIcon("src/Images/gamepanel-bg.png");
 
@@ -104,7 +111,7 @@ public class GamePanel extends JPanel implements ActionListener{
         super.paintComponent(graphics);
 
         if (!running){
-            startButton.drawStartMenu(graphics, 250, logo);
+            startScreen.drawStartMenu(graphics, 250, logo);
 
         }else{
             drawTopPanel(graphics);
@@ -129,7 +136,7 @@ public class GamePanel extends JPanel implements ActionListener{
         if ( !gameOver ) {
             graphics.setColor(new Color(14, 102, 0));
             graphics.setFont(customFont.deriveFont(Font.BOLD, 25));
-            graphics.drawString("Time: "+ playedSeconds + "." + tenthOfSecond + " seconds", PANEL_WIDTH -250, 25 );
+            graphics.drawString("Time: "+ playedSeconds + "." + tenthOfSecond + " seconds", PANEL_WIDTH -250, graphics.getFont().getSize() + TOP_PANEL_HEIGHT);
         }
     }
 
@@ -146,7 +153,7 @@ public class GamePanel extends JPanel implements ActionListener{
     public void drawScore (Graphics graphics){
         graphics.setColor(new Color(14, 102, 0));
         graphics.setFont(customFont.deriveFont(Font.BOLD, 25));
-        graphics.drawString("Score: " + scoreCounter,10,graphics.getFont().getSize() + 70);
+        graphics.drawString("Score: " + scoreCounter,10,graphics.getFont().getSize() + TOP_PANEL_HEIGHT);
     }
 
     public void drawBackgroundImage(Graphics graphics){
@@ -276,13 +283,13 @@ public class GamePanel extends JPanel implements ActionListener{
     @Override
     public void actionPerformed(ActionEvent e){
         if(!running && !gameOver) {
-            if (startButton.isRepaint()) {
+            if (startScreen.isRepaint()) {
                 repaint();
-                startButton.setRepaint(false);
+                startScreen.setRepaint(false);
             }
-            if (startButton.isActive()) {
+            if (startScreen.isActive()) {
                 startGame();
-                startButton.setActive(false);
+                startScreen.setActive(false);
             }
         } else if (gameOver) {
             if (gameOverScreen.isRepaint()) {
@@ -345,13 +352,14 @@ public class GamePanel extends JPanel implements ActionListener{
         snake.setSnake(6);
 
         scoreCounter = 0;
+        foodCounter = 0;
         randomNumber = random.nextInt(10);
+        randomNumber2 = random.nextInt(10);
 
         playedSeconds = 0;
         tenthOfSecond = 0;
 
         direction = "Right";
-        running = false;
         gameOver = false;
 
         startGame();
