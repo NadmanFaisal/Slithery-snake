@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.net.URL;
 
 
-public class StartGameButton extends MouseAdapter {
+public class StartScreen extends MouseAdapter {
     private boolean active;
     private boolean repaint;
     private int panelWidth;
@@ -20,7 +20,7 @@ public class StartGameButton extends MouseAdapter {
     private boolean btnHighlight = false; // Boolean to check if mouse is hovering on button
     private Font font;
 
-    public StartGameButton(int panelWidth, int panelHeight) {
+    public StartScreen(int panelWidth, int panelHeight) {
         this.active = false;
         this.panelWidth = panelWidth;
         this.panelHeight = panelHeight;

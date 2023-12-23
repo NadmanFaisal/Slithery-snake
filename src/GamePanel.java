@@ -2,7 +2,6 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Random;
@@ -56,7 +55,7 @@ public class GamePanel extends JPanel implements ActionListener{
     private final Font customFont;
     private Buttons buttons;
 
-    private StartGameButton startButton;
+    private StartScreen startButton;
     private boolean invincible = false;
 
     public GamePanel() {
@@ -77,7 +76,7 @@ public class GamePanel extends JPanel implements ActionListener{
         this.addKeyListener(new MyKeyAdapter());
         this.gameOverPanel = new GameOverPanel();
         this.add(gameOverPanel);
-        this.startButton = new StartGameButton(PANEL_WIDTH,PANEL_HEIGHT + TOP_PANEL_HEIGHT);
+        this.startButton = new StartScreen(PANEL_WIDTH,PANEL_HEIGHT + TOP_PANEL_HEIGHT);
 
 
         this.backgroundImage = new ImageIcon("src/Images/gamepanel-bg.png");
