@@ -108,14 +108,12 @@ public class StartScreen extends MouseAdapter {
     public boolean isRepaint() {
         return repaint;
     }
-
     public void setRepaint(boolean repaint) {
         this.repaint = repaint;
     }
     public boolean isActive() {
         return active;
     }
-
     public void setActive(boolean active) {
         this.active = active;
     }

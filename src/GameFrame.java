@@ -1,14 +1,8 @@
 import javax.swing.*;
-import java.awt.*;
 
 public class GameFrame {
     private JFrame frame;
-    private GamePanel gamePanel; //NEW
-    private Timer stopwatchTimer;
-    private JLabel stopwatchLabel;
-    private JPanel stopwatchPanel;
-    private int playedSeconds;
-    private ImageIcon imageIcon;
+    private GamePanel gamePanel;
 
     public GameFrame() {
         initialize();
@@ -28,7 +22,5 @@ public class GameFrame {
         this.frame.setLocationRelativeTo(null);
 
         this.frame.setIconImage(snakeLogo.getImage());
-
     }
-
 }
