@@ -7,6 +7,8 @@ public class Snake {
     private final int[] y;
     private int bodyUnits;
     private int moveCounter;
+    private String[] colorList;
+    private  int colorIndex;
 
     private ImageIcon snakeRightT;
     private ImageIcon snakeLeftT;
@@ -22,16 +24,22 @@ public class Snake {
         this.UNIT= UNIT;
         this.x = new int[GAME_UNITS];
         this.y = new int[GAME_UNITS];
+        this.colorList = new String[4];
+        this.colorList[0] = "Green";
+        this.colorList[1] = "Blue";
+        this.colorList[2] = "Red";
+        this.colorList[3] = "Yellow";
+        this.colorIndex = 0;
 
-        this.snakeRightT = new ImageIcon("src/Images/GreenSnake/Snake Right.png");
-        this.snakeLeftT = new ImageIcon("src/Images/GreenSnake/Snake Left.png");
-        this.snakeUpT = new ImageIcon("src/Images/GreenSnake/Snake Up.png");
-        this.snakeDownT = new ImageIcon("src/Images/GreenSnake/Snake Down.png");
-        this.snakeRight = new ImageIcon("src/Images/GreenSnake/Snake Right (no).png");
-        this.snakeLeft = new ImageIcon("src/Images/GreenSnake/Snake Left (no).png");
-        this.snakeUp = new ImageIcon("src/Images/GreenSnake/Snake Up (no).png");
-        this.snakeDown = new ImageIcon("src/Images/GreenSnake/Snake Down (no).png");
-        this.snakeBody = new ImageIcon("src/Images/GreenSnake/SnakeBody (circle).png");
+        this.snakeRightT = new ImageIcon("src/Images/Green Snake/RightT.png");
+        this.snakeLeftT = new ImageIcon("src/Images/Green Snake/LeftT.png");
+        this.snakeUpT = new ImageIcon("src/Images/Green Snake/UpT.png");
+        this.snakeDownT = new ImageIcon("src/Images/Green Snake/DownT.png");
+        this.snakeRight = new ImageIcon("src/Images/Green Snake/Right.png");
+        this.snakeLeft = new ImageIcon("src/Images/Green Snake/Left.png");
+        this.snakeUp = new ImageIcon("src/Images/Green Snake/Up.png");
+        this.snakeDown = new ImageIcon("src/Images/Green Snake/Down.png");
+        this.snakeBody = new ImageIcon("src/Images/Green Snake/Body.png");
     }
     public int getBodyUnits() {
         return bodyUnits;
@@ -48,6 +56,24 @@ public class Snake {
 
     public int getY(int index) {
         return y[index];
+    }
+    public void changeSnakeColor() {
+        if(this.colorIndex < colorList.length - 1) {
+            this.colorIndex += 1;
+        } else {
+            this.colorIndex = 0;
+        }
+
+        String color = this.colorList[this.colorIndex];
+        this.snakeRightT = new ImageIcon("src/Images/" + color + " Snake/RightT.png");
+        this.snakeLeftT = new ImageIcon("src/Images/" + color + " Snake/LeftT.png");
+        this.snakeUpT = new ImageIcon("src/Images/" + color + " Snake/UpT.png");
+        this.snakeDownT = new ImageIcon("src/Images/" + color + " Snake/DownT.png");
+        this.snakeRight = new ImageIcon("src/Images/" + color + " Snake/Right.png");
+        this.snakeLeft = new ImageIcon("src/Images/" + color + " Snake/Left.png");
+        this.snakeUp = new ImageIcon("src/Images/" + color + " Snake/Up.png");
+        this.snakeDown = new ImageIcon("src/Images/" + color + " Snake/Down.png");
+        this.snakeBody = new ImageIcon("src/Images/" + color + " Snake/Body.png");
     }
     private ImageIcon getSnakeHead(String direction) {
         ImageIcon head = null;

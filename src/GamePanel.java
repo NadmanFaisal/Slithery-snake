@@ -19,11 +19,16 @@ public class GamePanel extends JPanel implements ActionListener{
     private Food food;
     private Food invincibleFood;
     private Food toxicFood;
-
+    private GameOverScreen gameOverScreen;
+    private StartScreen startScreen;
     private Random random;
     private Timer timer;
     private Timer stopwatchTimer;  //timer attribute for the stopwatch of type timer
+    private Button playButton;
+    private Button changeColor;
+
     private String direction;
+    private boolean started;
     private boolean running;
     private boolean gameOver;
     private boolean invincible;
@@ -32,38 +37,37 @@ public class GamePanel extends JPanel implements ActionListener{
     private int randomNumber; //better name
     private int randomNumber2;
     private int scoreCounter;
-
-
-
     private int playedSeconds; //attribute for the seconds that will go up as we play
     private int tenthOfSecond;
 
-    private GameOverScreen gameOverScreen;
-    private StartScreen startScreen;
+
     private ImageIcon logo;
     private ImageIcon backgroundImage;
     private final Font customFont;
-    private Button button;
-
-
-
 
     public GamePanel() {
-        this.snake = new Snake(UNIT, GAME_UNITS);
-        this.foodCounter = 0;
         this.direction = "Right";
+        this.started = false;
         this.running = false;
         this.gameOver = false;
         this.invincible = false;
+        this.scoreCounter = 0;
+
+        this.foodCounter = 0;
         this.random = new Random();
         this.randomNumber = random.nextInt(10);
         this.randomNumber2 = random.nextInt(10);
-        this.scoreCounter = 0;
+
         this.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT + TOP_PANEL_HEIGHT));
         this.setBackground(Color.black);
         this.setFocusable(true);
         this.setLayout(null);
         this.addKeyListener(new MyKeyAdapter());
+
+        this.snake = new Snake(UNIT, GAME_UNITS);
+        this.food = new Food(PANEL_WIDTH, PANEL_HEIGHT, TOP_PANEL_HEIGHT, UNIT, "src/Images/Strawberry.png");
+        this.toxicFood = new Food(PANEL_WIDTH, PANEL_HEIGHT, TOP_PANEL_HEIGHT, UNIT, "src/Images/EvilBerry.png");
+        this.invincibleFood = new Food(PANEL_WIDTH, PANEL_HEIGHT, TOP_PANEL_HEIGHT, UNIT, "src/Images/InvincibleBerryMain.png");
 
         this.gameOverScreen = new GameOverScreen(PANEL_WIDTH, PANEL_HEIGHT + TOP_PANEL_HEIGHT);
         this.addMouseListener(gameOverScreen);
@@ -74,22 +78,27 @@ public class GamePanel extends JPanel implements ActionListener{
         this.addMouseMotionListener(startScreen);
 
         this.backgroundImage = new ImageIcon("src/Images/gamepanel-bg.png");
-
         this.logo = new ImageIcon("src/Images/SnakeLogo.png");
         this.customFont = getFont("KarmaFuture.ttf");
 
-        this.button = new Button("PLAY");
-        this.button.addActionListener(e -> startGame());
-        this.add(button);
+        this.playButton = new Button("PLAY");
+        this.playButton.addActionListener(this);
+        this.playButton.setBounds( 120, 30, 100, 40);
+        this.playButton.setVisible(false);
 
+        this.changeColor = new Button("Change Color"); //SHOULD IT BE "SWITCH COLOR"??
+        this.changeColor.addActionListener(this);
+        this.changeColor.setBounds(230,30, 160, 40);
+        this.changeColor.setVisible(false);
 
         this.stopwatchTimer = new Timer(1000, this); //making the stopwatch a Timer (built-in java) object.
         this.playedSeconds = 0;
         this.tenthOfSecond = 0;
-        startStopwatch(); //calling method to start the stopwatch when player starts playing
 
         timer = new Timer(TIMER_DELAY, this);
         timer.start();
+        this.add(playButton);
+        this.add(changeColor);
     }
 
     public void startStopwatch(){ //start stopwatch
@@ -105,35 +114,39 @@ public class GamePanel extends JPanel implements ActionListener{
         stopwatchTimer.stop();
     }
 
-
     @Override
     public void paintComponent(Graphics graphics) {
         super.paintComponent(graphics);
 
-        if (!running){
+        if (!started){
             startScreen.drawStartMenu(graphics, 250, logo);
 
-        }else{
+        } else if (gameOver) {
+            playButton.setVisible(false);
+            changeColor.setVisible(false);
+            gameOverScreen.showGameOverScreen(graphics, scoreCounter, playedSeconds, tenthOfSecond);
+        } else {
             drawTopPanel(graphics);
             drawBackgroundImage(graphics);
-            if (foodCounter == randomNumber) {
-                toxicFood.drawFood(graphics);
+
+            if (running) {
+                if (foodCounter == randomNumber) {
+                    toxicFood.drawFood(graphics);
+                }
+                if (foodCounter == randomNumber2) {
+                    invincibleFood.drawFood(graphics);
+                }
+                food.drawFood(graphics);
+                this.snake.drawSnake(graphics, direction);
             }
-            if (foodCounter == randomNumber2) {
-                invincibleFood.drawFood(graphics);
-            }
-            food.drawFood(graphics);
-            this.snake.drawSnake(graphics, direction);
+
             drawScore(graphics);
             drawStopwatchLabel(graphics);
+        }
 
-        }
-        if (gameOver) {
-            gameOverScreen.showGameOverScreen(graphics, scoreCounter, playedSeconds, tenthOfSecond);
-        }
     }
     public void drawStopwatchLabel (Graphics graphics) {
-        if ( !gameOver ) {
+        if (!gameOver) {
             graphics.setColor(new Color(14, 102, 0));
             graphics.setFont(customFont.deriveFont(Font.BOLD, 25));
             graphics.drawString("Time: "+ playedSeconds + "." + tenthOfSecond + " seconds", PANEL_WIDTH -250, graphics.getFont().getSize() + TOP_PANEL_HEIGHT);
@@ -162,19 +175,22 @@ public class GamePanel extends JPanel implements ActionListener{
 
     public void startGame() {
         gameOverScreen.setActive(false);//WHY DO WE I HAVE TO?? MAYBE BUG
+
         this.snake.setSnake(6);
-        button.setVisible(true);
-        this.food = new Food(PANEL_WIDTH, PANEL_HEIGHT, TOP_PANEL_HEIGHT, UNIT, "src/Images/Strawberry.png");
-        this.toxicFood = new Food(PANEL_WIDTH, PANEL_HEIGHT, TOP_PANEL_HEIGHT, UNIT, "src/Images/EvilBerry.png");
-        this.invincibleFood = new Food(PANEL_WIDTH, PANEL_HEIGHT, TOP_PANEL_HEIGHT, UNIT, "src/Images/InvincibleBerryMain.png");
+
+        foodCounter = 0;
+        randomNumber = random.nextInt(10);
+        randomNumber2 = random.nextInt(10);
+
+        direction = "Right";
+        gameOver = false;
         running = true;
+
         if(timer != null && timer.isRunning()) {
             timer.stop();
         }
         timer = new Timer(TIMER_DELAY, this);
         timer.start();
-        startStopwatch();
-
     }
 
     public void checkFood () { //changed logic in if block
@@ -282,13 +298,13 @@ public class GamePanel extends JPanel implements ActionListener{
 
     @Override
     public void actionPerformed(ActionEvent e){
-        if(!running && !gameOver) {
+        if(!started) {
             if (startScreen.isRepaint()) {
                 repaint();
                 startScreen.setRepaint(false);
             }
             if (startScreen.isActive()) {
-                startGame();
+                started = true;
                 startScreen.setActive(false);
             }
         } else if (gameOver) {
@@ -297,11 +313,17 @@ public class GamePanel extends JPanel implements ActionListener{
                 gameOverScreen.setRepaint(false);
             }
             if (gameOverScreen.isActive()) {
-                restartGame();
+                gameOver = false;
                 gameOverScreen.setActive(false);
             }
-        }
-        if (running) {
+        } else if (!running){
+            scoreCounter = 0;
+            playedSeconds = 0;
+            tenthOfSecond = 0;
+            if (e.getSource() == playButton) {
+                startGame();
+            }
+        } else {
             snake.movement(direction);
             checkFood();
             checkToxicFood();
@@ -311,6 +333,9 @@ public class GamePanel extends JPanel implements ActionListener{
                 snakeBodyCollision();
             }
             startStopwatch();
+        }
+        if (e.getSource() == changeColor) {
+            snake.changeSnakeColor();
         }
         stopStopwatch();
         repaint();
@@ -344,32 +369,12 @@ public class GamePanel extends JPanel implements ActionListener{
         }
     }
 
-
-    // Game restarts when you press "R" in game over screen
-    public void restartGame () {
-        //Restart from a new position
-        // Always restarts from the top left side.
-        snake.setSnake(6);
-
-        scoreCounter = 0;
-        foodCounter = 0;
-        randomNumber = random.nextInt(10);
-        randomNumber2 = random.nextInt(10);
-
-        playedSeconds = 0;
-        tenthOfSecond = 0;
-
-        direction = "Right";
-        gameOver = false;
-
-        startGame();
-
-    }
-
     private void drawTopPanel(Graphics graphics){
         graphics.setColor(Color.WHITE);
         graphics.fillRect(0,0,PANEL_WIDTH, TOP_PANEL_HEIGHT);
         graphics.drawImage(logo.getImage(), 5,0,TOP_PANEL_HEIGHT, TOP_PANEL_HEIGHT, null);
+        playButton.setVisible(true);
+        changeColor.setVisible(true);
     }
 }
 
