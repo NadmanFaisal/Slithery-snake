@@ -73,11 +73,12 @@ public class GamePanel extends JPanel implements ActionListener{
         this.addMouseListener(gameOverScreen);
         this.addMouseMotionListener(gameOverScreen);
 
+
         this.startScreen = new StartScreen(PANEL_WIDTH,PANEL_HEIGHT + TOP_PANEL_HEIGHT);
         this.addMouseListener(startScreen);
         this.addMouseMotionListener(startScreen);
 
-        this.backgroundImage = new ImageIcon("src/Images/gamepanel-bg.png");
+        this.backgroundImage = new ImageIcon("src/Images/Background.jpeg");
         this.logo = new ImageIcon("src/Images/SnakeLogo.png");
         this.customFont = getFont("KarmaFuture.ttf");
 
@@ -90,7 +91,7 @@ public class GamePanel extends JPanel implements ActionListener{
         this.changeColor.addActionListener(this);
         this.changeColor.setBounds(230,30, 160, 40);
         this.changeColor.setVisible(false);
-
+        
         this.stopwatchTimer = new Timer(1000, this); //making the stopwatch a Timer (built-in java) object.
         this.playedSeconds = 0;
         this.tenthOfSecond = 0;
