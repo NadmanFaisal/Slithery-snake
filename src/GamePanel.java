@@ -99,6 +99,7 @@ public class GamePanel extends JPanel implements ActionListener{
         timer.start();
         this.add(playButton);
         this.add(changeColor);
+        snake.setSnake(6);
     }
 
     public void startStopwatch(){ //start stopwatch
@@ -137,8 +138,8 @@ public class GamePanel extends JPanel implements ActionListener{
                     invincibleFood.drawFood(graphics);
                 }
                 food.drawFood(graphics);
-                this.snake.drawSnake(graphics, direction);
             }
+            this.snake.drawSnake(graphics, direction);
 
             drawScore(graphics);
             drawStopwatchLabel(graphics);
@@ -314,12 +315,14 @@ public class GamePanel extends JPanel implements ActionListener{
             }
             if (gameOverScreen.isActive()) {
                 gameOver = false;
+                snake.setSnake(6);
+                scoreCounter = 0;
+                playedSeconds = 0;
+                tenthOfSecond = 0;
                 gameOverScreen.setActive(false);
             }
         } else if (!running){
-            scoreCounter = 0;
-            playedSeconds = 0;
-            tenthOfSecond = 0;
+
             if (e.getSource() == playButton) {
                 startGame();
             }

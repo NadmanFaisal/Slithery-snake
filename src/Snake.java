@@ -155,8 +155,14 @@ public class Snake {
     }
     public void setSnake(int bodyUnits) {
         for (int i = 0; i < bodyUnits; i++) {
-            x[i] = 0;
-            y[i] = 100;
+            if (i == 0) {
+                x[i] = 250;
+                y[i] = 350;
+            } else {
+                x[i] = 250 - UNIT;
+                y[i] = 350;
+
+            }
         }
         this.bodyUnits = bodyUnits;
     }
