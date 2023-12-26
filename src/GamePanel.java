@@ -82,7 +82,7 @@ public class GamePanel extends JPanel implements ActionListener{
         this.logo = new ImageIcon("src/Images/SnakeLogo.png");
         this.customFont = getFont("KarmaFuture.ttf");
 
-        this.playButton = new Button("PLAY");
+        this.playButton = new Button("Play");
         this.playButton.addActionListener(this);
         this.playButton.setBounds( 120, 30, 100, 40);
         this.playButton.setVisible(false);
