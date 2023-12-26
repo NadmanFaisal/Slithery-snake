@@ -74,7 +74,7 @@ public class GameOverScreen extends MouseAdapter {
         int xGameOver = (panelWidth - gameOverWidth) / 2;
         int xScore = (panelWidth - scoreWidth) / 2;
         int xTime = (panelWidth - timeWidth) / 2;
-        int y = panelHeight / 2 + 20;
+        int y = panelHeight / 2;
 
         graphics.drawString("Game Over!", xGameOver, y - 30);
         graphics.drawString("Score: " + score, xScore, y + 10); // Adjust Y position for spacing
