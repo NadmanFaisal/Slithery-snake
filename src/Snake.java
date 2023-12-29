@@ -1,11 +1,5 @@
-import com.google.gson.Gson;
-
 import javax.swing.*;
 import java.awt.*;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.Map;
 
 public class Snake {
     private final int UNIT;
@@ -36,8 +30,8 @@ public class Snake {
         this.colorList[1] = "Blue";
         this.colorList[2] = "Red";
         this.colorList[3] = "Yellow";
-        this.colorIndex = loadColorIndexFromJsonFile("snake_data.json");
         this.serializer = new Serializer();
+        this.colorIndex = serializer.loadColorIndexFromJsonFile("snake_data.json");
 
         this.snakeRightT = new ImageIcon("src/Images/" + this.colorList[this.colorIndex] + " Snake/RightT.png");
         this.snakeLeftT = new ImageIcon("src/Images/" + this.colorList[this.colorIndex] + " Snake/LeftT.png");
@@ -49,35 +43,6 @@ public class Snake {
         this.snakeDown = new ImageIcon("src/Images/" + this.colorList[this.colorIndex] + " Snake/Down.png");
         this.snakeBody = new ImageIcon("src/Images/" + this.colorList[this.colorIndex] + " Snake/Body.png");
     }
-
-    private void saveColorIndexToJsonFile() {
-        String serializedSnake = serializer.serializeSnake(this);
-        // Save serialized snake data to a file
-        try (FileWriter fileWriter = new FileWriter("snake_data.json")) {
-            fileWriter.write(serializedSnake);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public int loadColorIndexFromJsonFile(String filePath) {
-        try (FileReader fileReader = new FileReader(filePath)) {
-            Gson gson = new Gson();
-            // Read the JSON data from the file to a Map<String, Object>
-            Map<String, Object> jsonData = gson.fromJson(fileReader, Map.class);
-            // Get the colorIndex value from the JSON data
-            if (jsonData != null && jsonData.containsKey("colorIndex")) {
-                Object colorIndexObj = jsonData.get("colorIndex");
-                if (colorIndexObj instanceof Number) {
-                    return ((Number) colorIndexObj).intValue();
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return 0; // Default value if colorIndex couldn't be loaded
-    }
-
 
     public int getBodyUnits() {
         return bodyUnits;
@@ -121,7 +86,7 @@ public class Snake {
         this.snakeDown = new ImageIcon("src/Images/" + color + " Snake/Down.png");
         this.snakeBody = new ImageIcon("src/Images/" + color + " Snake/Body.png");
 
-        saveColorIndexToJsonFile();
+        serializer.saveColorIndexToJsonFile(this);
         }
 
     private ImageIcon getSnakeHead(String direction) {
