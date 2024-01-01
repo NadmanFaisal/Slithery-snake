@@ -5,10 +5,6 @@ import java.io.IOException;
 
 public class SnakeAdapter extends TypeAdapter<Snake> {
 
-    private static final int PANEL_WIDTH = 500;
-    private static final int PANEL_HEIGHT = 500;
-    private static final int UNIT = 25;
-    private static final int GAME_UNITS = (PANEL_HEIGHT * PANEL_WIDTH) / (UNIT * UNIT);
     @Override
     public Snake read(JsonReader reader) throws IOException {
         reader.beginObject();
@@ -20,9 +16,8 @@ public class SnakeAdapter extends TypeAdapter<Snake> {
             }
         }
         reader.endObject();
-        Snake snake = new Snake(UNIT, GAME_UNITS); // Initialize snake object
-        snake.setColorIndex(colorIndex);
-        return snake;
+        createSnake().setColorIndex(colorIndex);
+        return createSnake();
 
     }
 
@@ -31,6 +26,15 @@ public class SnakeAdapter extends TypeAdapter<Snake> {
         writer.beginObject();
         writer.name("colorIndex").value(snake.getColorIndex());
         writer.endObject();
+    }
+
+    public Snake createSnake(){
+        int PANEL_WIDTH = 500;
+        int PANEL_HEIGHT = 500;
+        int UNIT = 25;
+        int GAME_UNITS = (PANEL_HEIGHT * PANEL_WIDTH) / (UNIT * UNIT);
+
+        return new Snake(UNIT, GAME_UNITS);
     }
 }
 

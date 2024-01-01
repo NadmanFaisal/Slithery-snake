@@ -41,7 +41,7 @@ public class Serializer {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return 0; // Default value if colorIndex couldn't be loaded
+        return 0; // Default color will be green if colorIndex couldn't be loaded
     }
 }
 
