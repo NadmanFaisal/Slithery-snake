@@ -82,7 +82,7 @@ public class GamePanel extends JPanel implements ActionListener{
         this.logo = new ImageIcon("src/Images/SnakeLogo.png");
         this.customFont = getFont("KarmaFuture.ttf");
 
-        this.playButton = new Button("PLAY");
+        this.playButton = new Button("Play");
         this.playButton.addActionListener(this);
         this.playButton.setBounds( 120, 30, 100, 40);
         this.playButton.setVisible(false);
@@ -379,8 +379,8 @@ public class GamePanel extends JPanel implements ActionListener{
         graphics.setColor(new Color(221,244,155));
         graphics.fillRect(0,0,PANEL_WIDTH, TOP_PANEL_HEIGHT);
 
-        graphics.setColor(new Color(22, 89, 14));
-        graphics2D.setStroke( new BasicStroke(15));
+        graphics.setColor(new Color(14, 102, 0));
+        graphics2D.setStroke( new BasicStroke(6));
         graphics2D.drawLine(0, 0, PANEL_WIDTH, 0);
         graphics2D.drawLine(0, TOP_PANEL_HEIGHT, PANEL_WIDTH, TOP_PANEL_HEIGHT);
         graphics2D.drawLine(0, 0, 0, TOP_PANEL_HEIGHT);
