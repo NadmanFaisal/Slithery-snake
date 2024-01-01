@@ -9,6 +9,7 @@ public class Snake {
     private int moveCounter;
     private String[] colorList;
     private  int colorIndex;
+    private Serializer serializer;
 
     private ImageIcon snakeRightT;
     private ImageIcon snakeLeftT;
@@ -29,18 +30,20 @@ public class Snake {
         this.colorList[1] = "Blue";
         this.colorList[2] = "Red";
         this.colorList[3] = "Yellow";
-        this.colorIndex = 0;
+        this.serializer = new Serializer();
+        this.colorIndex = serializer.loadColorIndexFromJsonFile("snake_data.json");
 
-        this.snakeRightT = new ImageIcon("src/Images/Green Snake/RightT.png");
-        this.snakeLeftT = new ImageIcon("src/Images/Green Snake/LeftT.png");
-        this.snakeUpT = new ImageIcon("src/Images/Green Snake/UpT.png");
-        this.snakeDownT = new ImageIcon("src/Images/Green Snake/DownT.png");
-        this.snakeRight = new ImageIcon("src/Images/Green Snake/Right.png");
-        this.snakeLeft = new ImageIcon("src/Images/Green Snake/Left.png");
-        this.snakeUp = new ImageIcon("src/Images/Green Snake/Up.png");
-        this.snakeDown = new ImageIcon("src/Images/Green Snake/Down.png");
-        this.snakeBody = new ImageIcon("src/Images/Green Snake/Body.png");
+        this.snakeRightT = new ImageIcon("src/Images/" + this.colorList[this.colorIndex] + " Snake/RightT.png");
+        this.snakeLeftT = new ImageIcon("src/Images/" + this.colorList[this.colorIndex] + " Snake/LeftT.png");
+        this.snakeUpT = new ImageIcon("src/Images/" + this.colorList[this.colorIndex] + " Snake/UpT.png");
+        this.snakeDownT = new ImageIcon("src/Images/" + this.colorList[this.colorIndex] + " Snake/DownT.png");
+        this.snakeRight = new ImageIcon("src/Images/" + this.colorList[this.colorIndex] + " Snake/Right.png");
+        this.snakeLeft = new ImageIcon("src/Images/" + this.colorList[this.colorIndex] + " Snake/Left.png");
+        this.snakeUp = new ImageIcon("src/Images/" + this.colorList[this.colorIndex] + " Snake/Up.png");
+        this.snakeDown = new ImageIcon("src/Images/" + this.colorList[this.colorIndex] + " Snake/Down.png");
+        this.snakeBody = new ImageIcon("src/Images/" + this.colorList[this.colorIndex] + " Snake/Body.png");
     }
+
     public int getBodyUnits() {
         return bodyUnits;
     }
@@ -56,6 +59,14 @@ public class Snake {
 
     public int getY(int index) {
         return y[index];
+    }
+
+    public int getColorIndex() {
+        return this.colorIndex;
+    }
+
+    public void setColorIndex(int newColor){
+       this.colorIndex = newColor;
     }
     public void changeSnakeColor() {
         if(this.colorIndex < colorList.length - 1) {
@@ -74,7 +85,10 @@ public class Snake {
         this.snakeUp = new ImageIcon("src/Images/" + color + " Snake/Up.png");
         this.snakeDown = new ImageIcon("src/Images/" + color + " Snake/Down.png");
         this.snakeBody = new ImageIcon("src/Images/" + color + " Snake/Body.png");
-    }
+
+        serializer.saveColorIndexToJsonFile(this);
+        }
+
     private ImageIcon getSnakeHead(String direction) {
         ImageIcon head = null;
 

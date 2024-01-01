@@ -1,12 +1,14 @@
-
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Random;
 
-public class GamePanel extends JPanel implements ActionListener{
+public class GamePanel extends JPanel implements ActionListener {
 
     private static final int PANEL_WIDTH = 500;
     private static final int PANEL_HEIGHT = 500;
@@ -40,10 +42,11 @@ public class GamePanel extends JPanel implements ActionListener{
     private int playedSeconds; //attribute for the seconds that will go up as we play
     private int tenthOfSecond;
 
-
     private ImageIcon logo;
     private ImageIcon backgroundImage;
     private final Font customFont;
+
+    //private Serializer serializer;
 
     public GamePanel() {
         this.direction = "Right";
@@ -74,7 +77,7 @@ public class GamePanel extends JPanel implements ActionListener{
         this.addMouseMotionListener(gameOverScreen);
 
 
-        this.startScreen = new StartScreen(PANEL_WIDTH,PANEL_HEIGHT + TOP_PANEL_HEIGHT);
+        this.startScreen = new StartScreen(PANEL_WIDTH, PANEL_HEIGHT + TOP_PANEL_HEIGHT);
         this.addMouseListener(startScreen);
         this.addMouseMotionListener(startScreen);
 
@@ -84,14 +87,14 @@ public class GamePanel extends JPanel implements ActionListener{
 
         this.playButton = new Button("Play");
         this.playButton.addActionListener(this);
-        this.playButton.setBounds( 120, 30, 100, 40);
+        this.playButton.setBounds(120, 30, 100, 40);
         this.playButton.setVisible(false);
 
         this.changeColor = new Button("Change Color"); //SHOULD IT BE "SWITCH COLOR"??
         this.changeColor.addActionListener(this);
-        this.changeColor.setBounds(230,30, 160, 40);
+        this.changeColor.setBounds(230, 30, 160, 40);
         this.changeColor.setVisible(false);
-        
+
         this.stopwatchTimer = new Timer(1000, this); //making the stopwatch a Timer (built-in java) object.
         this.playedSeconds = 0;
         this.tenthOfSecond = 0;
@@ -101,9 +104,11 @@ public class GamePanel extends JPanel implements ActionListener{
         this.add(playButton);
         this.add(changeColor);
         snake.setSnake(6);
+
+        //this.serializer = new Serializer();
     }
 
-    public void startStopwatch(){ //start stopwatch
+    public void startStopwatch() { //start stopwatch
         tenthOfSecond = tenthOfSecond + 1;
         if (tenthOfSecond == 10) {
             tenthOfSecond = 0;
@@ -120,7 +125,7 @@ public class GamePanel extends JPanel implements ActionListener{
     public void paintComponent(Graphics graphics) {
         super.paintComponent(graphics);
 
-        if (!started){
+        if (!started) {
             startScreen.drawStartMenu(graphics, 250, logo);
 
         } else if (gameOver) {
@@ -147,15 +152,16 @@ public class GamePanel extends JPanel implements ActionListener{
         }
 
     }
-    public void drawStopwatchLabel (Graphics graphics) {
+
+    public void drawStopwatchLabel(Graphics graphics) {
         if (!gameOver) {
             graphics.setColor(new Color(14, 102, 0));
             graphics.setFont(customFont.deriveFont(Font.BOLD, 25));
-            graphics.drawString("Time: "+ playedSeconds + "." + tenthOfSecond + " seconds", PANEL_WIDTH -250, graphics.getFont().getSize() + TOP_PANEL_HEIGHT);
+            graphics.drawString("Time: " + playedSeconds + "." + tenthOfSecond + " seconds", PANEL_WIDTH - 250, graphics.getFont().getSize() + TOP_PANEL_HEIGHT);
         }
     }
 
-    public Font getFont (String fontName){
+    public Font getFont(String fontName) {
         try {
             String path = "/Fonts/" + fontName;
             URL url = getClass().getResource(path);
@@ -164,14 +170,14 @@ public class GamePanel extends JPanel implements ActionListener{
             throw new RuntimeException(e);
         }
     }
-    
-    public void drawScore (Graphics graphics){
+
+    public void drawScore(Graphics graphics) {
         graphics.setColor(new Color(14, 102, 0));
         graphics.setFont(customFont.deriveFont(Font.BOLD, 25));
-        graphics.drawString("Score: " + scoreCounter,10,graphics.getFont().getSize() + TOP_PANEL_HEIGHT);
+        graphics.drawString("Score: " + scoreCounter, 10, graphics.getFont().getSize() + TOP_PANEL_HEIGHT);
     }
 
-    public void drawBackgroundImage(Graphics graphics){
+    public void drawBackgroundImage(Graphics graphics) {
         graphics.drawImage(backgroundImage.getImage(), 0, TOP_PANEL_HEIGHT, PANEL_WIDTH, PANEL_HEIGHT, this);
     }
 
@@ -188,18 +194,18 @@ public class GamePanel extends JPanel implements ActionListener{
         gameOver = false;
         running = true;
 
-        if(timer != null && timer.isRunning()) {
+        if (timer != null && timer.isRunning()) {
             timer.stop();
         }
         timer = new Timer(TIMER_DELAY, this);
         timer.start();
     }
 
-    public void checkFood () { //changed logic in if block
-        if((snake.getX(0) == food.getFoodX() && snake.getY(0) == food.getFoodY())) {
+    public void checkFood() { //changed logic in if block
+        if ((snake.getX(0) == food.getFoodX() && snake.getY(0) == food.getFoodY())) {
             if (this.foodCounter == this.randomNumber) {
                 foodCounter = 0;
-                randomNumber =  random.nextInt(10);
+                randomNumber = random.nextInt(10);
             }
             snake.increaseBodyUnits();
             this.foodCounter = this.foodCounter + 1;
@@ -217,7 +223,7 @@ public class GamePanel extends JPanel implements ActionListener{
         }
     }
 
-    public void checkToxicFood () { //also separated methods to check the different foods
+    public void checkToxicFood() { //also separated methods to check the different foods
         if (this.foodCounter == this.randomNumber) { //Added a condition to fix logic
             if (snake.getX(0) == toxicFood.getFoodX() && snake.getY(0) == toxicFood.getFoodY()) {
                 snake.decreaseBodyUnits();
@@ -281,7 +287,7 @@ public class GamePanel extends JPanel implements ActionListener{
            it means the starting point is 0. So it the panel size goes from 70 --> 570; both side.
            */
 
-        if ((snake.getX(0) < 0 || snake.getX(0) >= PANEL_WIDTH) || (snake.getY(0) < TOP_PANEL_HEIGHT || snake.getY(0) >= PANEL_HEIGHT + TOP_PANEL_HEIGHT)){
+        if ((snake.getX(0) < 0 || snake.getX(0) >= PANEL_WIDTH) || (snake.getY(0) < TOP_PANEL_HEIGHT || snake.getY(0) >= PANEL_HEIGHT + TOP_PANEL_HEIGHT)) {
             gameOver = true;
             running = false;
             Audio clicked = new Audio("src/Audio/SnakeGameOver.wav");
@@ -290,7 +296,7 @@ public class GamePanel extends JPanel implements ActionListener{
 
     }
 
-    public void updateScore () {
+    public void updateScore() {
         if (snake.getX(0) == food.getFoodX() && snake.getY(0) == food.getFoodY()) {
             scoreCounter += 10;
         } else {
@@ -299,8 +305,8 @@ public class GamePanel extends JPanel implements ActionListener{
     }
 
     @Override
-    public void actionPerformed(ActionEvent e){
-        if(!started) {
+    public void actionPerformed(ActionEvent e) {
+        if (!started) {
             if (startScreen.isRepaint()) {
                 repaint();
                 startScreen.setRepaint(false);
@@ -322,7 +328,7 @@ public class GamePanel extends JPanel implements ActionListener{
                 tenthOfSecond = 0;
                 gameOverScreen.setActive(false);
             }
-        } else if (!running){
+        } else if (!running) {
 
             if (e.getSource() == playButton) {
                 startGame();
@@ -340,6 +346,7 @@ public class GamePanel extends JPanel implements ActionListener{
         }
         if (e.getSource() == changeColor) {
             snake.changeSnakeColor();
+            //saveSnakeGameData();
         }
         stopStopwatch();
         repaint();
@@ -373,24 +380,38 @@ public class GamePanel extends JPanel implements ActionListener{
         }
     }
 
-    private void drawTopPanel(Graphics graphics){
+    private void drawTopPanel(Graphics graphics) {
         Graphics2D graphics2D = (Graphics2D) graphics;
 
-        graphics.setColor(new Color(221,244,155));
-        graphics.fillRect(0,0,PANEL_WIDTH, TOP_PANEL_HEIGHT);
+        graphics.setColor(new Color(221, 244, 155));
+        graphics.fillRect(0, 0, PANEL_WIDTH, TOP_PANEL_HEIGHT);
 
         graphics.setColor(new Color(14, 102, 0));
-        graphics2D.setStroke( new BasicStroke(6));
+        graphics2D.setStroke(new BasicStroke(6));
         graphics2D.drawLine(0, 0, PANEL_WIDTH, 0);
         graphics2D.drawLine(0, TOP_PANEL_HEIGHT, PANEL_WIDTH, TOP_PANEL_HEIGHT);
         graphics2D.drawLine(0, 0, 0, TOP_PANEL_HEIGHT);
         graphics2D.drawLine(PANEL_WIDTH, 0, PANEL_WIDTH, TOP_PANEL_HEIGHT);
 
-        graphics2D.setStroke( new BasicStroke(0));
+        graphics2D.setStroke(new BasicStroke(0));
 
-        graphics.drawImage(logo.getImage(), 5,0,TOP_PANEL_HEIGHT, TOP_PANEL_HEIGHT, null);
+        graphics.drawImage(logo.getImage(), 5, 0, TOP_PANEL_HEIGHT, TOP_PANEL_HEIGHT, null);
         playButton.setVisible(true);
         changeColor.setVisible(true);
     }
+
+
+    /*private void saveSnakeGameData() {
+        String serializedSnake = serializer.serializeSnake(snake);
+        // Save serialized snake data to a file
+        try (FileWriter fileWriter = new FileWriter("snake_data.json")) {
+            fileWriter.write(serializedSnake);
+        } catch (IOException e) {
+            e.printStackTrace();
+            // Handle the exception appropriately
+        }
+    }
+
+     */
 }
 
