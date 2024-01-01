@@ -1,12 +1,10 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
+import java.awt.event.*;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Random;
+
 
 public class GamePanel extends JPanel implements ActionListener {
 
@@ -107,6 +105,15 @@ public class GamePanel extends JPanel implements ActionListener {
 
         //this.serializer = new Serializer();
     }
+    public Font getFont(String fontName) {
+        try {
+            String path = "/Fonts/" + fontName;
+            URL url = getClass().getResource(path);
+            return Font.createFont(Font.TRUETYPE_FONT, url.openStream());
+        } catch (IOException | FontFormatException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     public void startStopwatch() { //start stopwatch
         tenthOfSecond = tenthOfSecond + 1;
@@ -132,6 +139,7 @@ public class GamePanel extends JPanel implements ActionListener {
             playButton.setVisible(false);
             changeColor.setVisible(false);
             gameOverScreen.showGameOverScreen(graphics, scoreCounter, playedSeconds, tenthOfSecond);
+
         } else {
             drawTopPanel(graphics);
             drawBackgroundImage(graphics);
@@ -161,22 +169,30 @@ public class GamePanel extends JPanel implements ActionListener {
         }
     }
 
-    public Font getFont(String fontName) {
-        try {
-            String path = "/Fonts/" + fontName;
-            URL url = getClass().getResource(path);
-            return Font.createFont(Font.TRUETYPE_FONT, url.openStream());
-        } catch (IOException | FontFormatException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     public void drawScore(Graphics graphics) {
         graphics.setColor(new Color(14, 102, 0));
         graphics.setFont(customFont.deriveFont(Font.BOLD, 25));
         graphics.drawString("Score: " + scoreCounter, 10, graphics.getFont().getSize() + TOP_PANEL_HEIGHT);
     }
+    private void drawTopPanel(Graphics graphics) {
+        Graphics2D graphics2D = (Graphics2D) graphics;
 
+        graphics.setColor(new Color(221, 244, 155));
+        graphics.fillRect(0, 0, PANEL_WIDTH, TOP_PANEL_HEIGHT);
+
+        graphics.setColor(new Color(14, 102, 0));
+        graphics2D.setStroke(new BasicStroke(6));
+        graphics2D.drawLine(0, 0, PANEL_WIDTH, 0);
+        graphics2D.drawLine(0, TOP_PANEL_HEIGHT, PANEL_WIDTH, TOP_PANEL_HEIGHT);
+        graphics2D.drawLine(0, 0, 0, TOP_PANEL_HEIGHT);
+        graphics2D.drawLine(PANEL_WIDTH, 0, PANEL_WIDTH, TOP_PANEL_HEIGHT);
+
+        graphics2D.setStroke(new BasicStroke(0));
+
+        graphics.drawImage(logo.getImage(), 5, 0, TOP_PANEL_HEIGHT, TOP_PANEL_HEIGHT, null);
+        playButton.setVisible(true);
+        changeColor.setVisible(true);
+    }
     public void drawBackgroundImage(Graphics graphics) {
         graphics.drawImage(backgroundImage.getImage(), 0, TOP_PANEL_HEIGHT, PANEL_WIDTH, PANEL_HEIGHT, this);
     }
@@ -277,16 +293,14 @@ public class GamePanel extends JPanel implements ActionListener {
 
     }
 
-
-    public void snakeWallCollision() {
-        // Snake Collides With Wall/ Panel
+    // Snake Collides With Wall/ Panel
         /* if the snake head (x) is smaller than the left panel(0) or bigger than the right panel(500)
            or the snake head (y) is smaller than the upper panel(70) or bigger than the lower panel(570)
            game ends.
            here 0 may look like a magic number but it's not as we all know width and height size is 570
            it means the starting point is 0. So it the panel size goes from 70 --> 570; both side.
            */
-
+    public void snakeWallCollision() {
         if ((snake.getX(0) < 0 || snake.getX(0) >= PANEL_WIDTH) || (snake.getY(0) < TOP_PANEL_HEIGHT || snake.getY(0) >= PANEL_HEIGHT + TOP_PANEL_HEIGHT)) {
             gameOver = true;
             running = false;
@@ -303,6 +317,13 @@ public class GamePanel extends JPanel implements ActionListener {
             scoreCounter = scoreCounter / 2;
         }
     }
+    public void resetGame() {
+        gameOver = false;
+        snake.setSnake(6);
+        scoreCounter = 0;
+        playedSeconds = 0;
+        tenthOfSecond = 0;
+    }
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -315,24 +336,26 @@ public class GamePanel extends JPanel implements ActionListener {
                 started = true;
                 startScreen.setActive(false);
             }
+
         } else if (gameOver) {
             if (gameOverScreen.isRepaint()) {
                 repaint();
                 gameOverScreen.setRepaint(false);
             }
             if (gameOverScreen.isActive()) {
-                gameOver = false;
-                snake.setSnake(6);
-                scoreCounter = 0;
-                playedSeconds = 0;
-                tenthOfSecond = 0;
+                resetGame();
                 gameOverScreen.setActive(false);
             }
-        } else if (!running) {
 
+        } else if (!running) {
             if (e.getSource() == playButton) {
                 startGame();
             }
+
+            if (e.getSource() == changeColor) {
+                snake.changeSnakeColor();
+            }
+
         } else {
             snake.movement(direction);
             checkFood();
@@ -343,11 +366,9 @@ public class GamePanel extends JPanel implements ActionListener {
                 snakeBodyCollision();
             }
             startStopwatch();
+
         }
-        if (e.getSource() == changeColor) {
-            snake.changeSnakeColor();
-            //saveSnakeGameData();
-        }
+
         stopStopwatch();
         repaint();
     }
@@ -379,39 +400,5 @@ public class GamePanel extends JPanel implements ActionListener {
             }
         }
     }
-
-    private void drawTopPanel(Graphics graphics) {
-        Graphics2D graphics2D = (Graphics2D) graphics;
-
-        graphics.setColor(new Color(221, 244, 155));
-        graphics.fillRect(0, 0, PANEL_WIDTH, TOP_PANEL_HEIGHT);
-
-        graphics.setColor(new Color(14, 102, 0));
-        graphics2D.setStroke(new BasicStroke(6));
-        graphics2D.drawLine(0, 0, PANEL_WIDTH, 0);
-        graphics2D.drawLine(0, TOP_PANEL_HEIGHT, PANEL_WIDTH, TOP_PANEL_HEIGHT);
-        graphics2D.drawLine(0, 0, 0, TOP_PANEL_HEIGHT);
-        graphics2D.drawLine(PANEL_WIDTH, 0, PANEL_WIDTH, TOP_PANEL_HEIGHT);
-
-        graphics2D.setStroke(new BasicStroke(0));
-
-        graphics.drawImage(logo.getImage(), 5, 0, TOP_PANEL_HEIGHT, TOP_PANEL_HEIGHT, null);
-        playButton.setVisible(true);
-        changeColor.setVisible(true);
-    }
-
-
-    /*private void saveSnakeGameData() {
-        String serializedSnake = serializer.serializeSnake(snake);
-        // Save serialized snake data to a file
-        try (FileWriter fileWriter = new FileWriter("snake_data.json")) {
-            fileWriter.write(serializedSnake);
-        } catch (IOException e) {
-            e.printStackTrace();
-            // Handle the exception appropriately
-        }
-    }
-
-     */
 }
 
