@@ -268,6 +268,7 @@ public class GamePanel extends JPanel implements ActionListener {
         }
     }
 
+    // Changes invincibility boolean to true for 10 seconds
     public void activateInvincibility() {
         invincible = true;
         Timer invincibilityTimer = new Timer(10000, new ActionListener() {
@@ -276,7 +277,9 @@ public class GamePanel extends JPanel implements ActionListener {
                 invincible = false;
             }
         });
-        invincibilityTimer.setRepeats(false); // Make the timer run only once
+
+        // Makes the timer run only once
+        invincibilityTimer.setRepeats(false);
         invincibilityTimer.start();
     }
 
