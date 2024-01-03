@@ -303,6 +303,8 @@ public class GamePanel extends JPanel implements ActionListener {
            here 0 may look like a magic number but it's not as we all know width and height size is 570
            it means the starting point is 0. So it the panel size goes from 70 --> 570; both side.
            */
+
+    // Causes the snake to collide with the wall
     public void snakeWallCollision() {
         if ((snake.getX(0) < 0 || snake.getX(0) >= PANEL_WIDTH) || (snake.getY(0) < TOP_PANEL_HEIGHT || snake.getY(0) >= PANEL_HEIGHT + TOP_PANEL_HEIGHT)) {
             gameOver = true;
