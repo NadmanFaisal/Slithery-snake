@@ -81,6 +81,7 @@ public class GameOverScreen extends MouseAdapter {
         graphics.drawString("Time played: " + playedSeconds + "." + tenthOfSecond + " seconds", xTime, y + 50);
     }
 
+    //Displays the restart button on the Game Over screen. 
     public void drawButton(Graphics graphics){
         Graphics2D graphics2D = (Graphics2D) graphics;
 
@@ -100,11 +101,11 @@ public class GameOverScreen extends MouseAdapter {
 
     }
 
+     // Adding start button text and positioning it inside the button
     public void drawTextInsideButton(Graphics graphics){
         graphics.setFont(customFont.deriveFont(Font.BOLD, 23));
         graphics.setColor(new Color(255, 255, 240));
 
-        // Adding start button text and positioning it inside the button
         int textX = (int) (restartButton.getX() + 5);
         int textY = (int) (restartButton.getY() + 35);
         graphics.drawString(buttonText, textX, textY);

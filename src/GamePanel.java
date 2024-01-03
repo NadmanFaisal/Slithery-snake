@@ -23,7 +23,7 @@ public class GamePanel extends JPanel implements ActionListener {
     private StartScreen startScreen;
     private Random random;
     private Timer timer;
-    private Timer stopwatchTimer;  //timer attribute for the stopwatch of type timer
+    private Timer stopwatchTimer;  
     private Button playButton;
     private Button changeColor;
 
@@ -37,7 +37,7 @@ public class GamePanel extends JPanel implements ActionListener {
     private int randomNumber; //better name
     private int randomNumber2;
     private int scoreCounter;
-    private int playedSeconds; //attribute for the seconds that will go up as we play
+    private int playedSeconds; 
     private int tenthOfSecond;
 
     private ImageIcon logo;
@@ -93,7 +93,7 @@ public class GamePanel extends JPanel implements ActionListener {
         this.changeColor.setBounds(230, 30, 160, 40);
         this.changeColor.setVisible(false);
 
-        this.stopwatchTimer = new Timer(1000, this); //making the stopwatch a Timer (built-in java) object.
+        this.stopwatchTimer = new Timer(1000, this); 
         this.playedSeconds = 0;
         this.tenthOfSecond = 0;
 
@@ -115,7 +115,8 @@ public class GamePanel extends JPanel implements ActionListener {
         }
     }
 
-    public void startStopwatch() { //start stopwatch
+    //Starts the stopwatch when the user starts playing. Counts seconds and tenths of seconds. 
+    public void startStopwatch() { 
         tenthOfSecond = tenthOfSecond + 1;
         if (tenthOfSecond == 10) {
             tenthOfSecond = 0;
@@ -124,7 +125,8 @@ public class GamePanel extends JPanel implements ActionListener {
         stopwatchTimer.start();
     }
 
-    public void stopStopwatch() { //stop stopwatch
+    //Stops the stopwatch. 
+    public void stopStopwatch() { 
         stopwatchTimer.stop();
     }
 
@@ -161,6 +163,7 @@ public class GamePanel extends JPanel implements ActionListener {
 
     }
 
+    //Makes the stopwatch visible for the player on the game screen when the game is running.
     public void drawStopwatchLabel(Graphics graphics) {
         if (!gameOver) {
             graphics.setColor(new Color(14, 102, 0));
@@ -278,8 +281,8 @@ public class GamePanel extends JPanel implements ActionListener {
     }
 
 
+    // Causes Game Over if the snake collides with itself. 
     private void snakeBodyCollision() {
-        // self collision
         for (int i = snake.getBodyUnits(); i > 0; i--) {
             if ((snake.getX(0) == snake.getX(i)) && (snake.getY(0) == snake.getY(i))) {
                 gameOver = true;
@@ -317,6 +320,8 @@ public class GamePanel extends JPanel implements ActionListener {
             scoreCounter = scoreCounter / 2;
         }
     }
+
+    //Resets the game to start mode. Snake length starts at 6 bodyunits. Stopwatch and score is reset to 0. 
     public void resetGame() {
         gameOver = false;
         snake.setSnake(6);
