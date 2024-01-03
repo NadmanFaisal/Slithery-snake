@@ -256,7 +256,7 @@ public class GamePanel extends JPanel implements ActionListener {
         }
     }
 
-
+    // Checks whether snake head collides with invincible food
     public void checkInvincibleFood() {
         if (this.foodCounter == this.randomNumber2) {
             if (snake.getX(0) == invincibleFood.getFoodX() && snake.getY(0) == invincibleFood.getFoodY()) {
@@ -372,6 +372,8 @@ public class GamePanel extends JPanel implements ActionListener {
             checkToxicFood();
             checkInvincibleFood();
             snakeWallCollision();
+
+            // If invincible is false, snake can collide with itself only then
             if (!invincible) {
                 snakeBodyCollision();
             }
