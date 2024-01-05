@@ -7,6 +7,8 @@ public class GameFrame {
     public GameFrame() {
         initialize();
     }
+
+    //This method is responsible for setting up and displaying a JFrame for the game, along with adding the JPanel "GamePanel" to it.
     public void initialize() {
         ImageIcon snakeLogo = new ImageIcon("Snake_Logo.png");
         this.frame = new JFrame();

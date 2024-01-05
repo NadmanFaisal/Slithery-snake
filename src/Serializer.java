@@ -9,13 +9,15 @@ import java.util.Map;
 public class Serializer {
     private Gson gson;
 
+    //This method is a constructor that initializes the Gson attribute with a custom adapter
+    //called SnakeAdapter for the Snake class.
     public Serializer() {
-        // Initializes Gson and registers the adapter
         gson = new GsonBuilder()
                 .registerTypeAdapter(Snake.class, new SnakeAdapter())
                 .create();
     }
 
+    //This method serializes the Snake object to JSON format and saves it to a file named "snake_data.json".
     public void saveColorIndexToJsonFile(Snake snake) {
         String serializedSnake = gson.toJson(snake);
         // Save serialized snake data to a file
@@ -26,6 +28,8 @@ public class Serializer {
         }
     }
 
+    //This method reads the JSON data, extracts the "colorIndex" attribute, and returns its integer value.
+    //If the file or attribute is missing it defaults to returning 0 (color index for the color green).
     public int loadColorIndexFromJsonFile(String filePath) {
         try (FileReader fileReader = new FileReader(filePath)) {
             Gson gson = new Gson();

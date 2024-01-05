@@ -7,6 +7,9 @@ public class Audio {
 
     Clip audio;
 
+     // For the use of sound effects with a specified audio file path and the Clip class for playback.
+     // Handles potential exceptions.
+
     Audio (String path) {
         File file = new File(path);
         try {

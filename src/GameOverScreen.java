@@ -21,6 +21,7 @@ public class GameOverScreen extends MouseAdapter {
     private boolean btnHighlight = false; // Boolean to check if mouse is hovering on button
     private final Font customFont;
 
+    //Constructor
     public GameOverScreen(int panelWidth, int panelHeight) {
         this.active = false;
         this.repaint = false;
@@ -31,6 +32,7 @@ public class GameOverScreen extends MouseAdapter {
         createButton();
     }
 
+    //This method creates and positions the restart button on the screen using specific coordinates and dimensions.
     public void createButton(){
 
         // Position of the button on the screen
@@ -52,6 +54,7 @@ public class GameOverScreen extends MouseAdapter {
         }
     }
 
+    //This method renders the game over screen by drawing all of its components using the provided Graphics object.
     public void showGameOverScreen(Graphics graphics, int score, int playedSeconds, int tenthOfSecond) {
         drawBackground(graphics);
         drawGameResult(graphics, score, playedSeconds, tenthOfSecond);
@@ -63,6 +66,8 @@ public class GameOverScreen extends MouseAdapter {
         graphics.drawImage(backgroundImage.getImage(), 0, 0, panelWidth, panelHeight, null);
     }
 
+    //This method displays the game-related information (game over message, score and time played)
+    // for the game over screen using the custom font and specific positioning.
     public void drawGameResult(Graphics graphics, int score, int playedSeconds, int tenthOfSecond){
         graphics.setFont(customFont.deriveFont(Font.BOLD, 30));
         graphics.setColor(new Color(14, 102, 0));

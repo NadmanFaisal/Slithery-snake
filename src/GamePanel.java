@@ -101,8 +101,12 @@ public class GamePanel extends JPanel implements ActionListener {
         this.add(playButton);
         this.add(changeColor);
         snake.setSnake(6);
+
         timer.start();
     }
+
+    //This method takes the name of the font file as an argument and uses it to construct a path,
+    //retrieve the font file's URL and create a font object. If the file is not found, a runtime exception is thrown.
     public Font getFont(String fontName) {
         try {
             String path = "/Fonts/" + fontName;
@@ -185,7 +189,8 @@ public class GamePanel extends JPanel implements ActionListener {
         }
     }
 
-    // draws the score
+    //This method draws the score on the screen using the provided graphics object
+    //and sets the color, font style and size of the text along with the placement of it.
     public void drawScore(Graphics graphics) {
         graphics.setColor(new Color(14, 102, 0));
         graphics.setFont(customFont.deriveFont(Font.BOLD, 25));
@@ -210,6 +215,8 @@ public class GamePanel extends JPanel implements ActionListener {
         playButton.setVisible(true);
         changeColor.setVisible(true);
     }
+
+    //This method draws the background image on the screen using the provided graphics object.
     public void drawBackgroundImage(Graphics graphics) {
         graphics.drawImage(backgroundImage.getImage(), 0, TOP_PANEL_HEIGHT, PANEL_WIDTH, PANEL_HEIGHT, this);
     }
@@ -250,8 +257,8 @@ public class GamePanel extends JPanel implements ActionListener {
             this.foodCounter = this.foodCounter + 1;
             updateScore();
             food.newFood();
-            Audio clicked = new Audio("src/Audio/SnakeEat2.wav");
-            clicked.audio.start();
+            Audio clicked = new Audio("src/Audio/SnakeEat3.wav");
+            clicked.audio.start(); // starting the playback
             if (this.foodCounter == this.randomNumber) {
                 toxicFood.newFood();
             }
@@ -269,7 +276,7 @@ public class GamePanel extends JPanel implements ActionListener {
                 this.foodCounter = 0;
                 this.randomNumber = random.nextInt(10);
                 updateScore();
-                Audio clicked = new Audio("src/Audio/SnakePoisonFruit.wav");
+                Audio clicked = new Audio("src/Audio/SnakePoisonFruit4.wav");
                 clicked.audio.start();
                 food.newFood();
             }
@@ -283,6 +290,8 @@ public class GamePanel extends JPanel implements ActionListener {
                 this.foodCounter = 0;
                 this.randomNumber2 = random.nextInt(10);
                 activateInvincibility();
+                Audio clicked = new Audio("src/Audio/SnakeGameInvincible.wav");
+                clicked.audio.start();
                 food.newFood();
             }
         }
@@ -333,6 +342,9 @@ public class GamePanel extends JPanel implements ActionListener {
 
     }
 
+    //This method updates the score depending on the type of food that has been eaten. If the snake eats a normal berry,
+    //the player earns 10 points and the score is updated. If an evil berry is eaten, the player loses half of their earned points
+    //and the score is updated.
     public void updateScore() {
         if (snake.getX(0) == food.getFoodX() && snake.getY(0) == food.getFoodY()) {
             scoreCounter += 10;
