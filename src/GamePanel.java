@@ -35,7 +35,7 @@ public class GamePanel extends JPanel implements ActionListener {
 
     private final int TIMER_DELAY = 100;
     private int foodCounter;
-    private int randomNumber; //better name
+    private int randomNumber;
     private int randomNumber2;
     private int scoreCounter;
     private int playedSeconds; 
