@@ -21,6 +21,7 @@ public class GameOverScreen extends MouseAdapter {
     private boolean btnHighlight = false; // Boolean to check if mouse is hovering on button
     private final Font customFont;
 
+    //Constructor
     public GameOverScreen(int panelWidth, int panelHeight) {
         this.active = false;
         this.repaint = false;
@@ -31,6 +32,7 @@ public class GameOverScreen extends MouseAdapter {
         createButton();
     }
 
+    //This method creates and positions the restart button on the screen using specific coordinates and dimensions.
     public void createButton(){
 
         // Position of the button on the screen
@@ -52,6 +54,7 @@ public class GameOverScreen extends MouseAdapter {
         }
     }
 
+    //This method renders the game over screen by drawing all of its components using the provided Graphics object.
     public void showGameOverScreen(Graphics graphics, int score, int playedSeconds, int tenthOfSecond) {
         drawBackground(graphics);
         drawGameResult(graphics, score, playedSeconds, tenthOfSecond);
@@ -63,6 +66,8 @@ public class GameOverScreen extends MouseAdapter {
         graphics.drawImage(backgroundImage.getImage(), 0, 0, panelWidth, panelHeight, null);
     }
 
+    //This method displays the game-related information (game over message, score and time played)
+    // for the game over screen using the custom font and specific positioning.
     public void drawGameResult(Graphics graphics, int score, int playedSeconds, int tenthOfSecond){
         graphics.setFont(customFont.deriveFont(Font.BOLD, 30));
         graphics.setColor(new Color(14, 102, 0));
@@ -81,6 +86,7 @@ public class GameOverScreen extends MouseAdapter {
         graphics.drawString("Time played: " + playedSeconds + "." + tenthOfSecond + " seconds", xTime, y + 50);
     }
 
+    //Displays the restart button on the Game Over screen. 
     public void drawButton(Graphics graphics){
         Graphics2D graphics2D = (Graphics2D) graphics;
 
@@ -100,11 +106,11 @@ public class GameOverScreen extends MouseAdapter {
 
     }
 
+     // Adding start button text and positioning it inside the button
     public void drawTextInsideButton(Graphics graphics){
         graphics.setFont(customFont.deriveFont(Font.BOLD, 23));
         graphics.setColor(new Color(255, 255, 240));
 
-        // Adding start button text and positioning it inside the button
         int textX = (int) (restartButton.getX() + 5);
         int textY = (int) (restartButton.getY() + 35);
         graphics.drawString(buttonText, textX, textY);
@@ -133,14 +139,12 @@ public class GameOverScreen extends MouseAdapter {
     public boolean isRepaint() {
         return repaint;
     }
-
     public void setRepaint(boolean repaint) {
         this.repaint = repaint;
     }
     public boolean isActive() {
         return active;
     }
-
     public void setActive(boolean active) {
         this.active = active;
     }
