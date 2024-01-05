@@ -6,6 +6,12 @@ The font was created by Typodermic Fonts on https://www.1001freefonts.com/karmaf
 
 The background image was found on Freepik, https://www.freepik.com/free-vector/grass-background-green-tones_1086557.htm#query=flat%20grass&position=7&from_view=search&track=ais&uuid=c68f15f1-0850-4a61-8195-34dc123096b9
 
+The food image was found on vecteezy.com:
+<a href="https://www.vecteezy.com/free-vector/strawberry">Strawberry Vectors by Vecteezy</a>
+
+The toxic food image was found on vecteezy.com:
+<a href="https://www.vecteezy.com/free-vector/mystical">Mystical Vectors by Vecteezy</a>
+
 ## Getting started
 
 To make it easy for you to get started with GitLab, here's a list of recommended next steps.
