@@ -1,6 +1,10 @@
 # Group 11
 
+##Attributions:
 
+The font was created by Typodermic Fonts on https://www.1001freefonts.com/karmafuture.font
+
+The background image was found on Freepik, https://www.freepik.com/free-vector/grass-background-green-tones_1086557.htm#query=flat%20grass&position=7&from_view=search&track=ais&uuid=c68f15f1-0850-4a61-8195-34dc123096b9
 
 ## Getting started
 
