@@ -196,6 +196,13 @@ public class GamePanel extends JPanel implements ActionListener {
         graphics.setFont(customFont.deriveFont(Font.BOLD, 25));
         graphics.drawString("Score: " + scoreCounter, 10, graphics.getFont().getSize() + TOP_PANEL_HEIGHT);
     }
+    /*
+      This Java code defines a method to draw a graphical user interface top panel.
+      It uses Java's graphics functionalities to set background and border colors,
+      draw lines for the panel border, and display a logo image. Additionally,
+      it adjusts the stroke thickness for the border and sets the visibility
+      of play and color-changing buttons within the panel.
+     */
     private void drawTopPanel(Graphics graphics) {
         Graphics2D graphics2D = (Graphics2D) graphics;
 
@@ -283,7 +290,7 @@ public class GamePanel extends JPanel implements ActionListener {
         }
     }
 
-
+    // Checks whether snake head collides with invincible food
     public void checkInvincibleFood() {
         if (this.foodCounter == this.randomNumber2) {
             if (snake.getX(0) == invincibleFood.getFoodX() && snake.getY(0) == invincibleFood.getFoodY()) {
@@ -297,6 +304,7 @@ public class GamePanel extends JPanel implements ActionListener {
         }
     }
 
+    // Changes invincibility boolean to true for 10 seconds
     public void activateInvincibility() {
         invincible = true;
         Timer invincibilityTimer = new Timer(10000, new ActionListener() {
@@ -305,7 +313,9 @@ public class GamePanel extends JPanel implements ActionListener {
                 invincible = false;
             }
         });
-        invincibilityTimer.setRepeats(false); // Make the timer run only once
+
+        // Makes the timer run only once
+        invincibilityTimer.setRepeats(false);
         invincibilityTimer.start();
     }
 
@@ -332,6 +342,8 @@ public class GamePanel extends JPanel implements ActionListener {
            here 0 may look like a magic number but it's not as we all know width and height size is 570
            it means the starting point is 0. So it the panel size goes from 70 --> 570; both side.
            */
+
+    // Causes the snake to collide with the wall
     public void snakeWallCollision() {
         if ((snake.getX(0) < 0 || snake.getX(0) >= PANEL_WIDTH) || (snake.getY(0) < TOP_PANEL_HEIGHT || snake.getY(0) >= PANEL_HEIGHT + TOP_PANEL_HEIGHT)) {
             gameOver = true;
@@ -399,6 +411,8 @@ public class GamePanel extends JPanel implements ActionListener {
             checkToxicFood();
             checkInvincibleFood();
             snakeWallCollision();
+
+            // If invincible is false, snake can collide with itself only then
             if (!invincible) {
                 snakeBodyCollision();
             }
