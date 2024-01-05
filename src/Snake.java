@@ -61,10 +61,12 @@ public class Snake {
         return y[index];
     }
 
+    //This method gets the color index.
     public int getColorIndex() {
         return this.colorIndex;
     }
 
+    //This method sets the previous color index to the newly provided one.
     public void setColorIndex(int newColor){
        this.colorIndex = newColor;
     }
