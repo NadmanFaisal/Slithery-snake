@@ -196,6 +196,13 @@ public class GamePanel extends JPanel implements ActionListener {
         graphics.setFont(customFont.deriveFont(Font.BOLD, 25));
         graphics.drawString("Score: " + scoreCounter, 10, graphics.getFont().getSize() + TOP_PANEL_HEIGHT);
     }
+    /*
+      This Java code defines a method to draw a graphical user interface top panel.
+      It uses Java's graphics functionalities to set background and border colors,
+      draw lines for the panel border, and display a logo image. Additionally,
+      it adjusts the stroke thickness for the border and sets the visibility
+      of play and color-changing buttons within the panel.
+     */
     private void drawTopPanel(Graphics graphics) {
         Graphics2D graphics2D = (Graphics2D) graphics;
 
