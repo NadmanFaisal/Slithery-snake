@@ -230,8 +230,8 @@ public class GamePanel extends JPanel implements ActionListener {
             this.foodCounter = this.foodCounter + 1;
             updateScore();
             food.newFood();
-            Audio clicked = new Audio("src/Audio/SnakeEat2.wav");
-            clicked.audio.start();
+            Audio clicked = new Audio("src/Audio/SnakeEat3.wav");
+            clicked.audio.start(); // starting the playback
             if (this.foodCounter == this.randomNumber) {
                 toxicFood.newFood();
             }
@@ -249,7 +249,7 @@ public class GamePanel extends JPanel implements ActionListener {
                 this.foodCounter = 0;
                 this.randomNumber = random.nextInt(10);
                 updateScore();
-                Audio clicked = new Audio("src/Audio/SnakePoisonFruit.wav");
+                Audio clicked = new Audio("src/Audio/SnakePoisonFruit4.wav");
                 clicked.audio.start();
                 food.newFood();
             }
@@ -263,6 +263,8 @@ public class GamePanel extends JPanel implements ActionListener {
                 this.foodCounter = 0;
                 this.randomNumber2 = random.nextInt(10);
                 activateInvincibility();
+                Audio clicked = new Audio("src/Audio/SnakeGameInvincible.wav");
+                clicked.audio.start();
                 food.newFood();
             }
         }
