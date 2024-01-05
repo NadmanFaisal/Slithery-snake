@@ -47,9 +47,13 @@ public class Snake {
     public int getBodyUnits() {
         return bodyUnits;
     }
+
+    // adds a bodyUnit to snake
     public void increaseBodyUnits() {
         this.bodyUnits += 1;
     }
+
+    // halves the bodyUnits of the snake
     public void decreaseBodyUnits() {
         this.bodyUnits = this.bodyUnits / 2;
     }
@@ -70,6 +74,17 @@ public class Snake {
     public void setColorIndex(int newColor){
        this.colorIndex = newColor;
     }
+
+    /*
+    This method adds 1 to the colorIndex(hence referring to the next color in the array colorList) if it's not the equal
+    to the last index on the array. If colorIndex is equal to the last index on the array, it is assigned 0( so it refers back
+    to the first color in the array).
+
+    It then stores the color in colorList's index equal to colorIndex in a string. It assigns the attributes for the
+    snake images to images of the color stored in the string.
+
+    It calls the method to store the new colorIndex to the JSON file.
+     */
     public void changeSnakeColor() {
         if(this.colorIndex < colorList.length - 1) {
             this.colorIndex += 1;
@@ -89,8 +104,12 @@ public class Snake {
         this.snakeBody = new ImageIcon("src/Images/" + color + " Snake/Body.png");
 
         serializer.saveColorIndexToJsonFile(this);
-        }
+    }
 
+    /*
+    This returns the image for the head of the snake that corresponds to the direction of the snake. Every 5 moves, it
+    returns the snake head image which includes the tongue. This gives the effect that the snake is moving its tongue.
+     */
     private ImageIcon getSnakeHead(String direction) {
         ImageIcon head = null;
 
@@ -126,9 +145,13 @@ public class Snake {
         }
         return head;
     }
+
+
+    //This draws the snake. It calls the method getSnakeHead() to get the image of the head in the right direction and
+    //assigns all the images to their respective positions.
     public void drawSnake (Graphics graphics, String direction){
         ImageIcon head = getSnakeHead(direction);
-        //snake
+
         switch (direction) {
             case "Right", "Down" -> {
                 for (int i = 0; i < bodyUnits; i++) {
@@ -169,8 +192,12 @@ public class Snake {
             }
         }
     }
+
+    // It sets the snake's bodyUnits and positions the snake to begin at the centre of the game screen.
     public void setSnake(int bodyUnits) {
-        for (int i = 0; i < bodyUnits; i++) {
+        this.bodyUnits = bodyUnits;
+
+        for (int i = 0; i < this.bodyUnits; i++) {
             if (i == 0) {
                 x[i] = 250;
                 y[i] = 350;
@@ -180,9 +207,13 @@ public class Snake {
 
             }
         }
-        this.bodyUnits = bodyUnits;
     }
 
+    /*
+    This method moves the snake. It starts at the last bodyUnit and moves the bodyUnits to the position of the bodyUnit
+    before it, except the head. The head moves either up, down, left or right according to the direction. It adds 1 to
+    the moveCounter.
+     */
     public void movement (String direction) {
 
         for (int i = bodyUnits; i > 0; i--) {

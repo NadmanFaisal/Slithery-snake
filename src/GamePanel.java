@@ -127,24 +127,25 @@ public class GamePanel extends JPanel implements ActionListener {
         stopwatchTimer.start();
     }
 
-    //Stops the stopwatch. 
-    public void stopStopwatch() { 
+    //Stops the stopwatch.
+    public void stopStopwatch() {
         stopwatchTimer.stop();
     }
 
     /*
         This method calls to draw the Game screen according to some conditions:
-            It would draw the start game screen, if the game has not been started, by calling startScreen.drawStartMenu()
-            method.
+            - It would draw the start game screen, if the game has not been started, by calling
+              startScreen.drawStartMenu() method.
 
-            If the game had been started and gameOver was true due to the snake colliding with either a wall or itself,
-            it would call the gameOverScreen.showGameOverScreen() method.
+            - If the game had been started and gameOver was true due to the snake colliding with either a wall or itself,
+              it set the buttons of the game screen to not be visible and would call the
+              gameOverScreen.showGameOverScreen() method.
 
-            Otherwise if the game was started but gameOver was false, it would call methods to draw the top panel, the
-            background image, Additionally, if running was true due to the user clicking the play button, it would call
-            the draw food methods to draw the food, the toxic food, if foodCounter was equal to randomNumber, and the
-            invincible food, if foodCounter was equal to randomNumber2. Then it would also call the methods to draw
-            the score and the stopwatch label.
+            - Otherwise if the game was started but gameOver was false, it would call methods to draw the top panel, the
+              background image, Additionally, if running was true due to the user clicking the play button, it would call
+              the draw food methods to draw the food, the toxic food, if foodCounter was equal to randomNumber, and the
+              invincible food, if foodCounter was equal to randomNumber2. Then it would also call the methods to draw
+              the score and the stopwatch label.
 
     */
     @Override
@@ -254,6 +255,16 @@ public class GamePanel extends JPanel implements ActionListener {
         timer.start();
     }
 
+    /*
+        This method checks if the head of the snake is at the same coordinates as the food. If so:
+            - It checks whether the foodCounter is equal to the randomNumber, which means the toxic food was also an
+              option. If it is true, the foodCounter and randomNumber is reset.
+            - It calls to increase the snake's bodyUnit by adding 1 more
+            - It adds 1 to the foodCounter as the food is eaten.
+            - It updates the score and calls the method to create a new food on the screen and plays the audio selected.
+            - If the foodCounter now equals to randomNumber, it calls the method to create new toxic food, if foodCounter
+              equals randomNumber2, it calls the method to create new invincible food.
+     */
     public void checkFood() {
         if ((snake.getX(0) == food.getFoodX() && snake.getY(0) == food.getFoodY())) {
             if (this.foodCounter == this.randomNumber) {
@@ -276,8 +287,14 @@ public class GamePanel extends JPanel implements ActionListener {
         }
     }
 
-    public void checkToxicFood() { //also separated methods to check the different foods
-        if (this.foodCounter == this.randomNumber) { //Added a condition to fix logic
+    /*
+    This method checks if the toxic food is visible, if it is, it checks whether the snake's head is at the same
+    coordinates as the toxic food. If so, it halves the bodyUnits of the snake by calling the respective method, resets
+    the values of the foodCounter and the randomNumber, updates the score to half, plays the selected audio and calls
+    for normal new food to be created.
+     */
+    public void checkToxicFood() {
+        if (this.foodCounter == this.randomNumber) {
             if (snake.getX(0) == toxicFood.getFoodX() && snake.getY(0) == toxicFood.getFoodY()) {
                 snake.decreaseBodyUnits();
                 this.foodCounter = 0;
@@ -339,7 +356,7 @@ public class GamePanel extends JPanel implements ActionListener {
         /* if the snake head (x) is smaller than the left panel(0) or bigger than the right panel(500)
            or the snake head (y) is smaller than the upper panel(70) or bigger than the lower panel(570)
            game ends.
-           here 0 may look like a magic number but it's not as we all know width and height size is 570
+           here 0 may look like a magic number, but it's not as we all know width and height size is 570
            it means the starting point is 0. So it the panel size goes from 70 --> 570; both side.
            */
 
@@ -374,6 +391,29 @@ public class GamePanel extends JPanel implements ActionListener {
         tenthOfSecond = 0;
     }
 
+    /*
+    This method does different functions for different conditions:
+
+    If the game has not been started, it checks whether the repaint attribute of the startScreen is true, which means
+    mouse is hovering over the start button. If it's true, it calls repaint and sets the repaint attribute to false via
+    the setter. It then checks if the active attribute of startScreen is true, which means the button has been clicked.
+    If it's true, it sets started to true and active to false, via a setter.
+
+    Else if the game has been started but game is over (gameOver is true), it checks whether the repaint attribute of the
+    gameOverScreen is true, which means the mouse is hovering over the restart button. If it's true, it calls repaint()
+    and sets the repaint attribute to false via the setter. It then checks if the active attribute of gameOverScreen is
+    true, which means the button has been clicked. If it's true, it calls reset() and sets active to false, via the
+    setter.
+
+    Else if the game has been started and both running and gameOver are false, it checks if the play button or
+    changeColor buttons have been pressed. If play is presses, it calls to start playing the game. If changeColor is
+    pressed it switches to the next color.
+
+    Else if game has started, gameOver is false and running is true, it calls the snake movement,checks whether the
+    snake has eaten any foods or had a collision and calls to start the stopwatch.
+
+    This method always calls the repaint method and the stopStopWatch method.
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         if (!started) {
@@ -424,6 +464,7 @@ public class GamePanel extends JPanel implements ActionListener {
         repaint();
     }
 
+    //This method changes the direction of the snake in the game according to the arrow key pressed.
     public class MyKeyAdapter extends KeyAdapter {
         @Override
         public void keyPressed(KeyEvent keyEvent) {
