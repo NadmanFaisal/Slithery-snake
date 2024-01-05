@@ -13,7 +13,6 @@ public class GamePanel extends JPanel implements ActionListener {
     private static final int TOP_PANEL_HEIGHT = 100;
     private static final int UNIT = 25;
     private static final int GAME_UNITS = (PANEL_HEIGHT * PANEL_WIDTH) / (UNIT * UNIT);
-    private final int TIMER_DELAY = 100;
 
     private Snake snake;
     private Food food;
@@ -21,6 +20,7 @@ public class GamePanel extends JPanel implements ActionListener {
     private Food toxicFood;
     private GameOverScreen gameOverScreen;
     private StartScreen startScreen;
+
     private Random random;
     private Timer timer;
     private Timer stopwatchTimer;  
@@ -33,6 +33,7 @@ public class GamePanel extends JPanel implements ActionListener {
     private boolean gameOver;
     private boolean invincible;
 
+    private final int TIMER_DELAY = 100;
     private int foodCounter;
     private int randomNumber; //better name
     private int randomNumber2;
@@ -43,8 +44,6 @@ public class GamePanel extends JPanel implements ActionListener {
     private ImageIcon logo;
     private ImageIcon backgroundImage;
     private final Font customFont;
-
-    //private Serializer serializer;
 
     public GamePanel() {
         this.direction = "Right";
@@ -98,12 +97,11 @@ public class GamePanel extends JPanel implements ActionListener {
         this.tenthOfSecond = 0;
 
         timer = new Timer(TIMER_DELAY, this);
-        timer.start();
+
         this.add(playButton);
         this.add(changeColor);
         snake.setSnake(6);
-
-        //this.serializer = new Serializer();
+        timer.start();
     }
     public Font getFont(String fontName) {
         try {
@@ -130,6 +128,21 @@ public class GamePanel extends JPanel implements ActionListener {
         stopwatchTimer.stop();
     }
 
+    /*
+        This method calls to draw the Game screen according to some conditions:
+            It would draw the start game screen, if the game has not been started, by calling startScreen.drawStartMenu()
+            method.
+
+            If the game had been started and gameOver was true due to the snake colliding with either a wall or itself,
+            it would call the gameOverScreen.showGameOverScreen() method.
+
+            Otherwise if the game was started but gameOver was false, it would call methods to draw the top panel, the
+            background image, Additionally, if running was true due to the user clicking the play button, it would call
+            the draw food methods to draw the food, the toxic food, if foodCounter was equal to randomNumber, and the
+            invincible food, if foodCounter was equal to randomNumber2. Then it would also call the methods to draw
+            the score and the stopwatch label.
+
+    */
     @Override
     public void paintComponent(Graphics graphics) {
         super.paintComponent(graphics);
@@ -172,6 +185,7 @@ public class GamePanel extends JPanel implements ActionListener {
         }
     }
 
+    // draws the score
     public void drawScore(Graphics graphics) {
         graphics.setColor(new Color(14, 102, 0));
         graphics.setFont(customFont.deriveFont(Font.BOLD, 25));
@@ -200,8 +214,14 @@ public class GamePanel extends JPanel implements ActionListener {
         graphics.drawImage(backgroundImage.getImage(), 0, TOP_PANEL_HEIGHT, PANEL_WIDTH, PANEL_HEIGHT, this);
     }
 
+    /*
+        This method is called when play button is clicked to start playing. The snake is set to beginning position and
+        bodyUnits by calling snake.setSnake(). FoodCounter, randomNumber, randomNumber2 and direction are reassigned
+        their original values. gameOver is set false and running is true. If a timer is already running, it is
+        stopped. A new timer starts.
+     */
     public void startGame() {
-        gameOverScreen.setActive(false);//WHY DO WE I HAVE TO?? MAYBE BUG
+        gameOverScreen.setActive(false);
 
         this.snake.setSnake(6);
 
@@ -220,7 +240,7 @@ public class GamePanel extends JPanel implements ActionListener {
         timer.start();
     }
 
-    public void checkFood() { //changed logic in if block
+    public void checkFood() {
         if ((snake.getX(0) == food.getFoodX() && snake.getY(0) == food.getFoodY())) {
             if (this.foodCounter == this.randomNumber) {
                 foodCounter = 0;
